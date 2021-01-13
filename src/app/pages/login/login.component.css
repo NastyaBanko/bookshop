@@ -1,0 +1,46 @@
+.loginContainer {
+  padding: 40px 60px;
+  text-align: center;
+  border: solid 1px rgb(207, 207, 207);
+  border-radius: 10px;
+  width: 350px;
+  margin-top: 20px;
+  box-sizing: border-box;
+}
+
+h1,
+p {
+  padding: 0;
+  margin: 0;
+}
+
+.signUpContainer {
+  padding: 20px 60px;
+  text-align: center;
+  border: solid 1px rgb(207, 207, 207);
+  border-radius: 10px;
+  width: 350px;
+  margin-top: 20px;
+  box-sizing: border-box;
+}
+
+.fullElem {
+  width: 100%;
+}
+
+.registBut {
+  margin-top: 15px;
+}
+
+.centeredHtml {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.loginError {
+  /* margin-top: 30px; */
+  color: red;
+  font-size: 13px;
+}
