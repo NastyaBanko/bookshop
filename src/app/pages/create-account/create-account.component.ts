@@ -79,7 +79,6 @@ export class CreateAccountComponent implements OnInit {
       }
     }
     setTimeout(() => {
-      console.log(this.savedUsers, "createAccount")
       let isSaved = this.savedUsers.find(el=>el.email===this.userEmail.value||el.userName===this.userName)
       this.addAllToLocaleHost(isSaved)
     }, 1000);

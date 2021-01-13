@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     // this.http.get('/api/v1/categories').subscribe((data:any) => this.currentCategories=data);
-    // console.log("loggggiiin")
     setTimeout(()=>{
       this.getSavedUsers();
     }, 1000)
@@ -53,7 +52,6 @@ export class LoginComponent implements OnInit {
   }
 
   createAccount(): void {
-    console.log(this.savedUsers, "))))")
     this.router.navigate(['createAccount']);
   }
 
@@ -71,9 +69,7 @@ export class LoginComponent implements OnInit {
   }
 
   submit(): void {
-    console.log(this.savedUsers, ">>>>")
     let isSaved = this.savedUsers.find(el=>el.email===this.userEmail.value&&el.password===this.userPassword)
-    console.log(isSaved, "login")
     if(isSaved){
 
       this.loginError = "";

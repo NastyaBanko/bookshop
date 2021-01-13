@@ -17,10 +17,8 @@ export class AppComponent {
 
   ngOnInit(): void {
     let currentUser = JSON.parse(localStorage.getItem("currentUser"))
-    console.log(currentUser)
     let addedUsers = JSON.parse(localStorage.getItem("addedUsers")) || []
     this.getSavedUsers()
-    console.log("refresh")
     if(currentUser.id){
       if(currentUser.type === "admin"){
         this.router.navigate(['admin']);

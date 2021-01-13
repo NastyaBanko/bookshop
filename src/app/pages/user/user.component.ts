@@ -24,9 +24,6 @@ export class UserComponent implements OnInit {
     // this.http.get('/api/v1/categories').subscribe((data:any) => this.currentCategories=data);
     this.getCurrentUser()
     this.getSavedUsers()
-    setTimeout(() => {
-      console.log(this.savedUsers)
-    }, 1000);
   }
 
   getSavedUsers(): void {
