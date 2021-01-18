@@ -27,7 +27,7 @@ export class AskModalComponent implements OnInit {
   }
 
   updateUser(user): void {
-    this.userService.updateUser(user).subscribe(()=>{console.log("update")})
+    this.userService.updateUser(user)
   }
 
   cleanLocaleStorage(): void {

@@ -39,8 +39,7 @@ export class CreateAccountComponent implements OnInit {
   }
 
   getSavedUsers(): void {
-    this.userService.getSavedUsers()
-        .subscribe(savedUsers => this.savedUsers = savedUsers);
+    this.savedUsers = this.userService.getSavedUsers()
   }
 
   login(): void {
@@ -71,10 +70,7 @@ export class CreateAccountComponent implements OnInit {
         this.loginError = "A user with the same email or name already exists";
       } else {
         this.loginError = "";
-        this.userService.addUser({ userName: this.userName, type: "user", email: this.userEmail.value, password: this.userPassword, isLogin: false } as User)
-        .subscribe(user => {
-          this.savedUsers.push(user);
-        });
+        this.savedUsers.push(this.userService.addUser({ userName: this.userName, type: "user", email: this.userEmail.value, password: this.userPassword, isLogin: false } as User))
         this.router.navigate(['login']);
       }
     }

@@ -43,12 +43,11 @@ export class LoginComponent implements OnInit {
   }
 
   getSavedUsers(): void {
-    this.userService.getSavedUsers()
-        .subscribe(savedUsers => this.savedUsers = savedUsers);
+    this.savedUsers = this.userService.getSavedUsers()
   }
 
   updateUser(user): void {
-    this.userService.updateUser(user).subscribe(()=>{console.log("update")})
+    this.userService.updateUser(user)
   }
 
   createAccount(): void {

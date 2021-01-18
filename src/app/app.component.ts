@@ -39,15 +39,14 @@ export class AppComponent {
       }
       if(addedUsers){
         addedUsers.map(el=>{
-          this.userService.addUser({ 
-            userName: el.userName, 
-            type: "user", 
-            email: el.email, 
-            password: el.password, 
-            isLogin: isNew.id&&el.email===isNew.email?true:false } as User)
-          .subscribe(user => {
-            this.savedUsers.push(user);
-          });
+          this.savedUsers.push(
+            this.userService.addUser({ 
+              userName: el.userName, 
+              type: "user", 
+              email: el.email, 
+              password: el.password, 
+              isLogin: isNew.id&&el.email===isNew.email?true:false } as User)
+          )
         })
         this.getSavedUsers()
       }
@@ -55,11 +54,10 @@ export class AppComponent {
   }
 
   getSavedUsers(): void {
-    this.userService.getSavedUsers()
-        .subscribe(savedUsers => this.savedUsers = savedUsers);
+    this.savedUsers = this.userService.getSavedUsers()
   }
 
   updateUser(user): void {
-    this.userService.updateUser(user).subscribe(()=>{console.log("update")})
+    this.userService.updateUser(user)
   }
 }

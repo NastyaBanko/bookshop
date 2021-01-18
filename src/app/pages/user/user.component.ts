@@ -50,13 +50,15 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     // this.http.get('/catalog/api/v1/categories').subscribe((data:any) => this.currentCategories=data);
     this.httpService.getCategories().subscribe(data => this.currentCategories = data);
+    setTimeout(() => {
+      console.log(this.currentCategories, "currentCategories")
+    }, 1000);
     this.getCurrentUser()
     this.getSavedUsers()
   }
 
   getSavedUsers(): void {
-    this.userService.getSavedUsers()
-        .subscribe(savedUsers => this.savedUsers = savedUsers);
+    this.savedUsers = this.userService.getSavedUsers()
   }
 
   getCurrentUser(): void {
