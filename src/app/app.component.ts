@@ -13,9 +13,14 @@ import { HttpClient} from '@angular/common/http';
 export class AppComponent {
   title = 'hw7-login';
   savedUsers: any;
+  currentCategories: any;
+  test: any;
+  
   constructor(private userService: UserService, private router: Router, private http: HttpClient) { }
 
   ngOnInit(): void {
+    this.http.get('https://www.breakingbadapi.com/api/characters/8').subscribe((data:any) => this.test=data);
+    // this.http.get('/catalog/api/v1/categories').subscribe((data:any) => this.currentCategories=data);
     let currentUser = JSON.parse(localStorage.getItem("currentUser"))
     let addedUsers = JSON.parse(localStorage.getItem("addedUsers")) || []
     this.getSavedUsers()

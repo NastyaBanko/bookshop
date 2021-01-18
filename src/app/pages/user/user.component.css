@@ -1,3 +1,62 @@
 .mainContainer{
+    display: flex;
     padding: 20px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.welcomeText{
+    margin: 0 10px 0 10px;
+}
+
+.toolBar{
+    padding: 20px;
+    text-align: center;
+}
+
+.priceTool{
+    display: inline-block;
+}
+
+.marginRight{
+    margin-right: 10px;
+}
+
+.basketBtn {
+    cursor: pointer;
+}
+
+.basketIcon{
+    font-size: 40px;
+}
+
+.offerCard{
+    width: 300px;
+    display: inline-block;
+    margin: 10px;
+}
+
+.offersContainer{
+    padding: 20px;
+    text-align: center;
+}
+
+.rowed{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.countText{
+    margin: 0 10px;
+}
+
+.descriptionText{
+    text-align: start;
+    font-size: 13px;
+    color: gray;
+}
+
+.nameText{
+    font-size: 20px;
 }

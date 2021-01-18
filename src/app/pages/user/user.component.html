@@ -1,4 +1,50 @@
 <div class="mainContainer">
-    <h1>Hi, {{currentUser.userName}}!</h1>
-    <button mat-stroked-button (click)="openDialog()">Log out</button>
+    <div class="marginRight basketBtn">
+      <!-- <mat-icon aria-hidden="false" aria-label="Example home icon" class="basketIcon">shopping_cart</mat-icon> -->
+      <fa-icon size="2x" [icon]="faShoppingCart"></fa-icon>
+    </div>
+    <h1 class="welcomeText">Hi, {{currentUser.userName}}!</h1>
+    <div><button mat-stroked-button (click)="openDialog()">Log out</button></div>
+</div>
+
+<div class="toolBar">
+    <mat-form-field appearance="fill" class="marginRight">
+        <mat-label>Categories</mat-label>
+        <mat-select [(value)]="selectedCategory">
+          <mat-option [value]="option.value" *ngFor="let option of mockCategories">{{ option.viewValue }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <form class="priceTool">
+        <mat-form-field class="marginRight">
+          <mat-label>Min Price</mat-label>
+          <input [(ngModel)]="minPrice" type="number" name="minPrice" matInput value="">
+        </mat-form-field>
+        <mat-form-field class="marginRight">
+            <mat-label>Max Price</mat-label>
+            <input [(ngModel)]="maxPrice" type="number" name="maxPrice" matInput value="">
+          </mat-form-field>
+        <mat-form-field class="marginRight">
+            <mat-label>Search book</mat-label>
+            <input [(ngModel)]="searchName" name="searchName" matInput value="">
+        </mat-form-field>
+      </form>
+      <button class="marginRight" mat-stroked-button (click)="sortAlphabetically()">Sort Alphabetically</button>
+      <button mat-stroked-button (click)="resetSettings()">Reset Settings</button>
+</div>
+
+<div class="offersContainer">
+  <!-- <mat-option [value]="option.value" *ngFor="let option of mockCategories">{{ option.viewValue }}</mat-option> -->
+  <div *ngFor="let offer of mockOffers" class="offerCard">
+    <mat-card>
+      <p class="nameText">{{offer.name | uppercase}}</p>
+      <p class="descriptionText">Category: {{offer.category}}</p>
+      <p class="descriptionText">{{offer.description}}</p>
+      <p>Price: ${{offer.price}},00</p>
+      <div class="rowed">
+        <button mat-stroked-button (click)="addCount(offer)">+</button>
+        <p class="countText">{{offer.count}}</p>
+        <button mat-stroked-button (click)="minusCount(offer)">-</button>
+      </div>
+    </mat-card>
+  </div>
 </div>
