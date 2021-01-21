@@ -8,6 +8,7 @@ import { UserComponent } from './user.component';
 import { MatButtonModule } from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
+import {MatMenuModule} from '@angular/material/menu';
 // import {MatIconModule} from '@angular/material/icon';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {MatCardModule} from '@angular/material/card';
@@ -22,6 +23,7 @@ import {MatCardModule} from '@angular/material/card';
     MatSelectModule,
     FormsModule,
     FontAwesomeModule,
+    MatMenuModule,
     // MatIconModule,
     ReactiveFormsModule,
     MatCardModule,

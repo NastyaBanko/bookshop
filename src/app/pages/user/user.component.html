@@ -1,48 +1,84 @@
 <div class="mainContainer">
-    <div class="marginRight basketBtn">
-      <!-- <mat-icon aria-hidden="false" aria-label="Example home icon" class="basketIcon">shopping_cart</mat-icon> -->
-      <fa-icon size="2x" [icon]="faShoppingCart"></fa-icon>
-    </div>
-    <h1 class="welcomeText">Hi, {{currentUser.userName}}!</h1>
-    <div><button mat-stroked-button (click)="openDialog()">Log out</button></div>
+  <h1 class="welcomeText">Hi, {{ currentUser.userName }}!</h1>
+  <button class="burgerBtn" mat-button [matMenuTriggerFor]="menu">Menu</button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="viewBasket()">Basket<span *ngIf="basketItems.length > 0">({{basketItems.length}})*</span></button>
+    <button mat-menu-item (click)="viewOrders()">Orders</button>
+    <button mat-menu-item (click)="openDialog()">Log out</button>
+  </mat-menu>
 </div>
 
 <div class="toolBar">
-    <mat-form-field appearance="fill" class="marginRight">
-        <mat-label>Categories</mat-label>
-        <mat-select [(value)]="selectedCategory">
-          <mat-option [value]="option.value" *ngFor="let option of mockCategories">{{ option.viewValue }}</mat-option>
-        </mat-select>
+  <mat-form-field appearance="fill" class="marginRight">
+    <mat-label>Categories</mat-label>
+    <mat-select (selectionChange)="onChange()" [(value)]="selectedCategory">
+      <mat-option
+        [value]="option.value"
+        *ngFor="let option of mockCategories"
+        >{{ option.viewValue }}</mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+  <form class="priceTool">
+    <mat-form-field class="marginRight">
+      <mat-label>Min Price</mat-label>
+      <input
+        [(ngModel)]="minPrice"
+        (ngModelChange)="onChange()"
+        type="number"
+        name="minPrice"
+        matInput
+        value=""
+      />
     </mat-form-field>
-    <form class="priceTool">
-        <mat-form-field class="marginRight">
-          <mat-label>Min Price</mat-label>
-          <input [(ngModel)]="minPrice" type="number" name="minPrice" matInput value="">
-        </mat-form-field>
-        <mat-form-field class="marginRight">
-            <mat-label>Max Price</mat-label>
-            <input [(ngModel)]="maxPrice" type="number" name="maxPrice" matInput value="">
-          </mat-form-field>
-        <mat-form-field class="marginRight">
-            <mat-label>Search book</mat-label>
-            <input [(ngModel)]="searchName" name="searchName" matInput value="">
-        </mat-form-field>
-      </form>
-      <button class="marginRight" mat-stroked-button (click)="sortAlphabetically()">Sort Alphabetically</button>
-      <button mat-stroked-button (click)="resetSettings()">Reset Settings</button>
+    <mat-form-field class="marginRight">
+      <mat-label>Max Price</mat-label>
+      <input
+        [(ngModel)]="maxPrice"
+        (ngModelChange)="onChange()"
+        type="number"
+        name="maxPrice"
+        matInput
+        value=""
+      />
+    </mat-form-field>
+    <mat-form-field class="marginRight">
+      <mat-label>Search book</mat-label>
+      <input
+        [(ngModel)]="searchName"
+        (ngModelChange)="onChange()"
+        name="searchName"
+        matInput
+        value=""
+      />
+    </mat-form-field>
+  </form>
+  <button class="marginRight" mat-stroked-button (click)="onChangeIsAlp()">
+    Sort Alphabetically
+  </button>
+  <button mat-stroked-button (click)="resetSettings()">Reset Settings</button>
 </div>
 
 <div class="offersContainer">
   <!-- <mat-option [value]="option.value" *ngFor="let option of mockCategories">{{ option.viewValue }}</mat-option> -->
-  <div *ngFor="let offer of mockOffers" class="offerCard">
+  <p *ngIf="visibleOffers.length < 1">No available offers</p>
+  <div *ngFor="let offer of visibleOffers" class="offerCard">
     <mat-card>
-      <p class="nameText">{{offer.name | uppercase}}</p>
-      <p class="descriptionText">Category: {{offer.category}}</p>
-      <p class="descriptionText">{{offer.description}}</p>
-      <p>Price: ${{offer.price}},00</p>
+      <p class="nameText">{{ offer.name | uppercase }}</p>
+      <p>
+        <img
+          width="150"
+          src="https://www.investopedia.com/thmb/k-KuJXy6HUSb1No95Ot_ydx6CDA=/2560x2560/filters:no_upscale():max_bytes(150000):strip_icc()/the-intelligent-investor-25099a7263cb499f80de8b20d6b4ab86.jpg"
+        />
+      </p>
+      <p class="descriptionText">Category: {{ offer.category }}</p>
+      <p class="descriptionText">{{ offer.description }}</p>
+      <p>Price: ${{ offer.price }},00</p>
       <div class="rowed">
         <button mat-stroked-button (click)="addCount(offer)">+</button>
-        <p class="countText">{{offer.count}}</p>
+        <p class="countText">
+          {{findCurrentCount(offer)}}
+        </p>
         <button mat-stroked-button (click)="minusCount(offer)">-</button>
       </div>
     </mat-card>
