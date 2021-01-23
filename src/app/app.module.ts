@@ -13,12 +13,15 @@ import {MatInputModule} from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSelectModule} from '@angular/material/select';
 import { AskModalComponent } from './components/ask-modal/ask-modal.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { OrderviewModalComponent } from './components/orderview-modal/orderview-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AskModalComponent,
+    OrderviewModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,9 +34,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     ReactiveFormsModule,
     HttpClientModule,
     FontAwesomeModule,
+    MatDatepickerModule,
   ],
   providers: [
-    {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},
+    {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}, MatDatepickerModule,
   ],
   bootstrap: [AppComponent]
 })

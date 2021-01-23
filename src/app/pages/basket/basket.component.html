@@ -1,1 +1,77 @@
-<p>basket works!</p>
+<div class="basketContainer">
+  <h1>Your Basket</h1>
+  <p>Step 1. Order Overview</p>
+  <ul class="basketList">
+    <li class="basketItem" *ngFor="let item of basketItems">
+      <p>{{ item.name }}</p>
+      <div class="rowed">
+        <button mat-stroked-button (click)="addCount(item)">+</button>
+        <p class="countText">
+          {{ item.count }}
+        </p>
+        <button mat-stroked-button (click)="minusCount(item)">-</button>
+      </div>
+    </li>
+  </ul>
+  <div>
+    <p>Step 2. Order Completion</p>
+    <mat-form-field class="marginRight">
+      <mat-label>Contact number</mat-label>
+      <input
+        [(ngModel)]="contactNumber"
+        name="contactNumber"
+        matInput
+        value=""
+      />
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="marginRight">
+      <mat-label>Delivery Address</mat-label>
+      <input
+        [(ngModel)]="deliveryAddress"
+        name="deliveryAddress"
+        matInput
+        value=""
+      />
+    </mat-form-field>
+  </div>
+  <div>
+    <p>Delivery date:</p>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Delivery date</mat-label>
+      <input
+        matInput
+        [(ngModel)]="deliveryDate"
+        [matDatepickerFilter]="dateFilter"
+        [matDatepicker]="picker"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Payment type</mat-label>
+      <mat-select [(value)]="paymentType">
+        <mat-option
+          [value]="option.value"
+          *ngFor="let option of mockCategories"
+          >{{ option.viewValue }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <p class="errorText" *ngIf="dataError">The entered data is wrong</p>
+  <div>
+    <p class="totalPriceView marginRight">
+      Total Price: ${{ getTotalPrice() }},00
+    </p>
+    <button class="marginRight" mat-stroked-button (click)="backHome()">
+      Back Home
+    </button>
+    <button class="marginRight" mat-stroked-button (click)="continueCreate()">
+      Continue
+    </button>
+  </div>
+</div>

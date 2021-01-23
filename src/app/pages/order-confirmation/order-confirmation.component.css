@@ -1,0 +1,11 @@
+.basketContainer{
+    padding: 20px;
+}
+
+.orderView{
+    width: 400px;
+    border: solid 1px rgb(216, 215, 215);
+    border-radius: 5px;
+    margin: 10px 0;
+    padding: 20px;
+}

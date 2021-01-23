@@ -1,0 +1,47 @@
+.basketContainer{
+    padding: 20px;
+}
+
+.basketItem{
+    border: solid 1px rgb(216, 215, 215);
+    border-radius: 5px;
+    margin: 10px 0;
+    list-style-type: none;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.basketList{
+    width: 700px;
+    margin: 0;
+    padding: 0;
+}
+
+.rowed{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.countText{
+    margin: 0 10px;
+}
+
+.selectPayType{
+    padding: 0;
+}
+
+.totalPriceView{
+    text-transform: uppercase;
+    font-size: 25px;
+    display: inline;
+}
+
+.marginRight{
+    margin-right: 10px;
+}
+
+.errorText{
+    color: red;
+}

@@ -2,7 +2,11 @@
   <h1 class="welcomeText">Hi, {{ currentUser.userName }}!</h1>
   <button class="burgerBtn" mat-button [matMenuTriggerFor]="menu">Menu</button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="viewBasket()">Basket<span *ngIf="basketItems.length > 0">({{basketItems.length}})*</span></button>
+    <button mat-menu-item (click)="viewBasket()">
+      Basket<span *ngIf="basketItems.length > 0"
+        >({{ basketItems.length }})*</span
+      >
+    </button>
     <button mat-menu-item (click)="viewOrders()">Orders</button>
     <button mat-menu-item (click)="openDialog()">Log out</button>
   </mat-menu>
@@ -77,7 +81,7 @@
       <div class="rowed">
         <button mat-stroked-button (click)="addCount(offer)">+</button>
         <p class="countText">
-          {{findCurrentCount(offer)}}
+          {{ findCurrentCount(offer) }}
         </p>
         <button mat-stroked-button (click)="minusCount(offer)">-</button>
       </div>

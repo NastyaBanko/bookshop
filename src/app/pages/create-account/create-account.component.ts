@@ -1,45 +1,57 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
+import {
+  FormControl,
+  FormGroupDirective,
+  NgForm,
+  Validators,
+} from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { User } from '../../user';
 import { UserService } from '../../user.service';
-import {Router} from '@angular/router';
-import { HttpClient} from '@angular/common/http';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: FormControl | null,
+    form: FormGroupDirective | NgForm | null
+  ): boolean {
     const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+    return !!(
+      control &&
+      control.invalid &&
+      (control.dirty || control.touched || isSubmitted)
+    );
   }
 }
 
 @Component({
   selector: 'app-create-account',
   templateUrl: './create-account.component.html',
-  styleUrls: ['./create-account.component.css']
+  styleUrls: ['./create-account.component.css'],
 })
 export class CreateAccountComponent implements OnInit {
-
   savedUsers: User[];
-  userName: string = "";
-  userPassword: string = "";
-  loginError: string = "";
+  userName: string = '';
+  userPassword: string = '';
+  loginError: string = '';
 
-  userEmail = new FormControl('', [
-    Validators.required,
-    Validators.email,
-  ]);
+  userEmail = new FormControl('', [Validators.required, Validators.email]);
 
   matcher = new MyErrorStateMatcher();
 
-  constructor(private userService: UserService, private router: Router, private http: HttpClient) { }
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
     this.getSavedUsers();
   }
 
   getSavedUsers(): void {
-    this.savedUsers = this.userService.getSavedUsers()
+    this.savedUsers = this.userService.getSavedUsers();
   }
 
   login(): void {
@@ -54,29 +66,49 @@ export class CreateAccountComponent implements OnInit {
       email: user.email,
       password: user.password,
       isLogin: false,
-    }
-    let addedUsers = JSON.parse(localStorage.getItem("addedUsers")) || []
-    addedUsers.push(currentUser)
+    };
+    let addedUsers = JSON.parse(localStorage.getItem('addedUsers')) || [];
+    addedUsers.push(currentUser);
     let serialObj = JSON.stringify(addedUsers);
-    localStorage.setItem("addedUsers", serialObj);
+    localStorage.setItem('addedUsers', serialObj);
   }
 
   addAccount(): void {
-    if(this.userName.length<1||(this.userEmail.hasError('email') && !this.userEmail.hasError('required'))||this.userPassword.length<1){
-      this.loginError = "Check entered data.";
+    if (
+      this.userName.length < 1 ||
+      (this.userEmail.hasError('email') &&
+        !this.userEmail.hasError('required')) ||
+      this.userPassword.length < 8
+    ) {
+      this.loginError =
+        'Check entered data. Password should be at least 8 symbols';
     } else {
-      let isSaved = this.savedUsers.find(el=>el.email===this.userEmail.value||el.userName===this.userName)
-      if(isSaved){
-        this.loginError = "A user with the same email or name already exists";
+      let isSaved = this.savedUsers.find(
+        (el) =>
+          el.email === this.userEmail.value || el.userName === this.userName
+      );
+      if (isSaved) {
+        this.loginError = 'A user with the same email or name already exists';
       } else {
-        this.loginError = "";
-        this.savedUsers.push(this.userService.addUser({ userName: this.userName, type: "user", email: this.userEmail.value, password: this.userPassword, isLogin: false } as User))
+        this.loginError = '';
+        this.savedUsers.push(
+          this.userService.addUser({
+            userName: this.userName,
+            type: 'user',
+            email: this.userEmail.value,
+            password: this.userPassword,
+            isLogin: false,
+          } as User)
+        );
         this.router.navigate(['login']);
       }
     }
     setTimeout(() => {
-      let isSaved = this.savedUsers.find(el=>el.email===this.userEmail.value||el.userName===this.userName)
-      this.addAllToLocaleHost(isSaved)
+      let isSaved = this.savedUsers.find(
+        (el) =>
+          el.email === this.userEmail.value || el.userName === this.userName
+      );
+      if (isSaved.id) this.addAllToLocaleHost(isSaved);
     }, 1000);
   }
 }

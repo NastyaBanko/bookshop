@@ -1,33 +1,55 @@
 <div class="centeredHtml">
-    <div class="signUpContainer">
-        <h1 class="registTitle">Create an account</h1>
-        <form>
-            <mat-form-field class="fullElem">
-                <mat-label>User Name</mat-label>
-                <input [(ngModel)]="userName" name="userName" matInput value="">
-            </mat-form-field>
-          <mat-form-field class="fullElem">
-            <mat-label>Email</mat-label>
-            <input name="email" [(formControl)]="userEmail" [errorStateMatcher]="matcher"
-            placeholder="Ex. pat@example.com" matInput value="">
-            <mat-error *ngIf="userEmail.hasError('email') && !userEmail.hasError('required')">
-              Please enter a valid email address
-            </mat-error>
-            <mat-error *ngIf="userEmail.hasError('required')">
-              Email is required
-            </mat-error>
-          </mat-form-field>
-          <br>
-          <mat-form-field class="fullElem">
-            <mat-label>Password</mat-label>
-            <input [(ngModel)]="userPassword" type="password" name="password" matInput value="">
-          </mat-form-field>
-        </form>
-        <p class="signUpError" *ngIf="loginError.length">{{loginError}}</p>
-        <button class="fullElem registBut" mat-stroked-button (click)="addAccount()">Submit</button>
-    </div>
-    <div class="loginContainer">
-      <p class="askText">Do you already have an account?</p>
-      <button class="fullElem loginBut" mat-stroked-button (click)="login()">Sign in</button>
-    </div>
-    </div>
+  <div class="signUpContainer">
+    <h1 class="registTitle">Create an account</h1>
+    <form>
+      <mat-form-field class="fullElem">
+        <mat-label>User Name</mat-label>
+        <input [(ngModel)]="userName" name="userName" matInput value="" />
+      </mat-form-field>
+      <mat-form-field class="fullElem">
+        <mat-label>Email</mat-label>
+        <input
+          name="email"
+          [(formControl)]="userEmail"
+          [errorStateMatcher]="matcher"
+          placeholder="Ex. pat@example.com"
+          matInput
+          value=""
+        />
+        <mat-error
+          *ngIf="userEmail.hasError('email') && !userEmail.hasError('required')"
+        >
+          Please enter a valid email address
+        </mat-error>
+        <mat-error *ngIf="userEmail.hasError('required')">
+          Email is required
+        </mat-error>
+      </mat-form-field>
+      <br />
+      <mat-form-field class="fullElem">
+        <mat-label>Password</mat-label>
+        <input
+          [(ngModel)]="userPassword"
+          type="password"
+          name="password"
+          matInput
+          value=""
+        />
+      </mat-form-field>
+    </form>
+    <p class="signUpError" *ngIf="loginError.length">{{ loginError }}</p>
+    <button
+      class="fullElem registBut"
+      mat-stroked-button
+      (click)="addAccount()"
+    >
+      Submit
+    </button>
+  </div>
+  <div class="loginContainer">
+    <p class="askText">Do you already have an account?</p>
+    <button class="fullElem loginBut" mat-stroked-button (click)="login()">
+      Sign in
+    </button>
+  </div>
+</div>

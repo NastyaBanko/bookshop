@@ -10,7 +10,7 @@ import { AskModalComponent } from './../../components/ask-modal/ask-modal.compon
 
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
-import { cloneDeep } from "lodash";
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-user',
@@ -20,6 +20,7 @@ import { cloneDeep } from "lodash";
 export class UserComponent implements OnInit {
   currentUser: any;
   currentCategories: any;
+  // createOrder: any;
   savedUsers: any;
 
   mockCategories = [
@@ -93,7 +94,7 @@ export class UserComponent implements OnInit {
   searchName: string = '';
   isAlphabetically = false;
 
-  basketItems = [];
+  basketItems = JSON.parse(localStorage.getItem('currentBasketItems')) || [];
 
   visibleOffers = this.searchItem(
     this.filterCaregory(
@@ -115,8 +116,15 @@ export class UserComponent implements OnInit {
     this.httpService
       .getCategories()
       .subscribe((data) => (this.currentCategories = data));
+    // this.httpService
+    //   .getOffers()
+    //   .subscribe((data) => (this.currentCategories = data));
+    // this.httpService
+    // .createOrder({email:"nastya@gmail.com", offers: [0]})
+    // .subscribe((data) => (this.createOrder = data));
     setTimeout(() => {
       console.log(this.currentCategories, 'currentCategories');
+      // console.log(this.createOrder, 'createOrder');
     }, 1000);
     this.getCurrentUser();
     this.getSavedUsers();
@@ -135,7 +143,7 @@ export class UserComponent implements OnInit {
   }
 
   viewBasket() {
-    if(this.basketItems.length<1) return
+    if (this.basketItems.length < 1) return;
     this.router.navigate(['user/basket']);
   }
 
@@ -147,37 +155,40 @@ export class UserComponent implements OnInit {
     this.currentUser = this.userService.getCurrentUser();
   }
 
-  findCurrentCount(item){
-    let savedItem = this.basketItems.find(el=>el.id===item.id) || {}
-    if(savedItem.id){
-      return savedItem.count
-    } else return 0
+  findCurrentCount(item) {
+    let savedItem = this.basketItems.find((el) => el.id === item.id) || {};
+    if (savedItem.id) {
+      return savedItem.count;
+    } else return 0;
   }
 
   addCount(item): void {
-    let isSaved = this.basketItems.findIndex(el=>el.id===item.id)
-    let newItem = cloneDeep(item)
-    newItem.count = 1
-    if(isSaved<0){
+    let isSaved = this.basketItems.findIndex((el) => el.id === item.id);
+    let newItem = cloneDeep(item);
+    newItem.count = 1;
+    if (isSaved < 0) {
       this.basketItems.push(newItem);
-    } else ++this.basketItems[isSaved].count
+    } else ++this.basketItems[isSaved].count;
 
-    console.log(this.basketItems)
+    let serial = JSON.stringify(this.basketItems);
+    localStorage.setItem('currentBasketItems', serial);
   }
 
   minusCount(item): void {
-    let savedItem = this.basketItems.find(el=>el.id===item.id) || {}
-    let isSaved = this.basketItems.findIndex(el=>el.id===item.id)
-    let newItem = cloneDeep(item)
-    newItem.count = 1
-    if(!savedItem.id || savedItem.count < 1){
-      return
+    let savedItem = this.basketItems.find((el) => el.id === item.id) || {};
+    let isSaved = this.basketItems.findIndex((el) => el.id === item.id);
+    let newItem = cloneDeep(item);
+    newItem.count = 1;
+    if (!savedItem.id || savedItem.count < 1) {
+      return;
     } else {
       --this.basketItems[isSaved].count;
-      if(this.basketItems[isSaved].count<1) this.basketItems.splice(isSaved, 1);
+      if (this.basketItems[isSaved].count < 1)
+        this.basketItems.splice(isSaved, 1);
     }
 
-    console.log(this.basketItems)
+    let serial = JSON.stringify(this.basketItems);
+    localStorage.setItem('currentBasketItems', serial);
   }
 
   filterPrice(arr) {

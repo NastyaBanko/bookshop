@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Order Confirmation</h1>
+<div class="mat-typography" mat-dialog-content>
+  <p>Order Items: {{ data.items }}</p>
+  <p>Contact Number: {{ data.contactNumber }}</p>
+  <p>Delivery Address: {{ data.deliveryAddress }}</p>
+  <p>Delivery date: {{ deliveryDate }}</p>
+  <p>Payment Type: {{ data.paymentType }}</p>
+  <p>Total Price: ${{ data.totalPrice }},00</p>
+</div>
+<div mat-dialog-actions class="buttonContainer">
+  <button mat-button (click)="onNoClick()">Back</button>
+  <button mat-button (click)="onConfirm()">Confirm</button>
+</div>
