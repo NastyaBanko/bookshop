@@ -3,9 +3,13 @@
   <button class="burgerBtn" mat-button [matMenuTriggerFor]="menu">Menu</button>
   <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="viewBasket()">
-      Basket<span *ngIf="basketItems.length > 0"
-        >({{ basketItems.length }})*</span
+      <span *ngIf="basketItems.length < 1"
+        >Basket</span
       >
+      <!-- Basket<span *ngIf="basketItems.length > 0"
+        >({{ basketItems.length }})*</span
+      > -->
+      <span *ngIf="basketItems.length > 0" [matBadge]="basketItems.length" matBadgeOverlap="false">Basket</span>
     </button>
     <button mat-menu-item (click)="viewOrders()">Orders</button>
     <button mat-menu-item (click)="openDialog()">Log out</button>
@@ -25,7 +29,7 @@
   </mat-form-field>
   <form class="priceTool">
     <mat-form-field class="marginRight">
-      <mat-label>Min Price</mat-label>
+      <mat-label>Min Price, $</mat-label>
       <input
         [(ngModel)]="minPrice"
         (ngModelChange)="onChange()"
@@ -36,7 +40,7 @@
       />
     </mat-form-field>
     <mat-form-field class="marginRight">
-      <mat-label>Max Price</mat-label>
+      <mat-label>Max Price, $</mat-label>
       <input
         [(ngModel)]="maxPrice"
         (ngModelChange)="onChange()"
@@ -65,17 +69,18 @@
 
 <div class="offersContainer">
   <!-- <mat-option [value]="option.value" *ngFor="let option of mockCategories">{{ option.viewValue }}</mat-option> -->
-  <p *ngIf="visibleOffers.length < 1">No available offers</p>
+  <p *ngIf="visibleOffers.length < 1 && !loading">No available offers</p>
+  <p *ngIf="loading">Loading...</p>
   <div *ngFor="let offer of visibleOffers" class="offerCard">
     <mat-card>
-      <p class="nameText">{{ offer.name | uppercase }}</p>
+      <p class="nameText">{{ offer.title | uppercase }}</p>
       <p>
         <img
           width="150"
-          src="https://www.investopedia.com/thmb/k-KuJXy6HUSb1No95Ot_ydx6CDA=/2560x2560/filters:no_upscale():max_bytes(150000):strip_icc()/the-intelligent-investor-25099a7263cb499f80de8b20d6b4ab86.jpg"
+          [src]="offer.photo"
         />
       </p>
-      <p class="descriptionText">Category: {{ offer.category }}</p>
+      <p class="descriptionText">Category: {{ offer.category.category }}</p>
       <p class="descriptionText">{{ offer.description }}</p>
       <p>Price: ${{ offer.price }},00</p>
       <div class="rowed">

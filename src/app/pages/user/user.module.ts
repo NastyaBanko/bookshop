@@ -12,6 +12,7 @@ import {MatMenuModule} from '@angular/material/menu';
 // import {MatIconModule} from '@angular/material/icon';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {MatCardModule} from '@angular/material/card';
+import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
   declarations: [UserComponent],
@@ -27,6 +28,7 @@ import {MatCardModule} from '@angular/material/card';
     // MatIconModule,
     ReactiveFormsModule,
     MatCardModule,
+    MatBadgeModule,
   ]
 })
 export class UserModule { }

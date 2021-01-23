@@ -18,89 +18,24 @@ import { cloneDeep } from 'lodash';
   styleUrls: ['./user.component.css'],
 })
 export class UserComponent implements OnInit {
+  loading: boolean = false;
   currentUser: any;
   currentCategories: any;
-  // createOrder: any;
   savedUsers: any;
 
-  mockCategories = [
-    { value: 'all', viewValue: 'All' },
-    { value: 'detective', viewValue: 'Detective' },
-    { value: 'documentary', viewValue: 'Documentary' },
-    { value: 'romance', viewValue: 'Romance' },
-    { value: 'adventure', viewValue: 'Adventure' },
-  ];
+  mockCategories = [];
 
-  mockOffers = [
-    {
-      id: 1,
-      category: 'detective',
-      // count: 0,
-      name: 'Morning',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      price: 10,
-    },
-    {
-      id: 2,
-      category: 'documentary',
-      // count: 0,
-      name: 'Monday',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      price: 15,
-    },
-    {
-      id: 3,
-      category: 'documentary',
-      // count: 0,
-      name: 'Aomine',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      price: 13,
-    },
-    {
-      id: 4,
-      category: 'documentary',
-      // count: 0,
-      name: 'klgnwrkl',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      price: 13,
-    },
-    {
-      id: 5,
-      category: 'adventure',
-      // count: 0,
-      name: 'klgnwrkl',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      price: 13,
-    },
-    {
-      id: 6,
-      category: 'adventure',
-      // count: 0,
-      name: 'klgnwrkl',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      price: 13,
-    },
-  ];
+  mockOffers = [];
 
-  selectedCategory: string = this.mockCategories[0].value;
+  visibleOffers=[];
+
+  selectedCategory: string = "all";
   minPrice: number = 0;
   maxPrice: number = 100;
   searchName: string = '';
   isAlphabetically = false;
 
   basketItems = JSON.parse(localStorage.getItem('currentBasketItems')) || [];
-
-  visibleOffers = this.searchItem(
-    this.filterCaregory(
-      this.sortAlphabetically(this.filterPrice(this.mockOffers.slice()))
-    )
-  );
 
   faShoppingCart = faShoppingCart;
 
@@ -113,22 +48,47 @@ export class UserComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loading = true;
     this.httpService
       .getCategories()
-      .subscribe((data) => (this.currentCategories = data));
-    // this.httpService
-    //   .getOffers()
-    //   .subscribe((data) => (this.currentCategories = data));
-    // this.httpService
-    // .createOrder({email:"nastya@gmail.com", offers: [0]})
-    // .subscribe((data) => (this.createOrder = data));
-    setTimeout(() => {
-      console.log(this.currentCategories, 'currentCategories');
-      // console.log(this.createOrder, 'createOrder');
-    }, 1000);
+      .subscribe((data) => {
+        let categories = data.map((el) => {
+          let category = {}
+          category["value"] = el.category;
+          category["viewValue"] = el.category;
+          return category;
+        });
+        this.mockCategories = [{ value: 'all', viewValue: 'all' }, ...categories]
+      });
+      
+    this.httpService
+      .getOffers()
+      .subscribe((data) => {
+        this.mockOffers = data
+        this.visibleOffers = this.searchItem(
+          this.filterCaregory(
+            this.sortAlphabetically(this.filterPrice(data.slice()))
+          )
+        )
+        let prices = data.map(el=>el.price)
+        this.minPrice = Math.min(...prices);
+        this.maxPrice = Math.max(...prices);
+        this.loading = false;
+      });
+    // setTimeout(() => {
+    //   console.log(this.currentCategories, 'currentCategories');
+    //   console.log(this.mockOffers, "mockOffers")
+    //   // console.log(this.createOrder, 'createOrder');
+    // }, 1000);
     this.getCurrentUser();
     this.getSavedUsers();
   }
+
+  // visibleOffers = this.searchItem(
+  //   this.filterCaregory(
+  //     this.sortAlphabetically(this.filterPrice(this.mockOffers.slice()))
+  //   )
+  // );
 
   onChange(): void {
     this.visibleOffers = this.searchItem(
@@ -200,13 +160,13 @@ export class UserComponent implements OnInit {
   filterCaregory(arr) {
     if (this.selectedCategory === 'all') {
       return arr;
-    } else return arr.filter((el) => el.category === this.selectedCategory);
+    } else return arr.filter((el) => el.category.category === this.selectedCategory);
   }
 
   searchItem(arr) {
     if (this.searchName.length > 0) {
       return arr.filter((el) =>
-        el.name.toLowerCase().includes(this.searchName.toLowerCase())
+        el.title.toLowerCase().includes(this.searchName.toLowerCase())
       );
     } else return arr;
   }
@@ -223,8 +183,8 @@ export class UserComponent implements OnInit {
   sortAlphabetically(arr) {
     if (this.isAlphabetically) {
       return arr.slice().sort(function (a, b) {
-        let nameA = a.name.toLowerCase();
-        let nameB = b.name.toLowerCase();
+        let nameA = a.title.toLowerCase();
+        let nameB = b.title.toLowerCase();
         if (nameA < nameB) return -1;
         if (nameA > nameB) return 1;
         return 0;

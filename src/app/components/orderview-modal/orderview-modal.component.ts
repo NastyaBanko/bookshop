@@ -32,6 +32,7 @@ export class OrderviewModalComponent implements OnInit {
 
   onConfirm(): void {
     this.dialogRef.close();
+    localStorage.removeItem('currentBasketItems');
     this.router.navigate(['user']);
   }
 

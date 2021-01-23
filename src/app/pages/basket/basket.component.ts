@@ -87,7 +87,7 @@ export class BasketComponent implements OnInit {
   }
 
   openDialog(): void {
-    const itemNames = this.basketItems.map((el) => el.name).join(', ');
+    const itemNames = this.basketItems.map((el) => el.title).join(', ');
     const dialogRef = this.dialog.open(OrderviewModalComponent, {
       width: '350px',
       data: {
