@@ -9,7 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatMenuModule} from '@angular/material/menu';
-// import {MatIconModule} from '@angular/material/icon';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {MatCardModule} from '@angular/material/card';
 import {MatBadgeModule} from '@angular/material/badge';
@@ -25,7 +24,6 @@ import {MatBadgeModule} from '@angular/material/badge';
     FormsModule,
     FontAwesomeModule,
     MatMenuModule,
-    // MatIconModule,
     ReactiveFormsModule,
     MatCardModule,
     MatBadgeModule,

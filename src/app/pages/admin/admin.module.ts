@@ -1,11 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MatButtonModule } from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin.component';
+
+import { MatButtonModule } from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatMenuModule} from '@angular/material/menu';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {MatCardModule} from '@angular/material/card';
+import {MatBadgeModule} from '@angular/material/badge';
 
 
 @NgModule({
@@ -15,6 +22,13 @@ import { AdminComponent } from './admin.component';
     AdminRoutingModule,
     MatButtonModule,
     MatInputModule,
+    MatSelectModule,
+    FormsModule,
+    FontAwesomeModule,
+    MatMenuModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatBadgeModule,
   ]
 })
 export class AdminModule { }

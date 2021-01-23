@@ -1,4 +1,83 @@
 <div class="mainContainer">
-    <h1>Hi, {{currentUser.userName}}!</h1>
+    <h1 class="welcomeText">Hi, {{currentUser.userName}}!</h1>
     <button mat-stroked-button (click)="openDialog()">Log out</button>
 </div>
+
+<div class="toolBar">
+    <mat-form-field appearance="fill" class="marginRight">
+      <mat-label>Categories</mat-label>
+      <mat-select (selectionChange)="onChange()" [(value)]="selectedCategory">
+        <mat-option
+          [value]="option.value"
+          *ngFor="let option of mockCategories"
+          >{{ option.viewValue }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <form class="priceTool">
+      <mat-form-field class="marginRight">
+        <mat-label>Min Price, $</mat-label>
+        <input
+          [(ngModel)]="minPrice"
+          (ngModelChange)="onChange()"
+          type="number"
+          name="minPrice"
+          matInput
+          value=""
+        />
+      </mat-form-field>
+      <mat-form-field class="marginRight">
+        <mat-label>Max Price, $</mat-label>
+        <input
+          [(ngModel)]="maxPrice"
+          (ngModelChange)="onChange()"
+          type="number"
+          name="maxPrice"
+          matInput
+          value=""
+        />
+      </mat-form-field>
+      <mat-form-field class="marginRight">
+        <mat-label>Search book</mat-label>
+        <input
+          [(ngModel)]="searchName"
+          (ngModelChange)="onChange()"
+          name="searchName"
+          matInput
+          value=""
+        />
+      </mat-form-field>
+    </form>
+    <button class="marginRight" mat-stroked-button (click)="onChangeIsAlp()">
+      Sort Alphabetically
+    </button>
+    <button mat-stroked-button (click)="resetSettings()">Reset Settings</button>
+  </div>
+
+  <div class="offersContainer">
+    <!-- <mat-option [value]="option.value" *ngFor="let option of mockCategories">{{ option.viewValue }}</mat-option> -->
+    <p *ngIf="visibleOffers.length < 1 && !loading">No available offers</p>
+    <p *ngIf="loading">Loading...</p>
+    <div *ngFor="let offer of visibleOffers" class="offerCard">
+      <mat-card>
+        <p class="nameText">{{ offer.title | uppercase }}</p>
+        <p>
+          <img
+            width="150"
+            [src]="offer.photo"
+          />
+        </p>
+        <p class="descriptionText">Category: {{ offer.category.category }}</p>
+        <p class="descriptionText">{{ offer.description }}</p>
+        <p>Price: ${{ offer.price }},00</p>
+        <div class="rowed">
+          <button mat-stroked-button (click)="addCount(offer)">+</button>
+          <p class="countText">
+            {{ findCurrentCount(offer) }}
+          </p>
+          <button mat-stroked-button (click)="minusCount(offer)">-</button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+  

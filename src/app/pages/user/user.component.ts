@@ -193,9 +193,10 @@ export class UserComponent implements OnInit {
   }
 
   resetSettings(): void {
+    let prices = this.mockOffers.map(el=>el.price)
     this.selectedCategory = this.mockCategories[0].value;
-    this.minPrice = 0;
-    this.maxPrice = 100;
+    this.minPrice = Math.min(...prices);
+    this.maxPrice = Math.max(...prices);
     this.searchName = '';
     this.isAlphabetically = false;
     this.visibleOffers = this.mockOffers.slice();
