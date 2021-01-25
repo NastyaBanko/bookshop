@@ -75,20 +75,19 @@ export class UserComponent implements OnInit {
         this.maxPrice = Math.max(...prices);
         this.loading = false;
       });
-    // setTimeout(() => {
-    //   console.log(this.currentCategories, 'currentCategories');
-    //   console.log(this.mockOffers, "mockOffers")
-    //   // console.log(this.createOrder, 'createOrder');
-    // }, 1000);
     this.getCurrentUser();
     this.getSavedUsers();
   }
 
-  // visibleOffers = this.searchItem(
-  //   this.filterCaregory(
-  //     this.sortAlphabetically(this.filterPrice(this.mockOffers.slice()))
-  //   )
-  // );
+  roundNum(x, n){
+		if (isNaN(x) || isNaN(n)) return false
+		const result = (+x).toFixed(n).replace('.', ',')
+		const out = result
+			.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+			.split(' ')
+			.join('.')
+		return out
+	}
 
   onChange(): void {
     this.visibleOffers = this.searchItem(

@@ -30,6 +30,16 @@ export class OrderviewModalComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  roundNum(x, n){
+		if (isNaN(x) || isNaN(n)) return false
+		const result = (+x).toFixed(n).replace('.', ',')
+		const out = result
+			.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+			.split(' ')
+			.join('.')
+		return out
+	}
+
   onConfirm(): void {
     this.dialogRef.close();
     localStorage.removeItem('currentBasketItems');

@@ -60,6 +60,16 @@ export class AdminComponent implements OnInit {
     this.getSavedUsers();
   }
 
+  roundNum(x, n){
+		if (isNaN(x) || isNaN(n)) return false
+		const result = (+x).toFixed(n).replace('.', ',')
+		const out = result
+			.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+			.split(' ')
+			.join('.')
+		return out
+	}
+
   getCurrentCategories() {
     this.httpService.getCategories().subscribe((data) => {
       this.categories = data;

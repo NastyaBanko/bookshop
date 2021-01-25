@@ -5,7 +5,7 @@
   <p>Delivery Address: {{ data.deliveryAddress }}</p>
   <p>Delivery date: {{ deliveryDate }}</p>
   <p>Payment Type: {{ data.paymentType }}</p>
-  <p>Total Price: ${{ data.totalPrice }},00</p>
+  <p>Total Price: ${{ roundNum(data.totalPrice, 2) }}</p>
 </div>
 <div mat-dialog-actions class="buttonContainer">
   <button mat-button (click)="onNoClick()">Back</button>

@@ -74,7 +74,7 @@
         </p>
         <p class="descriptionText">Category: {{ offer.category.category }}</p>
         <p class="descriptionText">{{ offer.description }}</p>
-        <p>Price: ${{ offer.price }},00</p>
+        <p>Price: ${{ roundNum(offer.price, 2) }}</p>
         <div class="rowed">
           <button class="marginRight" mat-stroked-button (click)="openUpdateModal(offer)">Update Offer</button>
           <button mat-stroked-button (click)="openDeleteModal(offer.id)">Delete Offer</button>
