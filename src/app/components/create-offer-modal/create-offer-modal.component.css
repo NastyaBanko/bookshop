@@ -1,0 +1,17 @@
+.ownInput{
+    border-bottom: solid 1px rgb(196, 196, 196);
+    margin-bottom: 10px;
+}
+
+.ownSelect{
+    display: block;
+    margin-bottom: 10px;
+}
+
+.button{
+    border: solid 1px rgb(216, 215, 215);
+    border-radius: 5px;
+    padding: 5px 10px;
+    display: block;
+    margin-bottom: 5px;
+}

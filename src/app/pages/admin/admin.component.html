@@ -54,6 +54,10 @@
     <button mat-stroked-button (click)="resetSettings()">Reset Settings</button>
   </div>
 
+  <div class="toolBar">
+    <button mat-stroked-button (click)="openCreateModal()">Create New Offer</button>
+  </div>
+
   <div class="offersContainer">
     <!-- <mat-option [value]="option.value" *ngFor="let option of mockCategories">{{ option.viewValue }}</mat-option> -->
     <p *ngIf="visibleOffers.length < 1 && !loading">No available offers</p>
@@ -61,9 +65,9 @@
     <div *ngFor="let offer of visibleOffers" class="offerCard">
       <mat-card>
         <p class="nameText">{{ offer.title | uppercase }}</p>
-        <p>
+        <p class="imageWrapper">
           <img
-            width="150"
+            class="bookImage"
             [src]="offer.photo"
           />
         </p>
@@ -71,11 +75,8 @@
         <p class="descriptionText">{{ offer.description }}</p>
         <p>Price: ${{ offer.price }},00</p>
         <div class="rowed">
-          <button mat-stroked-button (click)="addCount(offer)">+</button>
-          <p class="countText">
-            {{ findCurrentCount(offer) }}
-          </p>
-          <button mat-stroked-button (click)="minusCount(offer)">-</button>
+          <button class="marginRight" mat-stroked-button (click)="openUpdateModal(offer)">Update Offer</button>
+          <button mat-stroked-button (click)="openDeleteModal(offer.id)">Delete Offer</button>
         </div>
       </mat-card>
     </div>

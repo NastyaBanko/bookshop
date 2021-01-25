@@ -74,9 +74,9 @@
   <div *ngFor="let offer of visibleOffers" class="offerCard">
     <mat-card>
       <p class="nameText">{{ offer.title | uppercase }}</p>
-      <p>
+      <p class="imageWrapper">
         <img
-          width="150"
+          class="bookImage"
           [src]="offer.photo"
         />
       </p>

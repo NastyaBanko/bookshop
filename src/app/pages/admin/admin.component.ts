@@ -8,6 +8,9 @@ import {Router} from '@angular/router';
 import { HttpClient} from '@angular/common/http';
 
 import {AskModalComponent} from './../../components/ask-modal/ask-modal.component';
+import {UpdateOfferComponent} from './../../components/update-offer/update-offer.component';
+import {DeleteOfferModalComponent} from './../../components/delete-offer-modal/delete-offer-modal.component';
+import {CreateOfferModalComponent} from './../../components/create-offer-modal/create-offer-modal.component';
 
 import { cloneDeep } from 'lodash';
 
@@ -39,6 +42,8 @@ export class AdminComponent implements OnInit {
 
   basketItems = JSON.parse(localStorage.getItem('currentBasketItems')) || [];
 
+  categories = [];
+
   constructor(
     private userService: UserService,
     private httpService: HttpService,
@@ -49,46 +54,56 @@ export class AdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    this.httpService
-      .getCategories()
-      .subscribe((data) => {
-        let categories = data.map((el) => {
-          let category = {}
-          category["value"] = el.category;
-          category["viewValue"] = el.category;
-          return category;
-        });
-        this.mockCategories = [{ value: 'all', viewValue: 'all' }, ...categories]
-      });
+    // this.httpService
+    //   .getCategories()
+    //   .subscribe((data) => {
+    //     this.categories = data;
+    //     let categories = data.map((el) => {
+    //       let category = {}
+    //       category["value"] = el.category;
+    //       category["viewValue"] = el.category;
+    //       return category;
+    //     });
+    //     this.mockCategories = [{ value: 'all', viewValue: 'all' }, ...categories]
+    //   });
+    this.getCurrentCategories()
       
-    this.httpService
-      .getOffers()
-      .subscribe((data) => {
-        this.mockOffers = data
-        this.visibleOffers = this.searchItem(
-          this.filterCaregory(
-            this.sortAlphabetically(this.filterPrice(data.slice()))
-          )
-        )
-        let prices = data.map(el=>el.price)
-        this.minPrice = Math.min(...prices);
-        this.maxPrice = Math.max(...prices);
-        this.loading = false;
-      });
-    // setTimeout(() => {
-    //   console.log(this.currentCategories, 'currentCategories');
-    //   console.log(this.mockOffers, "mockOffers")
-    //   // console.log(this.createOrder, 'createOrder');
-    // }, 1000);
+    this.getCurrentOffers()
     this.getCurrentUser();
     this.getSavedUsers();
   }
 
-  // visibleOffers = this.searchItem(
-  //   this.filterCaregory(
-  //     this.sortAlphabetically(this.filterPrice(this.mockOffers.slice()))
-  //   )
-  // );
+  getCurrentCategories(){
+    this.httpService
+    .getCategories()
+    .subscribe((data) => {
+      this.categories = data;
+      let categories = data.map((el) => {
+        let category = {}
+        category["value"] = el.category;
+        category["viewValue"] = el.category;
+        return category;
+      });
+      this.mockCategories = [{ value: 'all', viewValue: 'all' }, ...categories]
+    });
+  }
+
+  getCurrentOffers(){
+    this.httpService
+    .getOffers()
+    .subscribe((data) => {
+      this.mockOffers = data
+      let prices = data.map(el=>el.price)
+      this.minPrice = Math.min(...prices);
+      this.maxPrice = Math.max(...prices);
+      this.visibleOffers = this.searchItem(
+        this.filterCaregory(
+          this.sortAlphabetically(this.filterPrice(data.slice()))
+        )
+      )
+      this.loading = false;
+    });
+  }
 
   onChange(): void {
     this.visibleOffers = this.searchItem(
@@ -205,10 +220,68 @@ export class AdminComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(AskModalComponent, {
       width: '250px',
-      // data: {name: this.name, animal: this.animal}
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  createOffer(){
+    console.log("createOffer")
+  }
+
+  deleteOffer(id){
+    this.httpService
+    .deleteOffer(id)
+    .subscribe(() => {
+      console.log("delete")
+      this.getCurrentOffers()
+    });
+  }
+
+  openCreateModal(): void {
+    const dialogRef = this.dialog.open(CreateOfferModalComponent, {
+      width: '350px',
+      data: {
+        mockCategories: this.mockCategories.filter(el=>el.value !== "all"),
+        categories: this.categories,
+        getOffers: ()=>{this.getCurrentOffers()},
+        getCategories: ()=>{this.getCurrentCategories()},
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  openUpdateModal(offer): void {
+    const dialogRef = this.dialog.open(UpdateOfferComponent, {
+      width: '350px',
+      data: {
+        offer: offer,
+        mockCategories: this.mockCategories.filter(el=>el.value !== "all"),
+        categories: this.categories,
+        getOffers: ()=>{this.getCurrentOffers()},
+        getCategories: ()=>{this.getCurrentCategories()},
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  openDeleteModal(id): void {
+    const dialogRef = this.dialog.open(DeleteOfferModalComponent, {
+      width: '350px',
+      data: {
+        deleteOffer: ()=>{this.deleteOffer(id)},
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
     });
   }

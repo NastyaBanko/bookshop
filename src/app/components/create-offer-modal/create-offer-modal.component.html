@@ -1,0 +1,62 @@
+<div mat-dialog-content>
+    <h1>Create Offer:</h1>
+      <label>Title:</label>
+      <input
+        class="ownInput"
+        [(ngModel)]="title"
+        name="title"
+        value=""
+        matInput
+      />
+      <label>Url address:</label>
+      <input
+        class="ownInput"
+        [(ngModel)]="urlAddress"
+        name="urlAddress"
+        value=""
+        matInput
+      />
+      <label>Category:</label>
+      <select
+        *ngIf="!isCategoryNew"
+        class="ownSelect"
+        [(ngModel)]="selectedCategory"
+        name="selectedCategory"
+        value=""
+        matInput
+      >
+      <option *ngFor="let option of mockCategories" [value]="option.value">{{option.viewValue}}</option>
+    </select>
+    <input
+        *ngIf="isCategoryNew"
+        class="ownInput"
+        [(ngModel)]="selectedCategory"
+        name="selectedCategory"
+        value=""
+        matInput
+      />
+        <button class="button" *ngIf="!isCategoryNew" mat-button (click)="addNewCategory()">Add new category</button>
+        <button class="button" *ngIf="isCategoryNew" mat-button (click)="addNewCategory()">Add existing category</button>
+      <label>Description:</label>
+      <input
+        class="ownInput"
+        [(ngModel)]="description"
+        name="description"
+        value=""
+        matInput
+      />
+      <label>Price, $:</label>
+      <input
+        class="ownInput"
+        [(ngModel)]="price"
+        name="price"
+        value=""
+        matInput
+        type="number"
+      />
+</div>
+<div mat-dialog-actions class="buttonContainer">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="onCreate()">Create</button>
+</div>
+
