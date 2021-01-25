@@ -14,7 +14,7 @@ export interface DialogData {
 @Component({
   selector: 'app-create-offer-modal',
   templateUrl: './create-offer-modal.component.html',
-  styleUrls: ['./create-offer-modal.component.css']
+  styleUrls: ['./create-offer-modal.component.css'],
 })
 export class CreateOfferModalComponent implements OnInit {
   constructor(
@@ -25,12 +25,13 @@ export class CreateOfferModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data
   ) {}
 
-  title: any = "";
-  urlAddress: any = "";
-  selectedCategory: any = "";
-  description: any = "";
-  price: any = "";
+  title: any = '';
+  urlAddress: any = '';
+  selectedCategory: any = '';
+  description: any = '';
+  price: any = '';
   isCategoryNew: boolean = false;
+  dataError: boolean = false;
 
   mockCategories = this.data.mockCategories;
 
@@ -39,36 +40,66 @@ export class CreateOfferModalComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  addNewCategory(){
-    this.isCategoryNew = !this.isCategoryNew
+  addNewCategory() {
+    this.isCategoryNew = !this.isCategoryNew;
   }
 
-  onCreate(){
-    if(this.title.length<1 || this.title.urlAddress<1){
-
-    }
-    const currentCategory = this.data.categories.find(
-      (el) => el.category === this.selectedCategory
-    ) || {};
-    const newOffer = {
-      category: {
-        id: currentCategory.id || 100,
-        category: this.selectedCategory,
-      },
-      id: 100,
-      description: this.description,
-      photo: this.urlAddress,
-      price: this.price,
-      title: this.title,
+  checkImgSrc(src) {
+    const img = new Image();
+    img.src = src;
+    img.onload = function () {
+      console.log(`valid src: ${src}`);
     };
-    this.httpService.saveOffer(newOffer).subscribe(() => {
-      console.log('save offer');
-      this.data.getOffers();
-      this.data.getCategories();
-      this.dialogRef.close();
-    });
+    img.onerror = function () {
+      console.log(`unvalid src: ${src}`);
+    };
+  }
+
+  onCreate() {
+    if (
+      this.title.length < 1 ||
+      this.urlAddress.length < 1 ||
+      this.selectedCategory.length < 1 ||
+      this.description.length < 1 ||
+      this.price < 0 ||
+      !this.price
+    ) {
+      this.dataError = true;
+      return;
+    } else {
+      this.dataError = false;
+      const img = new Image();
+      img.src = this.urlAddress;
+      img.onload = () => {
+        const currentCategory =
+          this.data.categories.find(
+            (el) => el.category === this.selectedCategory
+          ) || {};
+        const newOffer = {
+          category: {
+            id: currentCategory.id || 100,
+            category: this.selectedCategory,
+          },
+          id: 100,
+          description: this.description,
+          photo: this.urlAddress,
+          price: this.price,
+          title: this.title,
+        };
+        this.httpService.saveOffer(newOffer).subscribe(() => {
+          console.log('save offer');
+          this.data.getOffers();
+          this.data.getCategories();
+          this.dialogRef.close();
+        });
+        console.log(`valid src: ${this.urlAddress}`);
+      };
+      img.onerror = () => {
+        this.dataError = true;
+        console.log(`unvalid src: ${this.urlAddress}`);
+      };
+    }
   }
 
   ngOnInit(): void {}
 }
-

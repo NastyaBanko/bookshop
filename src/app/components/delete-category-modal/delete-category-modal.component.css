@@ -1,0 +1,15 @@
+.ownInput{
+    border-bottom: solid 1px rgb(196, 196, 196);
+    margin-bottom: 10px;
+    width: 60%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.deleteBtn{
+    display: inline-block;
+}
+
+.errorText{
+    color: red;
+}

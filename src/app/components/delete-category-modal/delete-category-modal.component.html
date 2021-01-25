@@ -1,0 +1,18 @@
+<div mat-dialog-content>
+    <h1>Update Categories:</h1>
+    <div class="categoryItem" *ngFor="let category of categories">
+    <input
+        class="ownInput"
+        [(ngModel)]="category.category"
+        name="category.category"
+        value=""
+        matInput
+      />
+      <button class="deleteBtn" mat-button (click)="deleteCategory(category.id)">Delete</button>
+    </div>
+    <p class="errorText" *ngIf="dataError">The entered data is wrong</p>
+  </div>
+  <div mat-dialog-actions class="buttonContainer">
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="updateCategories()">Update</button>
+  </div>

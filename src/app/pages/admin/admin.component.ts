@@ -1,26 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 import { UserService } from '../../user.service';
 import { HttpService } from '../../services/http.service';
-import {Router} from '@angular/router';
-import { HttpClient} from '@angular/common/http';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
-import {AskModalComponent} from './../../components/ask-modal/ask-modal.component';
-import {UpdateOfferComponent} from './../../components/update-offer/update-offer.component';
-import {DeleteOfferModalComponent} from './../../components/delete-offer-modal/delete-offer-modal.component';
-import {CreateOfferModalComponent} from './../../components/create-offer-modal/create-offer-modal.component';
+import { AskModalComponent } from './../../components/ask-modal/ask-modal.component';
+import { UpdateOfferComponent } from './../../components/update-offer/update-offer.component';
+import { DeleteOfferModalComponent } from './../../components/delete-offer-modal/delete-offer-modal.component';
+import { CreateOfferModalComponent } from './../../components/create-offer-modal/create-offer-modal.component';
+import { DeleteCategoryModalComponent } from './../../components/delete-category-modal/delete-category-modal.component';
 
 import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css']
+  styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent implements OnInit {
-
   loading: boolean = false;
 
   currentUser: any;
@@ -32,9 +32,9 @@ export class AdminComponent implements OnInit {
 
   mockOffers = [];
 
-  visibleOffers=[];
+  visibleOffers = [];
 
-  selectedCategory: string = "all";
+  selectedCategory: string = 'all';
   minPrice: number = 0;
   maxPrice: number = 100;
   searchName: string = '';
@@ -54,53 +54,36 @@ export class AdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    // this.httpService
-    //   .getCategories()
-    //   .subscribe((data) => {
-    //     this.categories = data;
-    //     let categories = data.map((el) => {
-    //       let category = {}
-    //       category["value"] = el.category;
-    //       category["viewValue"] = el.category;
-    //       return category;
-    //     });
-    //     this.mockCategories = [{ value: 'all', viewValue: 'all' }, ...categories]
-    //   });
-    this.getCurrentCategories()
-      
-    this.getCurrentOffers()
+    this.getCurrentCategories();
+    this.getCurrentOffers();
     this.getCurrentUser();
     this.getSavedUsers();
   }
 
-  getCurrentCategories(){
-    this.httpService
-    .getCategories()
-    .subscribe((data) => {
+  getCurrentCategories() {
+    this.httpService.getCategories().subscribe((data) => {
       this.categories = data;
       let categories = data.map((el) => {
-        let category = {}
-        category["value"] = el.category;
-        category["viewValue"] = el.category;
+        let category = {};
+        category['value'] = el.category;
+        category['viewValue'] = el.category;
         return category;
       });
-      this.mockCategories = [{ value: 'all', viewValue: 'all' }, ...categories]
+      this.mockCategories = [{ value: 'all', viewValue: 'all' }, ...categories];
     });
   }
 
-  getCurrentOffers(){
-    this.httpService
-    .getOffers()
-    .subscribe((data) => {
-      this.mockOffers = data
-      let prices = data.map(el=>el.price)
+  getCurrentOffers() {
+    this.httpService.getOffers().subscribe((data) => {
+      this.mockOffers = data;
+      let prices = data.map((el) => el.price);
       this.minPrice = Math.min(...prices);
       this.maxPrice = Math.max(...prices);
       this.visibleOffers = this.searchItem(
         this.filterCaregory(
           this.sortAlphabetically(this.filterPrice(data.slice()))
         )
-      )
+      );
       this.loading = false;
     });
   }
@@ -175,7 +158,8 @@ export class AdminComponent implements OnInit {
   filterCaregory(arr) {
     if (this.selectedCategory === 'all') {
       return arr;
-    } else return arr.filter((el) => el.category.category === this.selectedCategory);
+    } else
+      return arr.filter((el) => el.category.category === this.selectedCategory);
   }
 
   searchItem(arr) {
@@ -208,7 +192,7 @@ export class AdminComponent implements OnInit {
   }
 
   resetSettings(): void {
-    let prices = this.mockOffers.map(el=>el.price)
+    let prices = this.mockOffers.map((el) => el.price);
     this.selectedCategory = this.mockCategories[0].value;
     this.minPrice = Math.min(...prices);
     this.maxPrice = Math.max(...prices);
@@ -222,21 +206,23 @@ export class AdminComponent implements OnInit {
       width: '250px',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
     });
   }
 
-  createOffer(){
-    console.log("createOffer")
+  deleteOffer(id) {
+    this.httpService.deleteOffer(id).subscribe(() => {
+      console.log('delete');
+      this.getCurrentOffers();
+    });
   }
 
-  deleteOffer(id){
-    this.httpService
-    .deleteOffer(id)
-    .subscribe(() => {
-      console.log("delete")
-      this.getCurrentOffers()
+  deleteCategory(id) {
+    this.httpService.deleteCategory(id).subscribe(() => {
+      console.log('deleteCategory');
+      this.getCurrentOffers();
+      this.getCurrentCategories();
     });
   }
 
@@ -244,15 +230,15 @@ export class AdminComponent implements OnInit {
     const dialogRef = this.dialog.open(CreateOfferModalComponent, {
       width: '350px',
       data: {
-        mockCategories: this.mockCategories.filter(el=>el.value !== "all"),
+        mockCategories: this.mockCategories.filter((el) => el.value !== 'all'),
         categories: this.categories,
-        getOffers: ()=>{this.getCurrentOffers()},
-        getCategories: ()=>{this.getCurrentCategories()},
-      }
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
+        getOffers: () => {
+          this.getCurrentOffers();
+        },
+        getCategories: () => {
+          this.getCurrentCategories();
+        },
+      },
     });
   }
 
@@ -261,15 +247,15 @@ export class AdminComponent implements OnInit {
       width: '350px',
       data: {
         offer: offer,
-        mockCategories: this.mockCategories.filter(el=>el.value !== "all"),
+        mockCategories: this.mockCategories.filter((el) => el.value !== 'all'),
         categories: this.categories,
-        getOffers: ()=>{this.getCurrentOffers()},
-        getCategories: ()=>{this.getCurrentCategories()},
-      }
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
+        getOffers: () => {
+          this.getCurrentOffers();
+        },
+        getCategories: () => {
+          this.getCurrentCategories();
+        },
+      },
     });
   }
 
@@ -277,12 +263,24 @@ export class AdminComponent implements OnInit {
     const dialogRef = this.dialog.open(DeleteOfferModalComponent, {
       width: '350px',
       data: {
-        deleteOffer: ()=>{this.deleteOffer(id)},
-      }
+        deleteOffer: () => {
+          this.deleteOffer(id);
+        },
+      },
     });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
+  }
+  openDeleteCategoryModal(): void {
+    const dialogRef = this.dialog.open(DeleteCategoryModalComponent, {
+      width: '350px',
+      data: {
+        categories: this.categories,
+        getOffers: () => {
+          this.getCurrentOffers();
+        },
+        getCategories: () => {
+          this.getCurrentCategories();
+        },
+      },
     });
   }
 

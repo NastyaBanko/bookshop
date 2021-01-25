@@ -20,6 +20,7 @@ import { OrderviewModalComponent } from './components/orderview-modal/orderview-
 import { UpdateOfferComponent } from './components/update-offer/update-offer.component';
 import { DeleteOfferModalComponent } from './components/delete-offer-modal/delete-offer-modal.component';
 import { CreateOfferModalComponent } from './components/create-offer-modal/create-offer-modal.component';
+import { DeleteCategoryModalComponent } from './components/delete-category-modal/delete-category-modal.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { CreateOfferModalComponent } from './components/create-offer-modal/creat
     UpdateOfferComponent,
     DeleteOfferModalComponent,
     CreateOfferModalComponent,
+    DeleteCategoryModalComponent,
   ],
   imports: [
     BrowserModule,

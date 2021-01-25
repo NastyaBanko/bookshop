@@ -54,6 +54,7 @@
         matInput
         type="number"
       />
+      <p class="errorText" *ngIf="dataError">The entered data is wrong</p>
 </div>
 <div mat-dialog-actions class="buttonContainer">
   <button mat-button (click)="onNoClick()">Cancel</button>
