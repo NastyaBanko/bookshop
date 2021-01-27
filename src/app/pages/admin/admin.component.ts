@@ -261,7 +261,7 @@ export class AdminComponent implements OnInit {
 
   openUpdateModal(offer): void {
     const dialogRef = this.dialog.open(UpdateOfferComponent, {
-      width: '350px',
+      width: '450px',
       data: {
         offer: offer,
         mockCategories: this.mockCategories.filter((el) => el.value !== 'all'),

@@ -1,68 +1,91 @@
 <div mat-dialog-content>
-    <h1>Update Offer:</h1>
-      <label>Title:</label>
-      <input
-        class="ownInput"
-        [(ngModel)]="title"
-        name="title"
-        value=""
-        matInput
-      />
-      <label>Url address:</label>
-      <input
-        class="ownInput"
-        [(ngModel)]="urlAddress"
-        name="urlAddress"
-        value=""
-        matInput
-        (ngModelChange)="closePicture()"
-      />
-      <p *ngIf="isPictureShow" class="imageWrapper">
-        <img class="bookImage" [src]="urlAddress" />
-      </p>
-      <p class="errorText" *ngIf="pictureError">Check picture url.</p>
-      <button class="button" mat-button (click)="showPicture()">
-        {{ isPictureShow ? "Hide picture" : "Show picture" }}
-      </button>
-      <label>Category:</label>
-      <select
-        *ngIf="!isCategoryNew"
-        class="ownSelect"
-        [(ngModel)]="selectedCategory"
-        name="selectedCategory"
-        value=""
-        matInput
-      >
-      <option *ngFor="let option of mockCategories" [value]="option.value">{{option.viewValue}}</option>
-    </select>
-    <input
-        *ngIf="isCategoryNew"
-        class="ownInput"
-        [(ngModel)]="selectedCategory"
-        name="selectedCategory"
-        value=""
-        matInput
-      />
-        <button class="button" *ngIf="!isCategoryNew" mat-button (click)="addNewCategory()">Add new category</button>
-        <button class="button" *ngIf="isCategoryNew" mat-button (click)="addNewCategory()">Add existing category</button>
-      <label>Description:</label>
-      <input
-        class="ownInput"
-        [(ngModel)]="description"
-        name="description"
-        value=""
-        matInput
-      />
-      <label>Price, $:</label>
-      <input
-        class="ownInput"
-        [(ngModel)]="price"
-        name="price"
-        value=""
-        matInput
-        type="number"
-      />
-      <p class="errorText" *ngIf="dataError">The entered data is wrong</p>
+  <h1>Update Offer:</h1>
+  <mat-form-field class="fieldContainer">
+    <mat-label>Title</mat-label>
+    <textarea
+      matInput
+      cdkTextareaAutosize
+      [(ngModel)]="title"
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="5"
+    ></textarea>
+  </mat-form-field>
+
+  <mat-form-field class="fieldContainer">
+    <mat-label>Picture url</mat-label>
+    <textarea
+      matInput
+      cdkTextareaAutosize
+      [(ngModel)]="urlAddress"
+      (ngModelChange)="closePicture()"
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="5"
+    ></textarea>
+  </mat-form-field>
+
+  <p *ngIf="isPictureShow" class="imageWrapper">
+    <img class="bookImage" [src]="urlAddress" />
+  </p>
+
+  <p class="errorText" *ngIf="pictureError">Check picture url.</p>
+  <button class="button" mat-button (click)="showPicture()">
+    {{ isPictureShow ? "Hide picture" : "Show picture" }}
+  </button>
+
+  <mat-form-field *ngIf="!isCategoryNew" appearance="fill">
+    <mat-label>Category</mat-label>
+    <mat-select [(value)]="selectedCategory">
+      <mat-option *ngFor="let option of mockCategories" [value]="option.value">
+        {{ option.viewValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="isCategoryNew" class="fieldContainer">
+    <mat-label>Category</mat-label>
+    <textarea
+      matInput
+      cdkTextareaAutosize
+      [(ngModel)]="selectedCategory"
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="5"
+    ></textarea>
+  </mat-form-field>
+
+  <button class="button" mat-button (click)="addNewCategory()">
+    {{ isCategoryNew ? "Add existing category" : "Add new category" }}
+  </button>
+
+  <mat-form-field class="fieldContainer">
+    <mat-label>Description</mat-label>
+    <textarea
+      matInput
+      cdkTextareaAutosize
+      [(ngModel)]="description"
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="5"
+    ></textarea>
+  </mat-form-field>
+
+  <mat-form-field class="fieldContainer">
+    <mat-label>Price, $</mat-label>
+    <textarea
+      type="number"
+      matInput
+      cdkTextareaAutosize
+      [(ngModel)]="price"
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="5"
+      type="number"
+    ></textarea>
+  </mat-form-field>
+
+  <p class="errorText" *ngIf="dataError">The entered data is wrong</p>
 </div>
 <div mat-dialog-actions class="buttonContainer">
   <button mat-button (click)="onNoClick()">Cancel</button>

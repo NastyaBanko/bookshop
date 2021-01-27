@@ -75,7 +75,6 @@ export class CreateOfferModalComponent implements OnInit {
   }
 
   onCreate() {
-    console.log(this.title, this.urlAddress, this.selectedCategory, this.description, this.price, "DATA")
     if (
       this.title.length < 1 ||
       this.urlAddress.length < 1 ||

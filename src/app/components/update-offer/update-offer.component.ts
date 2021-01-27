@@ -80,7 +80,8 @@ export class UpdateOfferComponent implements OnInit {
       this.selectedCategory.length < 1 ||
       this.description.length < 1 ||
       this.price < 0 ||
-      !this.price
+      !this.price ||
+      !+(this.price)
     ) {
       this.dataError = true;
       return;
