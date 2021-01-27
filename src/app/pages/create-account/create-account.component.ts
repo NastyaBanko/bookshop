@@ -47,30 +47,17 @@ export class CreateAccountComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getSavedUsers();
+    this.getUsers();
   }
 
-  getSavedUsers(): void {
-    this.savedUsers = this.userService.getSavedUsers();
+  getUsers(): void {
+    this.userService.getUsers().subscribe((data) => {
+      this.savedUsers = data;
+    });
   }
 
   login(): void {
     this.router.navigate(['login']);
-  }
-
-  addAllToLocaleHost(user): void {
-    let currentUser = {
-      id: user.id,
-      userName: user.userName,
-      type: user.type,
-      email: user.email,
-      password: user.password,
-      isLogin: false,
-    };
-    let addedUsers = JSON.parse(localStorage.getItem('addedUsers')) || [];
-    addedUsers.push(currentUser);
-    let serialObj = JSON.stringify(addedUsers);
-    localStorage.setItem('addedUsers', serialObj);
   }
 
   addAccount(): void {
@@ -84,31 +71,28 @@ export class CreateAccountComponent implements OnInit {
         'Check entered data. Password should be at least 8 symbols';
     } else {
       let isSaved = this.savedUsers.find(
-        (el) =>
-          el.email === this.userEmail.value || el.userName === this.userName
+        (el) => el.email === this.userEmail.value || el.name === this.userName
       );
       if (isSaved) {
         this.loginError = 'A user with the same email or name already exists';
       } else {
         this.loginError = '';
-        this.savedUsers.push(
-          this.userService.addUser({
-            userName: this.userName,
-            type: 'user',
+        this.userService
+          .addUser({
+            name: this.userName,
+            login: this.userName,
+            surname: this.userName,
+            patronymic: this.userName,
+            age: 100,
+            role: 'USER',
             email: this.userEmail.value,
             password: this.userPassword,
-            isLogin: false,
-          } as User)
-        );
+          })
+          .subscribe(() => {
+            console.log('add user');
+          });
         this.router.navigate(['login']);
       }
     }
-    setTimeout(() => {
-      let isSaved = this.savedUsers.find(
-        (el) =>
-          el.email === this.userEmail.value || el.userName === this.userName
-      );
-      if (isSaved.id) this.addAllToLocaleHost(isSaved);
-    }, 1000);
   }
 }

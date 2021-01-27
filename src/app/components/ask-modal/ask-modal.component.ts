@@ -26,9 +26,9 @@ export class AskModalComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  updateUser(user): void {
-    this.userService.updateUser(user);
-  }
+  // updateUser(user): void {
+  //   this.userService.updateUser(user);
+  // }
 
   cleanLocaleStorage(): void {
     let currentUser = {
@@ -47,16 +47,16 @@ export class AskModalComponent implements OnInit {
   onLogOut(): void {
     console.log('log out');
     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    const updateUser = {
-      id: currentUser.id,
-      userName: currentUser.userName,
-      type: currentUser.type,
-      email: currentUser.email,
-      password: currentUser.password,
-      isLogin: false,
-    };
+    // const updateUser = {
+    //   id: currentUser.id,
+    //   userName: currentUser.userName,
+    //   type: currentUser.type,
+    //   email: currentUser.email,
+    //   password: currentUser.password,
+    //   isLogin: false,
+    // };
     this.dialogRef.close();
-    this.updateUser(updateUser);
+    // this.updateUser(updateUser);
     this.userService.logout();
     this.cleanLocaleStorage();
     this.router.navigate(['login']);

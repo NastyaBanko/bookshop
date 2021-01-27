@@ -1,8 +1,12 @@
 export interface User {
-    id: number;
-    type: string;
-    userName: string;
+    // id: number;
+    age: number;
+    role: string;
+    name: string;
+    login: string;
     email: string;
+    surname: string;
     password: string;
-    isLogin: boolean;
+    patronymic: string;
+    // isLogin: boolean;
   }

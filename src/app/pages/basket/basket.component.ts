@@ -40,15 +40,15 @@ export class BasketComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  roundNum(x, n){
-		if (isNaN(x) || isNaN(n)) return false
-		const result = (+x).toFixed(n).replace('.', ',')
-		const out = result
-			.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
-			.split(' ')
-			.join('.')
-		return out
-	}
+  roundNum(x, n) {
+    if (isNaN(x) || isNaN(n)) return false;
+    const result = (+x).toFixed(n).replace('.', ',');
+    const out = result
+      .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+      .split(' ')
+      .join('.');
+    return out;
+  }
 
   addCount(item): void {
     let isSaved = this.basketItems.findIndex((el) => el.id === item.id);
@@ -98,6 +98,10 @@ export class BasketComponent implements OnInit {
 
   openDialog(): void {
     const itemNames = this.basketItems.map((el) => el.title).join(', ');
+    const itemsIds = [];
+    this.basketItems.forEach((el) => {
+      for (let i = 0; i < el.count; i++) itemsIds.push(el.id);
+    });
     const dialogRef = this.dialog.open(OrderviewModalComponent, {
       width: '350px',
       data: {
@@ -107,6 +111,7 @@ export class BasketComponent implements OnInit {
         deliveryDate: this.deliveryDate,
         paymentType: this.paymentType,
         totalPrice: this.getTotalPrice(),
+        itemsIds: itemsIds,
       },
     });
 

@@ -50,17 +50,24 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     // this.http.get('/api/v1/categories').subscribe((data:any) => this.currentCategories=data);
     setTimeout(() => {
-      this.getSavedUsers();
+       this.getUsers()
+      // this.getSavedUsers();
     }, 1000);
   }
 
-  getSavedUsers(): void {
-    this.savedUsers = this.userService.getSavedUsers();
+  // getSavedUsers(): void {
+  //   this.savedUsers = this.userService.getSavedUsers();
+  // }
+
+  getUsers(): void {
+    this.userService.getUsers().subscribe((data) => {
+      this.savedUsers=data;
+    });
   }
 
-  updateUser(user): void {
-    this.userService.updateUser(user);
-  }
+  // updateUser(user): void {
+  //   this.userService.updateUser(user);
+  // }
 
   createAccount(): void {
     this.router.navigate(['createAccount']);
@@ -68,12 +75,15 @@ export class LoginComponent implements OnInit {
 
   addToLocaleStorage(user): void {
     let currentUser = {
-      id: user.id,
-      userName: user.userName,
-      type: user.type,
+      name: user.name,
+      role: user.role,
       email: user.email,
       password: user.password,
       isLogin: true,
+      age: 20,
+      login: user.name,
+      patronymic: "string",
+      surname: user.name
     };
     let serialObj = JSON.stringify(currentUser);
     localStorage.setItem('currentUser', serialObj);
@@ -84,24 +94,22 @@ export class LoginComponent implements OnInit {
       (el) =>
         el.email === this.userEmail.value && el.password === this.userPassword
     );
+    console.log(this.savedUsers)
+    console.log(isSaved)
     if (isSaved) {
       this.loginError = '';
 
-      const updateUser = { ...isSaved };
-      updateUser.isLogin = true;
-
-      if (isSaved.type === 'admin') {
+      if (isSaved.role === 'ADMIN') {
         this.router.navigate(['admin']);
       } else this.router.navigate(['user']);
       this.addToLocaleStorage(isSaved);
       this.userService.login(
-        isSaved.type,
-        isSaved.userName,
+        isSaved.role,
+        isSaved.name,
         isSaved.email,
         isSaved.password
       );
-      this.updateUser(updateUser);
-      this.getSavedUsers();
+      this.getUsers()
     } else {
       this.loginError = 'Incorrect username or password.';
       this.userService.logout();

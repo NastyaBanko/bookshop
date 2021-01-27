@@ -19,7 +19,7 @@ export class LoginGuardService implements CanActivate {
       return this.userService.isAuthenticated()
       .then(
         (loginInf: any) => {
-          if (loginInf.isLogin && expectedRole === loginInf.type) {
+          if (loginInf.isLogin && expectedRole === loginInf.role) {
             return true;
           } else {
             this.router.navigate(['/']);

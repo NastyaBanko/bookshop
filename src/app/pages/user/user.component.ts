@@ -76,7 +76,7 @@ export class UserComponent implements OnInit {
         this.loading = false;
       });
     this.getCurrentUser();
-    this.getSavedUsers();
+    this.getUsers()
   }
 
   roundNum(x, n){
@@ -106,9 +106,19 @@ export class UserComponent implements OnInit {
     this.router.navigate(['user/basket']);
   }
 
-  getSavedUsers(): void {
-    this.savedUsers = this.userService.getSavedUsers();
+  getUsers(): void {
+    this.userService.getUsers().subscribe((data) => {
+      this.savedUsers=data;
+    });
   }
+
+  // getOrders(email): void{
+  //   this.httpService
+  //     .getOrdersByEmail(email)
+  //     .subscribe((data) => {
+  //       console.log("get orders")
+  //   });
+  // }
 
   getCurrentUser(): void {
     this.currentUser = this.userService.getCurrentUser();

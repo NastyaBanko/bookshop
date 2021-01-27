@@ -57,6 +57,10 @@ export class HttpService {
     return this.http.post<any>('/processor/api/v1/processor/orders', order);
   }
 
+  getOrdersByEmail(email: any): Observable<any> {
+    return this.http.get<any>(`/processor/api/v1/processor/${email}/orders`);
+  }
+
   addOfferToOrder(orderId: number, offerId: number): Observable<any> {
     return this.http.put<any>(`/processor/api/v1/processor/orders/${orderId}/add?offerId=${offerId}`, null);
   }

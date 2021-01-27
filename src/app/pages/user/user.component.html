@@ -1,14 +1,11 @@
 <div class="mainContainer">
-  <h1 class="welcomeText">Hi, {{ currentUser.userName }}!</h1>
+  <h1 class="welcomeText">Hi, {{ currentUser.name }}!</h1>
   <button class="burgerBtn" mat-button [matMenuTriggerFor]="menu">Menu</button>
   <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="viewBasket()">
       <span *ngIf="basketItems.length < 1"
         >Basket</span
       >
-      <!-- Basket<span *ngIf="basketItems.length > 0"
-        >({{ basketItems.length }})*</span
-      > -->
       <span *ngIf="basketItems.length > 0" [matBadge]="basketItems.length" matBadgeOverlap="false">Basket</span>
     </button>
     <button mat-menu-item (click)="viewOrders()">Orders</button>

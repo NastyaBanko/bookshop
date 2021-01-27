@@ -5,9 +5,9 @@ import { LoginGuardService }   from './login-guard.service';
 const routes: Routes = [
   { path: '', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) },
   { path: 'admin', loadChildren: () => import('./pages/admin/admin.module').then(m => m.AdminModule), canActivate: [LoginGuardService], data: { 
-    expectedRole: 'admin'}},
+    expectedRole: 'ADMIN'}},
   { path: 'user', loadChildren: () => import('./pages/user/user.module').then(m => m.UserModule), canActivate: [LoginGuardService], data: { 
-      expectedRole: 'user'} },
+      expectedRole: 'USER'} },
   { path: 'login', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) },
   { path: 'createAccount', loadChildren: () => import('./pages/create-account/create-account.module').then(m => m.CreateAccountModule) },
   { path: 'user/orders', loadChildren: () => import('./pages/orders/orders.module').then(m => m.OrdersModule) },

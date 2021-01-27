@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 import { UserService } from '../../user.service';
+import { HttpService } from '../../services/http.service';
 
 import * as moment from 'moment';
 
@@ -20,6 +21,7 @@ export class OrderviewModalComponent implements OnInit {
     public dialogRef: MatDialogRef<OrderviewModalComponent>,
     private userService: UserService,
     private router: Router,
+    private httpService: HttpService,
     @Inject(MAT_DIALOG_DATA) public data
   ) {}
 
@@ -30,20 +32,38 @@ export class OrderviewModalComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  roundNum(x, n){
-		if (isNaN(x) || isNaN(n)) return false
-		const result = (+x).toFixed(n).replace('.', ',')
-		const out = result
-			.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
-			.split(' ')
-			.join('.')
-		return out
-	}
+  roundNum(x, n) {
+    if (isNaN(x) || isNaN(n)) return false;
+    const result = (+x).toFixed(n).replace('.', ',');
+    const out = result
+      .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+      .split(' ')
+      .join('.');
+    return out;
+  }
+
+  changeOrderStatus(id, status) {
+    this.httpService.changeOrderStatus(id, status).subscribe(() => {
+      console.log('change status');
+    });
+  }
 
   onConfirm(): void {
-    this.dialogRef.close();
-    localStorage.removeItem('currentBasketItems');
-    this.router.navigate(['user']);
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    let newOrder = {
+      offers: [...this.data.itemsIds],
+      email: currentUser.email,
+      deliveryAddress: this.data.deliveryAddress,
+      contactNumber: this.data.contactNumber,
+      paymentType: this.data.paymentType === 'card'?"CREDIT_CARD":"CASH",
+      timeStamp: moment(this.data.deliveryDate).format(),
+    };
+    this.httpService.createOrder(newOrder).subscribe((data) => {
+      this.changeOrderStatus(data.id, 'CONFIRMED');
+      this.dialogRef.close();
+      localStorage.removeItem('currentBasketItems');
+      this.router.navigate(['user']);
+    });
   }
 
   ngOnInit(): void {}

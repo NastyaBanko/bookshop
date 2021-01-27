@@ -57,18 +57,25 @@ export class AdminComponent implements OnInit {
     this.getCurrentCategories();
     this.getCurrentOffers();
     this.getCurrentUser();
-    this.getSavedUsers();
+    // this.getSavedUsers();
+    this.getUsers();
   }
 
-  roundNum(x, n){
-		if (isNaN(x) || isNaN(n)) return false
-		const result = (+x).toFixed(n).replace('.', ',')
-		const out = result
-			.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
-			.split(' ')
-			.join('.')
-		return out
-	}
+  getUsers(): void {
+    this.userService.getUsers().subscribe((data) => {
+      this.savedUsers = data;
+    });
+  }
+
+  roundNum(x, n) {
+    if (isNaN(x) || isNaN(n)) return false;
+    const result = (+x).toFixed(n).replace('.', ',');
+    const out = result
+      .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+      .split(' ')
+      .join('.');
+    return out;
+  }
 
   getCurrentCategories() {
     this.httpService.getCategories().subscribe((data) => {
@@ -115,9 +122,9 @@ export class AdminComponent implements OnInit {
     this.router.navigate(['user/basket']);
   }
 
-  getSavedUsers(): void {
-    this.savedUsers = this.userService.getSavedUsers();
-  }
+  // getSavedUsers(): void {
+  //   this.savedUsers = this.userService.getSavedUsers();
+  // }
 
   getCurrentUser(): void {
     this.currentUser = this.userService.getCurrentUser();
@@ -293,5 +300,4 @@ export class AdminComponent implements OnInit {
       },
     });
   }
-
 }

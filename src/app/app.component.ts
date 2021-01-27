@@ -19,45 +19,20 @@ export class AppComponent {
   constructor(private userService: UserService, private router: Router, private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.http.get('https://www.breakingbadapi.com/api/characters/8').subscribe((data:any) => this.test=data);
-    // this.http.get('/catalog/api/v1/categories').subscribe((data:any) => this.currentCategories=data);
+    this.getUsers();
     let currentUser = JSON.parse(localStorage.getItem("currentUser"))
-    let addedUsers = JSON.parse(localStorage.getItem("addedUsers")) || []
-    this.getSavedUsers()
-    if(currentUser.id){
-      if(currentUser.type === "admin"){
+    if(currentUser.email){
+      if(currentUser.role === "ADMIN"){
         this.router.navigate(['admin']);
       } else this.router.navigate(['user']);
-      this.userService.login(currentUser.type, currentUser.userName, currentUser.email, currentUser.password);
+      this.userService.login(currentUser.role, currentUser.name, currentUser.email, currentUser.password);
     }
-    setTimeout(()=>{
-      let isNew = addedUsers.find(el=>el.id===currentUser.id) || {}
-      if(currentUser.id && !isNew.id){
-        const updateUser = {...currentUser};
-        updateUser.isLogin = true;
-        this.updateUser(updateUser);
-      }
-      if(addedUsers){
-        addedUsers.map(el=>{
-          this.savedUsers.push(
-            this.userService.addUser({ 
-              userName: el.userName, 
-              type: "user", 
-              email: el.email, 
-              password: el.password, 
-              isLogin: isNew.id&&el.email===isNew.email?true:false } as User)
-          )
-        })
-        this.getSavedUsers()
-      }
-    }, 1000)
   }
 
-  getSavedUsers(): void {
-    this.savedUsers = this.userService.getSavedUsers()
+  getUsers(): void {
+    this.userService.getUsers().subscribe((data) => {
+      this.savedUsers=data;
+    });
   }
 
-  updateUser(user): void {
-    this.userService.updateUser(user)
-  }
 }
