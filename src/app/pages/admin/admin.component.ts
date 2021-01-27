@@ -245,7 +245,7 @@ export class AdminComponent implements OnInit {
 
   openCreateModal(): void {
     const dialogRef = this.dialog.open(CreateOfferModalComponent, {
-      width: '350px',
+      width: '450px',
       data: {
         mockCategories: this.mockCategories.filter((el) => el.value !== 'all'),
         categories: this.categories,

@@ -21,6 +21,7 @@ import { UpdateOfferComponent } from './components/update-offer/update-offer.com
 import { DeleteOfferModalComponent } from './components/delete-offer-modal/delete-offer-modal.component';
 import { CreateOfferModalComponent } from './components/create-offer-modal/create-offer-modal.component';
 import { DeleteCategoryModalComponent } from './components/delete-category-modal/delete-category-modal.component';
+import {TextFieldModule} from '@angular/cdk/text-field';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { DeleteCategoryModalComponent } from './components/delete-category-modal
     FontAwesomeModule,
     MatDatepickerModule,
     FormsModule,
+    TextFieldModule,
   ],
   providers: [
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}, MatDatepickerModule,

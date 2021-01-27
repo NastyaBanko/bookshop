@@ -65,7 +65,6 @@
 </div>
 
 <div class="offersContainer">
-  <!-- <mat-option [value]="option.value" *ngFor="let option of mockCategories">{{ option.viewValue }}</mat-option> -->
   <p *ngIf="visibleOffers.length < 1 && !loading">No available offers</p>
   <p *ngIf="loading">Loading...</p>
   <div *ngFor="let offer of visibleOffers" class="offerCard">

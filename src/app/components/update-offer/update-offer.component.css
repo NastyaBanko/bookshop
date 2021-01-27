@@ -19,3 +19,17 @@
 .errorText{
     color: red;
 }
+
+.imageWrapper {
+    display: inline-block;
+    height: 150px;
+    width: 200px;
+    padding: 5px;
+    background: white;
+  }
+  
+.bookImage {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+  }

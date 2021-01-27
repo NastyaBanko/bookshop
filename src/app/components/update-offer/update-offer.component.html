@@ -15,7 +15,15 @@
         name="urlAddress"
         value=""
         matInput
+        (ngModelChange)="closePicture()"
       />
+      <p *ngIf="isPictureShow" class="imageWrapper">
+        <img class="bookImage" [src]="urlAddress" />
+      </p>
+      <p class="errorText" *ngIf="pictureError">Check picture url.</p>
+      <button class="button" mat-button (click)="showPicture()">
+        {{ isPictureShow ? "Hide picture" : "Show picture" }}
+      </button>
       <label>Category:</label>
       <select
         *ngIf="!isCategoryNew"

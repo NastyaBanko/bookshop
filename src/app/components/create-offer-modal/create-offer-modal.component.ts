@@ -27,11 +27,13 @@ export class CreateOfferModalComponent implements OnInit {
 
   title: any = '';
   urlAddress: any = '';
-  selectedCategory: any = '';
+  selectedCategory: any = this.data.mockCategories[0].value;
   description: any = '';
   price: any = '';
   isCategoryNew: boolean = false;
   dataError: boolean = false;
+  isPictureShow: boolean = false;
+  pictureError: boolean = false;
 
   mockCategories = this.data.mockCategories;
 
@@ -47,22 +49,41 @@ export class CreateOfferModalComponent implements OnInit {
   checkImgSrc(src) {
     const img = new Image();
     img.src = src;
-    img.onload = function () {
+    img.onload = () => {
+      this.isPictureShow = !this.isPictureShow;
+      this.pictureError = false;
       console.log(`valid src: ${src}`);
     };
-    img.onerror = function () {
+    img.onerror = () => {
+      this.isPictureShow = false;
+      this.pictureError = true;
       console.log(`unvalid src: ${src}`);
     };
   }
 
+  showPicture() {
+    if (this.urlAddress.length > 0) {
+      this.checkImgSrc(this.urlAddress);
+    } else {
+      this.pictureError = true;
+      this.isPictureShow = false;
+    }
+  }
+
+  closePicture() {
+    this.isPictureShow = false;
+  }
+
   onCreate() {
+    console.log(this.title, this.urlAddress, this.selectedCategory, this.description, this.price, "DATA")
     if (
       this.title.length < 1 ||
       this.urlAddress.length < 1 ||
       this.selectedCategory.length < 1 ||
       this.description.length < 1 ||
       this.price < 0 ||
-      !this.price
+      !this.price ||
+      !+(this.price)
     ) {
       this.dataError = true;
       return;
