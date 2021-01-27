@@ -6,3 +6,20 @@
 .orderView{
     width: 400px;
 }
+
+.textSection{
+    color: gray;
+    padding: 0;
+    margin: 0;
+    width: 120px;
+    display: inline-block;
+}
+
+.rowed{
+    display: flex;
+    justify-content: space-between;
+}
+
+.textContainer{
+    margin-bottom: 5px;
+}

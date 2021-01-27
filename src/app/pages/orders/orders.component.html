@@ -1,10 +1,35 @@
 <div class="ordersContainer">
   <h1>Your Orders</h1>
-  <p *ngIf="orders.length < 1">No available orders</p>
+  <p *ngIf="loading">Loading...</p>
+  <p *ngIf="orders.length < 1 && !loading">No available orders</p>
   <ul class="orderList">
-    <li class="orderItem" (click)="openDetails()" *ngFor="let item of orders">
-      <p>{{ item.name }}</p>
-      <p>Total Price:</p>
+    <li class="orderItem" *ngFor="let item of orders">
+      <div (click)="openDetails(item)" class="itemContainer">
+        <div>
+          <p>{{ getItemNames(item) }}</p>
+          <p>TOTAL PRICE: ${{ roundNum(getTotalPrice(item), 2) }}</p>
+        </div>
+        <span
+          *ngIf="item.orderStatus === 'IN_PROCESS'"
+          class="status inProcess"
+          >{{ item.orderStatus }}</span
+        >
+        <span
+          *ngIf="item.orderStatus === 'CONFIRMED'"
+          class="status confirmed"
+          >{{ item.orderStatus }}</span
+        >
+        <span
+          *ngIf="item.orderStatus === 'CANCELED'"
+          class="status cancelled"
+          >{{ item.orderStatus }}</span
+        >
+        <span
+          *ngIf="item.orderStatus === 'DELIVERED'"
+          class="status delivered"
+          >{{ item.orderStatus }}</span
+        >
+      </div>
     </li>
   </ul>
   <div>

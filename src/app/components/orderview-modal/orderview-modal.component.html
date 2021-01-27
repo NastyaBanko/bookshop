@@ -1,13 +1,36 @@
-<h1 mat-dialog-title>Order Confirmation</h1>
+<h1 mat-dialog-title>
+  Order {{ data.screen === "BASKET" ? "Confirmation" : "View" }}
+</h1>
 <div class="mat-typography" mat-dialog-content>
-  <p>Order Items: {{ data.items }}</p>
-  <p>Contact Number: {{ data.contactNumber }}</p>
-  <p>Delivery Address: {{ data.deliveryAddress }}</p>
-  <p>Delivery date: {{ deliveryDate }}</p>
-  <p>Payment Type: {{ data.paymentType }}</p>
-  <p>Total Price: ${{ roundNum(data.totalPrice, 2) }}</p>
+  <div class="textContainer">
+    <p class="textSection">Order Items:</p>
+    {{ data.items }}
+  </div>
+  <div class="textContainer">
+    <p class="textSection">Contact Number:</p>
+    {{ data.contactNumber || "unknown" }}
+  </div>
+  <div class="textContainer">
+    <p class="textSection">Delivery Address:</p>
+    {{ data.deliveryAddress || "unknown" }}
+  </div>
+  <div class="textContainer">
+    <p class="textSection">Delivery date:</p>
+    {{ deliveryDate || "unknown"  }}
+  </div>
+  <div class="textContainer">
+    <p class="textSection">Payment Type:</p>
+    {{ data.paymentType || "unknown"  }}
+  </div>
+  <div class="textContainer">
+    <p class="textSection">Total Price:</p>
+    ${{ roundNum(data.totalPrice, 2) }}
+  </div>
 </div>
 <div mat-dialog-actions class="buttonContainer">
   <button mat-button (click)="onNoClick()">Back</button>
-  <button mat-button (click)="onConfirm()">Confirm</button>
+  <!-- <button mat-button (click)="onConfirm()">Confirm</button> -->
+  <button *ngIf="data.screen === 'BASKET'" mat-button (click)="onConfirm()">
+    Confirm
+  </button>
 </div>

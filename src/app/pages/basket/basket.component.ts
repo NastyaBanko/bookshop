@@ -112,6 +112,7 @@ export class BasketComponent implements OnInit {
         paymentType: this.paymentType,
         totalPrice: this.getTotalPrice(),
         itemsIds: itemsIds,
+        screen: "BASKET",
       },
     });
 
