@@ -11,6 +11,9 @@ import { UserService } from '../../user.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
+import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
+import {takeUntil} from 'rxjs/operators';
+
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
     control: FormControl | null,
@@ -30,7 +33,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends RxUnsubscribe implements OnInit {
   savedUsers: User[];
   userPassword: string;
   loginError: string = '';
@@ -45,29 +48,23 @@ export class LoginComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private http: HttpClient
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
-    // this.http.get('/api/v1/categories').subscribe((data:any) => this.currentCategories=data);
     setTimeout(() => {
-       this.getUsers()
-      // this.getSavedUsers();
+      this.getUsers();
     }, 1000);
   }
 
-  // getSavedUsers(): void {
-  //   this.savedUsers = this.userService.getSavedUsers();
-  // }
-
   getUsers(): void {
-    this.userService.getUsers().subscribe((data) => {
-      this.savedUsers=data;
+    this.userService.getUsers().pipe(
+      takeUntil((this.destroy$))
+    ).subscribe((data) => {
+      this.savedUsers = data;
     });
   }
-
-  // updateUser(user): void {
-  //   this.userService.updateUser(user);
-  // }
 
   createAccount(): void {
     this.router.navigate(['createAccount']);
@@ -82,8 +79,8 @@ export class LoginComponent implements OnInit {
       isLogin: true,
       age: 20,
       login: user.name,
-      patronymic: "string",
-      surname: user.name
+      patronymic: 'string',
+      surname: user.name,
     };
     let serialObj = JSON.stringify(currentUser);
     localStorage.setItem('currentUser', serialObj);
@@ -94,8 +91,8 @@ export class LoginComponent implements OnInit {
       (el) =>
         el.email === this.userEmail.value && el.password === this.userPassword
     );
-    console.log(this.savedUsers)
-    console.log(isSaved)
+    console.log(this.savedUsers);
+    console.log(isSaved);
     if (isSaved) {
       this.loginError = '';
 
@@ -109,7 +106,7 @@ export class LoginComponent implements OnInit {
         isSaved.email,
         isSaved.password
       );
-      this.getUsers()
+      this.getUsers();
     } else {
       this.loginError = 'Incorrect username or password.';
       this.userService.logout();

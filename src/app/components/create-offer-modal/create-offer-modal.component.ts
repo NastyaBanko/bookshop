@@ -7,6 +7,9 @@ import { HttpService } from '../../services/http.service';
 import { faSleigh } from '@fortawesome/free-solid-svg-icons';
 import { CurrencyPipe } from '@angular/common';
 
+import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
+import { takeUntil } from 'rxjs/operators';
+
 export interface DialogData {
   info: string;
 }
@@ -16,14 +19,16 @@ export interface DialogData {
   templateUrl: './create-offer-modal.component.html',
   styleUrls: ['./create-offer-modal.component.css'],
 })
-export class CreateOfferModalComponent implements OnInit {
+export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<CreateOfferModalComponent>,
     private userService: UserService,
     private router: Router,
     private httpService: HttpService,
     @Inject(MAT_DIALOG_DATA) public data
-  ) {}
+  ) {
+    super();
+  }
 
   title: any = '';
   urlAddress: any = '';
@@ -82,7 +87,7 @@ export class CreateOfferModalComponent implements OnInit {
       this.description.length < 1 ||
       this.price < 0 ||
       !this.price ||
-      !+(this.price)
+      !+this.price
     ) {
       this.dataError = true;
       return;
@@ -106,12 +111,15 @@ export class CreateOfferModalComponent implements OnInit {
           price: this.price,
           title: this.title,
         };
-        this.httpService.saveOffer(newOffer).subscribe(() => {
-          console.log('save offer');
-          this.data.getOffers();
-          this.data.getCategories();
-          this.dialogRef.close();
-        });
+        this.httpService
+          .saveOffer(newOffer)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(() => {
+            console.log('save offer');
+            this.data.getOffers();
+            this.data.getCategories();
+            this.dialogRef.close();
+          });
         console.log(`valid src: ${this.urlAddress}`);
       };
       img.onerror = () => {

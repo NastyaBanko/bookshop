@@ -2,36 +2,32 @@
   <h1>Your Orders</h1>
   <p *ngIf="loading">Loading...</p>
   <p *ngIf="orders.length < 1 && !loading">No available orders</p>
-  <ul class="orderList">
-    <li class="orderItem" *ngFor="let item of orders">
-      <div (click)="openDetails(item)" class="itemContainer">
-        <div>
-          <p>{{ getItemNames(item) }}</p>
-          <p>TOTAL PRICE: ${{ roundNum(getTotalPrice(item), 2) }}</p>
-        </div>
-        <span
-          *ngIf="item.orderStatus === 'IN_PROCESS'"
-          class="status inProcess"
-          >{{ item.orderStatus }}</span
-        >
-        <span
-          *ngIf="item.orderStatus === 'CONFIRMED'"
-          class="status confirmed"
-          >{{ item.orderStatus }}</span
-        >
-        <span
-          *ngIf="item.orderStatus === 'CANCELED'"
-          class="status cancelled"
-          >{{ item.orderStatus }}</span
-        >
-        <span
-          *ngIf="item.orderStatus === 'DELIVERED'"
-          class="status delivered"
-          >{{ item.orderStatus }}</span
-        >
+  <div class="ordersView" *ngIf="!loading">
+    <div
+      (click)="openDetails(item)"
+      class="orderView"
+      *ngFor="let item of orders"
+    >
+      <div>
+        <p>{{ getItemNames(item) }}</p>
+        <p>TOTAL PRICE: ${{ roundNum(getTotalPrice(item), 2) }}</p>
       </div>
-    </li>
-  </ul>
+      <span
+        *ngIf="item.orderStatus === 'IN_PROCESS'"
+        class="status inProcess"
+        >{{ item.orderStatus }}</span
+      >
+      <span *ngIf="item.orderStatus === 'CONFIRMED'" class="status confirmed">{{
+        item.orderStatus
+      }}</span>
+      <span *ngIf="item.orderStatus === 'CANCELED'" class="status cancelled">{{
+        item.orderStatus
+      }}</span>
+      <span *ngIf="item.orderStatus === 'DELIVERED'" class="status delivered">{{
+        item.orderStatus
+      }}</span>
+    </div>
+  </div>
   <div>
     <button mat-stroked-button (click)="backHome()">Back Home</button>
   </div>

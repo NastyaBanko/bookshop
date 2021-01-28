@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { UserService } from '../../user.service';
 import { HttpService } from '../../services/http.service';
 
+import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
+import { takeUntil } from 'rxjs/operators';
+
 import * as moment from 'moment';
 
 export interface DialogData {
@@ -16,14 +19,16 @@ export interface DialogData {
   templateUrl: './orderview-modal.component.html',
   styleUrls: ['./orderview-modal.component.css'],
 })
-export class OrderviewModalComponent implements OnInit {
+export class OrderviewModalComponent extends RxUnsubscribe implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<OrderviewModalComponent>,
     private userService: UserService,
     private router: Router,
     private httpService: HttpService,
     @Inject(MAT_DIALOG_DATA) public data
-  ) {}
+  ) {
+    super();
+  }
 
   deliveryDate = moment(this.data.deliveryDate).format('L');
 
@@ -43,9 +48,12 @@ export class OrderviewModalComponent implements OnInit {
   }
 
   changeOrderStatus(id, status) {
-    this.httpService.changeOrderStatus(id, status).subscribe(() => {
-      console.log('change status');
-    });
+    this.httpService
+      .changeOrderStatus(id, status)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        console.log('change status');
+      });
   }
 
   onConfirm(): void {
@@ -55,15 +63,18 @@ export class OrderviewModalComponent implements OnInit {
       email: currentUser.email,
       deliveryAddress: this.data.deliveryAddress,
       contactNumber: this.data.contactNumber,
-      paymentType: this.data.paymentType === 'card'?"CREDIT_CARD":"CASH",
+      paymentType: this.data.paymentType === 'card' ? 'CREDIT_CARD' : 'CASH',
       timeStamp: moment(this.data.deliveryDate).format(),
     };
-    this.httpService.createOrder(newOrder).subscribe((data) => {
-      this.changeOrderStatus(data.id, 'CONFIRMED');
-      this.dialogRef.close();
-      localStorage.removeItem('currentBasketItems');
-      this.router.navigate(['user']);
-    });
+    this.httpService
+      .createOrder(newOrder)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.changeOrderStatus(data.id, 'CONFIRMED');
+        this.dialogRef.close();
+        localStorage.removeItem('currentBasketItems');
+        this.router.navigate(['user']);
+      });
   }
 
   ngOnInit(): void {}

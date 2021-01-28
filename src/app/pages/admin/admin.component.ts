@@ -13,6 +13,9 @@ import { DeleteOfferModalComponent } from './../../components/delete-offer-modal
 import { CreateOfferModalComponent } from './../../components/create-offer-modal/create-offer-modal.component';
 import { DeleteCategoryModalComponent } from './../../components/delete-category-modal/delete-category-modal.component';
 
+import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
+import { takeUntil } from 'rxjs/operators';
+
 import { cloneDeep } from 'lodash';
 
 @Component({
@@ -20,7 +23,7 @@ import { cloneDeep } from 'lodash';
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent extends RxUnsubscribe implements OnInit {
   loading: boolean = false;
 
   currentUser: any;
@@ -50,21 +53,25 @@ export class AdminComponent implements OnInit {
     private router: Router,
     private http: HttpClient,
     public dialog: MatDialog
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.loading = true;
     this.getCurrentCategories();
     this.getCurrentOffers();
     this.getCurrentUser();
-    // this.getSavedUsers();
     this.getUsers();
   }
 
   getUsers(): void {
-    this.userService.getUsers().subscribe((data) => {
-      this.savedUsers = data;
-    });
+    this.userService
+      .getUsers()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.savedUsers = data;
+      });
   }
 
   roundNum(x, n) {
@@ -78,31 +85,40 @@ export class AdminComponent implements OnInit {
   }
 
   getCurrentCategories() {
-    this.httpService.getCategories().subscribe((data) => {
-      this.categories = data;
-      let categories = data.map((el) => {
-        let category = {};
-        category['value'] = el.category;
-        category['viewValue'] = el.category;
-        return category;
+    this.httpService
+      .getCategories()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.categories = data;
+        let categories = data.map((el) => {
+          let category = {};
+          category['value'] = el.category;
+          category['viewValue'] = el.category;
+          return category;
+        });
+        this.mockCategories = [
+          { value: 'all', viewValue: 'all' },
+          ...categories,
+        ];
       });
-      this.mockCategories = [{ value: 'all', viewValue: 'all' }, ...categories];
-    });
   }
 
   getCurrentOffers() {
-    this.httpService.getOffers().subscribe((data) => {
-      this.mockOffers = data;
-      let prices = data.map((el) => el.price);
-      this.minPrice = Math.min(...prices);
-      this.maxPrice = Math.max(...prices);
-      this.visibleOffers = this.searchItem(
-        this.filterCaregory(
-          this.sortAlphabetically(this.filterPrice(data.slice()))
-        )
-      );
-      this.loading = false;
-    });
+    this.httpService
+      .getOffers()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.mockOffers = data;
+        let prices = data.map((el) => el.price);
+        this.minPrice = Math.min(...prices);
+        this.maxPrice = Math.max(...prices);
+        this.visibleOffers = this.searchItem(
+          this.filterCaregory(
+            this.sortAlphabetically(this.filterPrice(data.slice()))
+          )
+        );
+        setTimeout(()=>{this.loading = false}, 500)
+      });
   }
 
   onChange(): void {
@@ -121,10 +137,6 @@ export class AdminComponent implements OnInit {
     if (this.basketItems.length < 1) return;
     this.router.navigate(['user/basket']);
   }
-
-  // getSavedUsers(): void {
-  //   this.savedUsers = this.userService.getSavedUsers();
-  // }
 
   getCurrentUser(): void {
     this.currentUser = this.userService.getCurrentUser();
@@ -229,18 +241,24 @@ export class AdminComponent implements OnInit {
   }
 
   deleteOffer(id) {
-    this.httpService.deleteOffer(id).subscribe(() => {
-      console.log('delete');
-      this.getCurrentOffers();
-    });
+    this.httpService
+      .deleteOffer(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        console.log('delete');
+        this.getCurrentOffers();
+      });
   }
 
   deleteCategory(id) {
-    this.httpService.deleteCategory(id).subscribe(() => {
-      console.log('deleteCategory');
-      this.getCurrentOffers();
-      this.getCurrentCategories();
-    });
+    this.httpService
+      .deleteCategory(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        console.log('deleteCategory');
+        this.getCurrentOffers();
+        this.getCurrentCategories();
+      });
   }
 
   openCreateModal(): void {

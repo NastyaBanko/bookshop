@@ -11,6 +11,9 @@ import { UserService } from '../../user.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
+import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
+import { takeUntil } from 'rxjs/operators';
+
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
     control: FormControl | null,
@@ -30,7 +33,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: './create-account.component.html',
   styleUrls: ['./create-account.component.css'],
 })
-export class CreateAccountComponent implements OnInit {
+export class CreateAccountComponent extends RxUnsubscribe implements OnInit {
   savedUsers: User[];
   userName: string = '';
   userPassword: string = '';
@@ -44,16 +47,21 @@ export class CreateAccountComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private http: HttpClient
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.getUsers();
   }
 
   getUsers(): void {
-    this.userService.getUsers().subscribe((data) => {
-      this.savedUsers = data;
-    });
+    this.userService
+      .getUsers()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.savedUsers = data;
+      });
   }
 
   login(): void {
@@ -88,6 +96,7 @@ export class CreateAccountComponent implements OnInit {
             email: this.userEmail.value,
             password: this.userPassword,
           })
+          .pipe(takeUntil(this.destroy$))
           .subscribe(() => {
             console.log('add user');
           });

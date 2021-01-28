@@ -6,6 +6,9 @@ import { UserService } from '../../user.service';
 import { HttpService } from '../../services/http.service';
 import { faSleigh } from '@fortawesome/free-solid-svg-icons';
 
+import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
+import { takeUntil } from 'rxjs/operators';
+
 export interface DialogData {
   info: string;
 }
@@ -15,14 +18,16 @@ export interface DialogData {
   templateUrl: './update-offer.component.html',
   styleUrls: ['./update-offer.component.css'],
 })
-export class UpdateOfferComponent implements OnInit {
+export class UpdateOfferComponent extends RxUnsubscribe implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<UpdateOfferComponent>,
     private userService: UserService,
     private router: Router,
     private httpService: HttpService,
     @Inject(MAT_DIALOG_DATA) public data
-  ) {}
+  ) {
+    super();
+  }
 
   title: any = this.data.offer.title;
   urlAddress: any = this.data.offer.photo;
@@ -41,36 +46,36 @@ export class UpdateOfferComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  addNewCategory(){
-    this.isCategoryNew = !this.isCategoryNew
+  addNewCategory() {
+    this.isCategoryNew = !this.isCategoryNew;
   }
 
   checkImgSrc(src) {
     const img = new Image();
     img.src = src;
-    img.onload = ()=>{
+    img.onload = () => {
       this.isPictureShow = !this.isPictureShow;
       this.pictureError = false;
       console.log(`valid src: ${src}`);
     };
-    img.onerror = ()=>{
+    img.onerror = () => {
       this.isPictureShow = false;
       this.pictureError = true;
       console.log(`unvalid src: ${src}`);
     };
   }
 
-  showPicture(){
-    if(this.urlAddress.length>0) {
-      this.checkImgSrc(this.urlAddress)
+  showPicture() {
+    if (this.urlAddress.length > 0) {
+      this.checkImgSrc(this.urlAddress);
     } else {
       this.pictureError = true;
-      this.isPictureShow = false
+      this.isPictureShow = false;
     }
   }
 
-  closePicture(){
-    this.isPictureShow = false
+  closePicture() {
+    this.isPictureShow = false;
   }
 
   onUpdate() {
@@ -81,7 +86,7 @@ export class UpdateOfferComponent implements OnInit {
       this.description.length < 1 ||
       this.price < 0 ||
       !this.price ||
-      !+(this.price)
+      !+this.price
     ) {
       this.dataError = true;
       return;
@@ -89,10 +94,11 @@ export class UpdateOfferComponent implements OnInit {
       this.dataError = false;
       const img = new Image();
       img.src = this.urlAddress;
-      img.onload = ()=>{
-        const curentCategory = this.data.categories.find(
-          (el) => el.category === this.selectedCategory
-        ) || {};
+      img.onload = () => {
+        const curentCategory =
+          this.data.categories.find(
+            (el) => el.category === this.selectedCategory
+          ) || {};
         let category = {
           id: curentCategory.id,
           category: this.selectedCategory,
@@ -109,7 +115,11 @@ export class UpdateOfferComponent implements OnInit {
         };
         if (this.selectedCategory !== this.data.offer.category.category) {
           this.httpService
-            .updateOfferCategory(this.data.offer.id, curentCategory.id?category:newCategory)
+            .updateOfferCategory(
+              this.data.offer.id,
+              curentCategory.id ? category : newCategory
+            )
+            .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
               console.log('category update');
               this.data.getOffers();
@@ -118,20 +128,24 @@ export class UpdateOfferComponent implements OnInit {
         if (!curentCategory.id) {
           this.httpService
             .saveCategory(newCategory)
+            .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
               console.log('add category');
               this.data.getOffers();
               this.data.getCategories();
             });
         }
-        this.httpService.updateOffer(updatedOffer).subscribe(() => {
-          console.log('update');
-          this.dialogRef.close();
-          this.data.getOffers();
-        });
+        this.httpService
+          .updateOffer(updatedOffer)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(() => {
+            console.log('update');
+            this.dialogRef.close();
+            this.data.getOffers();
+          });
         console.log(`valid src: ${this.urlAddress}`);
       };
-      img.onerror = ()=>{
+      img.onerror = () => {
         this.dataError = true;
         console.log(`unvalid src: ${this.urlAddress}`);
       };

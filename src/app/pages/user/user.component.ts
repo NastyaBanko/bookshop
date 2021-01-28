@@ -12,12 +12,15 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 import { cloneDeep } from 'lodash';
 
+import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
+import { takeUntil } from 'rxjs/operators';
+
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css'],
 })
-export class UserComponent implements OnInit {
+export class UserComponent extends RxUnsubscribe implements OnInit {
   loading: boolean = false;
   currentUser: any;
   currentCategories: any;
@@ -27,9 +30,9 @@ export class UserComponent implements OnInit {
 
   mockOffers = [];
 
-  visibleOffers=[];
+  visibleOffers = [];
 
-  selectedCategory: string = "all";
+  selectedCategory: string = 'all';
   minPrice: number = 0;
   maxPrice: number = 100;
   searchName: string = '';
@@ -45,49 +48,56 @@ export class UserComponent implements OnInit {
     private router: Router,
     private http: HttpClient,
     public dialog: MatDialog
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.loading = true;
     this.httpService
       .getCategories()
+      .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
         let categories = data.map((el) => {
-          let category = {}
-          category["value"] = el.category;
-          category["viewValue"] = el.category;
+          let category = {};
+          category['value'] = el.category;
+          category['viewValue'] = el.category;
           return category;
         });
-        this.mockCategories = [{ value: 'all', viewValue: 'all' }, ...categories]
+        this.mockCategories = [
+          { value: 'all', viewValue: 'all' },
+          ...categories,
+        ];
       });
-      
+
     this.httpService
       .getOffers()
+      .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
-        this.mockOffers = data
+        this.mockOffers = data;
         this.visibleOffers = this.searchItem(
           this.filterCaregory(
             this.sortAlphabetically(this.filterPrice(data.slice()))
           )
-        )
-        let prices = data.map(el=>el.price)
+        );
+        let prices = data.map((el) => el.price);
         this.minPrice = Math.min(...prices);
         this.maxPrice = Math.max(...prices);
-        this.loading = false;
+        setTimeout(()=>{this.loading = false}, 500)
       });
     this.getCurrentUser();
-    this.getUsers()
+    this.getUsers();
   }
 
-  roundNum(x, n){
-		if (isNaN(x) || isNaN(n)) return false
-		const result = (+x).toFixed(n).replace('.', ',')
-		const out = result
-			.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
-			.split(' ')
-			.join('.')
-		return out
-	}
+  roundNum(x, n) {
+    if (isNaN(x) || isNaN(n)) return false;
+    const result = (+x).toFixed(n).replace('.', ',');
+    const out = result
+      .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+      .split(' ')
+      .join('.');
+    return out;
+  }
 
   onChange(): void {
     this.visibleOffers = this.searchItem(
@@ -107,18 +117,13 @@ export class UserComponent implements OnInit {
   }
 
   getUsers(): void {
-    this.userService.getUsers().subscribe((data) => {
-      this.savedUsers=data;
-    });
+    this.userService
+      .getUsers()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.savedUsers = data;
+      });
   }
-
-  // getOrders(email): void{
-  //   this.httpService
-  //     .getOrdersByEmail(email)
-  //     .subscribe((data) => {
-  //       console.log("get orders")
-  //   });
-  // }
 
   getCurrentUser(): void {
     this.currentUser = this.userService.getCurrentUser();
@@ -169,7 +174,8 @@ export class UserComponent implements OnInit {
   filterCaregory(arr) {
     if (this.selectedCategory === 'all') {
       return arr;
-    } else return arr.filter((el) => el.category.category === this.selectedCategory);
+    } else
+      return arr.filter((el) => el.category.category === this.selectedCategory);
   }
 
   searchItem(arr) {
@@ -202,7 +208,7 @@ export class UserComponent implements OnInit {
   }
 
   resetSettings(): void {
-    let prices = this.mockOffers.map(el=>el.price)
+    let prices = this.mockOffers.map((el) => el.price);
     this.selectedCategory = this.mockCategories[0].value;
     this.minPrice = Math.min(...prices);
     this.maxPrice = Math.max(...prices);

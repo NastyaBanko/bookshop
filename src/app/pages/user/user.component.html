@@ -3,10 +3,13 @@
   <button class="burgerBtn" mat-button [matMenuTriggerFor]="menu">Menu</button>
   <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="viewBasket()">
-      <span *ngIf="basketItems.length < 1"
+      <span *ngIf="basketItems.length < 1">Basket</span>
+      <span
+        *ngIf="basketItems.length > 0"
+        [matBadge]="basketItems.length"
+        matBadgeOverlap="false"
         >Basket</span
       >
-      <span *ngIf="basketItems.length > 0" [matBadge]="basketItems.length" matBadgeOverlap="false">Basket</span>
     </button>
     <button mat-menu-item (click)="viewOrders()">Orders</button>
     <button mat-menu-item (click)="openDialog()">Log out</button>
@@ -64,28 +67,25 @@
   <button mat-stroked-button (click)="resetSettings()">Reset Settings</button>
 </div>
 
-<div class="offersContainer">
+<div class="warningText">
   <p *ngIf="visibleOffers.length < 1 && !loading">No available offers</p>
   <p *ngIf="loading">Loading...</p>
-  <div *ngFor="let offer of visibleOffers" class="offerCard">
-    <mat-card>
-      <p class="nameText">{{ offer.title | uppercase }}</p>
-      <p class="imageWrapper">
-        <img
-          class="bookImage"
-          [src]="offer.photo"
-        />
+</div>
+<div class="offersContainer" *ngIf="!loading">
+  <mat-card *ngFor="let offer of visibleOffers" class="offerCard">
+    <p class="nameText">{{ offer.title | uppercase }}</p>
+    <p class="imageWrapper">
+      <img class="bookImage" [src]="offer.photo" />
+    </p>
+    <p class="descriptionText">Category: {{ offer.category.category }}</p>
+    <p class="descriptionText">{{ offer.description }}</p>
+    <p>Price: ${{ roundNum(offer.price, 2) }}</p>
+    <div class="rowed">
+      <button mat-stroked-button (click)="addCount(offer)">+</button>
+      <p class="countText">
+        {{ findCurrentCount(offer) }}
       </p>
-      <p class="descriptionText">Category: {{ offer.category.category }}</p>
-      <p class="descriptionText">{{ offer.description }}</p>
-      <p>Price: ${{ roundNum(offer.price, 2) }}</p>
-      <div class="rowed">
-        <button mat-stroked-button (click)="addCount(offer)">+</button>
-        <p class="countText">
-          {{ findCurrentCount(offer) }}
-        </p>
-        <button mat-stroked-button (click)="minusCount(offer)">-</button>
-      </div>
-    </mat-card>
-  </div>
+      <button mat-stroked-button (click)="minusCount(offer)">-</button>
+    </div>
+  </mat-card>
 </div>

@@ -9,17 +9,25 @@ import { HttpService } from '../../services/http.service';
 
 import { MatDialog } from '@angular/material/dialog';
 
+import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
+import { takeUntil } from 'rxjs/operators';
+
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.css'],
 })
-export class OrdersComponent implements OnInit {
+export class OrdersComponent extends RxUnsubscribe implements OnInit {
   loading: boolean = false;
   orders = [];
-  // orderItemNames: any;
 
-  constructor(private router: Router, private httpService: HttpService, public dialog: MatDialog) {}
+  constructor(
+    private router: Router,
+    private httpService: HttpService,
+    public dialog: MatDialog
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.loading = true;
@@ -49,21 +57,25 @@ export class OrdersComponent implements OnInit {
   }
 
   getOrders(email): void {
-    this.httpService.getOrdersByEmail(email).subscribe((data) => {
-      let ordersInProc = JSON.parse(localStorage.getItem('currentBasketItems')) || [];
-      let orderInProcess = {
-        orderItems: [...ordersInProc],
-        orderStatus: "IN_PROCESS",
-      };
-      console.log(data)
-      this.orders = data;
-      if(ordersInProc.length>0) this.orders.push(orderInProcess)
-      this.loading = false;
-    });
+    this.httpService
+      .getOrdersByEmail(email)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        let ordersInProc =
+          JSON.parse(localStorage.getItem('currentBasketItems')) || [];
+        let orderInProcess = {
+          orderItems: [...ordersInProc],
+          orderStatus: 'IN_PROCESS',
+        };
+        console.log(data);
+        this.orders = data;
+        if (ordersInProc.length > 0) this.orders.push(orderInProcess);
+        setTimeout(()=>{this.loading = false}, 500)
+      });
   }
 
   openDialog(order): void {
-    const itemNames = this.getItemNames(order)
+    const itemNames = this.getItemNames(order);
     const dialogRef = this.dialog.open(OrderviewModalComponent, {
       width: '350px',
       data: {
@@ -73,13 +85,13 @@ export class OrdersComponent implements OnInit {
         deliveryDate: order.deliveryDate,
         paymentType: order.paymentType,
         totalPrice: this.getTotalPrice(order),
-        screen: "ORDERS",
+        screen: 'ORDERS',
       },
     });
   }
 
   openDetails(order) {
-    this.openDialog(order)
+    this.openDialog(order);
   }
 
   backHome() {

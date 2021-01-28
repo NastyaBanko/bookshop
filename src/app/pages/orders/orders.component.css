@@ -3,30 +3,26 @@
     text-align: center;
 }
 
-.orderItem{
+.orderView{
     border: solid 1px rgb(216, 215, 215);
     border-radius: 5px;
     margin: 10px;
-    list-style-type: none;
     padding: 10px 15px;
-    display: inline-block;
     width: 260px;
     cursor: pointer;
     transition: transform 0.5s; 
     background-color: white;
-}
-
-.orderItem:hover { transform: scale(1.2); }
-
-.itemContainer{
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.orderList{
-    margin: 0;
-    padding: 0;
+.orderView:hover { transform: scale(1.1); }
+
+.ordersView{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
     margin-bottom: 20px;
 }
 
@@ -34,7 +30,6 @@
     margin: 0;
     padding: 5px 10px;
     border-radius: 15px;
-    /* background-color: greenyellow; */
     color: white;
     font-size: 12px;
 }
