@@ -15,12 +15,21 @@ import { cloneDeep } from 'lodash';
 import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
 import { takeUntil } from 'rxjs/operators';
 
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css'],
 })
 export class UserComponent extends RxUnsubscribe implements OnInit {
+  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+
   loading: boolean = false;
   currentUser: any;
   currentCategories: any;
@@ -47,7 +56,8 @@ export class UserComponent extends RxUnsubscribe implements OnInit {
     private httpService: HttpService,
     private router: Router,
     private http: HttpClient,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) {
     super();
   }
@@ -83,7 +93,9 @@ export class UserComponent extends RxUnsubscribe implements OnInit {
         let prices = data.map((el) => el.price);
         this.minPrice = Math.min(...prices);
         this.maxPrice = Math.max(...prices);
-        setTimeout(()=>{this.loading = false}, 500)
+        setTimeout(() => {
+          this.loading = false;
+        }, 500);
       });
     this.getCurrentUser();
     this.getUsers();
@@ -97,6 +109,15 @@ export class UserComponent extends RxUnsubscribe implements OnInit {
       .split(' ')
       .join('.');
     return out;
+  }
+
+  openSnackBar(message, type) {
+    this._snackBar.open(message, 'Cancel', {
+      duration: 2000,
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      panelClass: [type],
+    });
   }
 
   onChange(): void {
@@ -221,10 +242,6 @@ export class UserComponent extends RxUnsubscribe implements OnInit {
     const dialogRef = this.dialog.open(AskModalComponent, {
       width: '250px',
       // data: {name: this.name, animal: this.animal}
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
     });
   }
 }

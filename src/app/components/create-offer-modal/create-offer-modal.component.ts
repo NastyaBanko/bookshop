@@ -43,7 +43,6 @@ export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
   mockCategories = this.data.mockCategories;
 
   onNoClick(): void {
-    console.log('stay');
     this.dialogRef.close();
   }
 
@@ -57,12 +56,10 @@ export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
     img.onload = () => {
       this.isPictureShow = !this.isPictureShow;
       this.pictureError = false;
-      console.log(`valid src: ${src}`);
     };
     img.onerror = () => {
       this.isPictureShow = false;
       this.pictureError = true;
-      console.log(`unvalid src: ${src}`);
     };
   }
 
@@ -114,17 +111,19 @@ export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
         this.httpService
           .saveOffer(newOffer)
           .pipe(takeUntil(this.destroy$))
-          .subscribe(() => {
-            console.log('save offer');
-            this.data.getOffers();
-            this.data.getCategories();
-            this.dialogRef.close();
-          });
-        console.log(`valid src: ${this.urlAddress}`);
+          .subscribe(
+            () => {
+              this.data.successNotify();
+              console.log('save offer');
+              this.data.getOffers();
+              this.data.getCategories();
+              this.dialogRef.close();
+            },
+            () => this.data.errorNotify()
+          );
       };
       img.onerror = () => {
         this.dataError = true;
-        console.log(`unvalid src: ${this.urlAddress}`);
       };
     }
   }

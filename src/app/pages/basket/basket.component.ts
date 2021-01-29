@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 import { OrderviewModalComponent } from './../../components/orderview-modal/orderview-modal.component';
 
@@ -15,13 +20,9 @@ import * as moment from 'moment';
   styleUrls: ['./basket.component.css'],
 })
 export class BasketComponent implements OnInit {
-  typesOfShoes: string[] = [
-    'Boots',
-    'Clogs',
-    'Loafers',
-    'Moccasins',
-    'Sneakers',
-  ];
+
+  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
   mockCategories = [
     { value: 'card', viewValue: 'Card' },
@@ -36,7 +37,7 @@ export class BasketComponent implements OnInit {
   paymentType: string = this.mockCategories[0].value;
   dataError = false;
 
-  constructor(private router: Router, public dialog: MatDialog) {}
+  constructor(private router: Router, public dialog: MatDialog, private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {}
 
@@ -48,6 +49,15 @@ export class BasketComponent implements OnInit {
       .split(' ')
       .join('.');
     return out;
+  }
+
+  openSnackBar(message, type) {
+    this._snackBar.open(message, 'Cancel', {
+      duration: 2000,
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      panelClass: [type],
+    });
   }
 
   addCount(item): void {
@@ -113,11 +123,14 @@ export class BasketComponent implements OnInit {
         totalPrice: this.getTotalPrice(),
         itemsIds: itemsIds,
         screen: "BASKET",
-      },
-    });
+        successNotify: ()=>{
+          this.openSnackBar('Success!', 'alert-success');
+        },
+        errorNotify: ()=>{
+          this.openSnackBar('Something goes wrong!', 'alert-error')
+        }
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
+      },
     });
   }
 }

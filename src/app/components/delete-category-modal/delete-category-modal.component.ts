@@ -36,7 +36,6 @@ export class DeleteCategoryModalComponent
   dataError: boolean = false;
 
   onNoClick(): void {
-    console.log('stay');
     this.dialogRef.close();
   }
 
@@ -50,7 +49,6 @@ export class DeleteCategoryModalComponent
   }
 
   updateCategories() {
-    console.log(this.serverCategories);
     let wrongCategories = this.categories.filter(
       (el) => el.category.length < 1
     );
@@ -67,12 +65,11 @@ export class DeleteCategoryModalComponent
           };
           this.httpService
             .updateCategoryName(category)
-            .pipe(takeUntil(this.destroy$))
             .subscribe((data) => {
-              console.log('update category name');
+              this.data.successNotify()
               this.data.getOffers();
               this.data.getCategories();
-            });
+            }, () => this.data.errorNotify());
         }
       });
       this.dialogRef.close();
@@ -84,11 +81,11 @@ export class DeleteCategoryModalComponent
       .deleteCategory(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
-        console.log('delete category');
+        this.data.successNotify()
         this.categories = this.categories.filter((el) => el.id !== id);
         this.data.getOffers();
         this.data.getCategories();
-      });
+      }, () => this.data.errorNotify());
   }
 
   ngOnInit(): void {

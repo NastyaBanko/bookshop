@@ -14,6 +14,13 @@ import { HttpClient } from '@angular/common/http';
 import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
 import { takeUntil } from 'rxjs/operators';
 
+import { MatDialog } from '@angular/material/dialog';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
     control: FormControl | null,
@@ -34,6 +41,9 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./create-account.component.css'],
 })
 export class CreateAccountComponent extends RxUnsubscribe implements OnInit {
+  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+
   savedUsers: User[];
   userName: string = '';
   userPassword: string = '';
@@ -46,7 +56,8 @@ export class CreateAccountComponent extends RxUnsubscribe implements OnInit {
   constructor(
     private userService: UserService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private _snackBar: MatSnackBar
   ) {
     super();
   }
@@ -62,6 +73,15 @@ export class CreateAccountComponent extends RxUnsubscribe implements OnInit {
       .subscribe((data) => {
         this.savedUsers = data;
       });
+  }
+
+  openSnackBar(message, type) {
+    this._snackBar.open(message, 'Cancel', {
+      duration: 2000,
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      panelClass: [type],
+    });
   }
 
   login(): void {
@@ -96,10 +116,12 @@ export class CreateAccountComponent extends RxUnsubscribe implements OnInit {
             email: this.userEmail.value,
             password: this.userPassword,
           })
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(() => {
-            console.log('add user');
-          });
+          .subscribe(
+            () => {
+              this.openSnackBar('Success!', 'alert-success');
+            },
+            () => this.openSnackBar('Something goes wrong!', 'alert-error')
+          );
         this.router.navigate(['login']);
       }
     }

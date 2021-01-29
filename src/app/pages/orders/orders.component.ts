@@ -67,7 +67,6 @@ export class OrdersComponent extends RxUnsubscribe implements OnInit {
           orderItems: [...ordersInProc],
           orderStatus: 'IN_PROCESS',
         };
-        console.log(data);
         this.orders = data;
         if (ordersInProc.length > 0) this.orders.push(orderInProcess);
         setTimeout(()=>{this.loading = false}, 500)

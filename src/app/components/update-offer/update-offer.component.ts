@@ -42,7 +42,6 @@ export class UpdateOfferComponent extends RxUnsubscribe implements OnInit {
   mockCategories = this.data.mockCategories;
 
   onNoClick(): void {
-    console.log('stay');
     this.dialogRef.close();
   }
 
@@ -56,12 +55,10 @@ export class UpdateOfferComponent extends RxUnsubscribe implements OnInit {
     img.onload = () => {
       this.isPictureShow = !this.isPictureShow;
       this.pictureError = false;
-      console.log(`valid src: ${src}`);
     };
     img.onerror = () => {
       this.isPictureShow = false;
       this.pictureError = true;
-      console.log(`unvalid src: ${src}`);
     };
   }
 
@@ -121,7 +118,6 @@ export class UpdateOfferComponent extends RxUnsubscribe implements OnInit {
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-              console.log('category update');
               this.data.getOffers();
             });
         }
@@ -130,7 +126,6 @@ export class UpdateOfferComponent extends RxUnsubscribe implements OnInit {
             .saveCategory(newCategory)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-              console.log('add category');
               this.data.getOffers();
               this.data.getCategories();
             });
@@ -139,15 +134,13 @@ export class UpdateOfferComponent extends RxUnsubscribe implements OnInit {
           .updateOffer(updatedOffer)
           .pipe(takeUntil(this.destroy$))
           .subscribe(() => {
-            console.log('update');
+            this.data.successNotify()
             this.dialogRef.close();
             this.data.getOffers();
-          });
-        console.log(`valid src: ${this.urlAddress}`);
+          }, () => this.data.errorNotify());
       };
       img.onerror = () => {
         this.dataError = true;
-        console.log(`unvalid src: ${this.urlAddress}`);
       };
     }
   }

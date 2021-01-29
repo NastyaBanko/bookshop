@@ -12,7 +12,6 @@ const routes: Routes = [
   { path: 'createAccount', loadChildren: () => import('./pages/create-account/create-account.module').then(m => m.CreateAccountModule) },
   { path: 'user/orders', loadChildren: () => import('./pages/orders/orders.module').then(m => m.OrdersModule) },
   { path: 'user/basket', loadChildren: () => import('./pages/basket/basket.module').then(m => m.BasketModule) },
-  { path: 'user/order-confirmation', loadChildren: () => import('./pages/order-confirmation/order-confirmation.module').then(m => m.OrderConfirmationModule) },
   { path: '**', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) }
 ];
 

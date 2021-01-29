@@ -22,7 +22,6 @@ export class AskModalComponent implements OnInit {
   ) {}
 
   onNoClick(): void {
-    console.log('stay');
     this.dialogRef.close();
   }
 

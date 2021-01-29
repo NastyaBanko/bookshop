@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 import { UserService } from '../../user.service';
 import { HttpService } from '../../services/http.service';
@@ -24,6 +29,9 @@ import { cloneDeep } from 'lodash';
   styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent extends RxUnsubscribe implements OnInit {
+  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+
   loading: boolean = false;
 
   currentUser: any;
@@ -52,7 +60,8 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
     private httpService: HttpService,
     private router: Router,
     private http: HttpClient,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) {
     super();
   }
@@ -117,7 +126,9 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
             this.sortAlphabetically(this.filterPrice(data.slice()))
           )
         );
-        setTimeout(()=>{this.loading = false}, 500)
+        setTimeout(() => {
+          this.loading = false;
+        }, 500);
       });
   }
 
@@ -129,53 +140,8 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
     );
   }
 
-  viewOrders() {
-    this.router.navigate(['user/orders']);
-  }
-
-  viewBasket() {
-    if (this.basketItems.length < 1) return;
-    this.router.navigate(['user/basket']);
-  }
-
   getCurrentUser(): void {
     this.currentUser = this.userService.getCurrentUser();
-  }
-
-  findCurrentCount(item) {
-    let savedItem = this.basketItems.find((el) => el.id === item.id) || {};
-    if (savedItem.id) {
-      return savedItem.count;
-    } else return 0;
-  }
-
-  addCount(item): void {
-    let isSaved = this.basketItems.findIndex((el) => el.id === item.id);
-    let newItem = cloneDeep(item);
-    newItem.count = 1;
-    if (isSaved < 0) {
-      this.basketItems.push(newItem);
-    } else ++this.basketItems[isSaved].count;
-
-    let serial = JSON.stringify(this.basketItems);
-    localStorage.setItem('currentBasketItems', serial);
-  }
-
-  minusCount(item): void {
-    let savedItem = this.basketItems.find((el) => el.id === item.id) || {};
-    let isSaved = this.basketItems.findIndex((el) => el.id === item.id);
-    let newItem = cloneDeep(item);
-    newItem.count = 1;
-    if (!savedItem.id || savedItem.count < 1) {
-      return;
-    } else {
-      --this.basketItems[isSaved].count;
-      if (this.basketItems[isSaved].count < 1)
-        this.basketItems.splice(isSaved, 1);
-    }
-
-    let serial = JSON.stringify(this.basketItems);
-    localStorage.setItem('currentBasketItems', serial);
   }
 
   filterPrice(arr) {
@@ -231,12 +197,15 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(AskModalComponent, {
-      width: '250px',
-    });
+    this.dialog.open(AskModalComponent, { width: '250px' });
+  }
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
+  openSnackBar(message, type) {
+    this._snackBar.open(message, 'Cancel', {
+      duration: 2000,
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      panelClass: [type],
     });
   }
 
@@ -244,21 +213,13 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
     this.httpService
       .deleteOffer(id)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        console.log('delete');
-        this.getCurrentOffers();
-      });
-  }
-
-  deleteCategory(id) {
-    this.httpService
-      .deleteCategory(id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        console.log('deleteCategory');
-        this.getCurrentOffers();
-        this.getCurrentCategories();
-      });
+      .subscribe(
+        (data) => {
+          this.openSnackBar('Success!', 'alert-success');
+          this.getCurrentOffers();
+        },
+        () => this.openSnackBar('Something goes wrong!', 'alert-error')
+      );
   }
 
   openCreateModal(): void {
@@ -272,6 +233,12 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
         },
         getCategories: () => {
           this.getCurrentCategories();
+        },
+        successNotify: () => {
+          this.openSnackBar('Success!', 'alert-success');
+        },
+        errorNotify: () => {
+          this.openSnackBar('Something goes wrong!', 'alert-error');
         },
       },
     });
@@ -290,6 +257,12 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
         getCategories: () => {
           this.getCurrentCategories();
         },
+        successNotify: () => {
+          this.openSnackBar('Success!', 'alert-success');
+        },
+        errorNotify: () => {
+          this.openSnackBar('Something goes wrong!', 'alert-error');
+        },
       },
     });
   }
@@ -304,6 +277,7 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
       },
     });
   }
+
   openDeleteCategoryModal(): void {
     const dialogRef = this.dialog.open(DeleteCategoryModalComponent, {
       width: '350px',
@@ -314,6 +288,12 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
         },
         getCategories: () => {
           this.getCurrentCategories();
+        },
+        successNotify: () => {
+          this.openSnackBar('Success!', 'alert-success');
+        },
+        errorNotify: () => {
+          this.openSnackBar('Something goes wrong!', 'alert-error');
         },
       },
     });

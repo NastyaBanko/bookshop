@@ -91,8 +91,6 @@ export class LoginComponent extends RxUnsubscribe implements OnInit {
       (el) =>
         el.email === this.userEmail.value && el.password === this.userPassword
     );
-    console.log(this.savedUsers);
-    console.log(isSaved);
     if (isSaved) {
       this.loginError = '';
 

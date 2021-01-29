@@ -33,7 +33,6 @@ export class OrderviewModalComponent extends RxUnsubscribe implements OnInit {
   deliveryDate = moment(this.data.deliveryDate).format('L');
 
   onNoClick(): void {
-    console.log('stay');
     this.dialogRef.close();
   }
 
@@ -50,7 +49,6 @@ export class OrderviewModalComponent extends RxUnsubscribe implements OnInit {
   changeOrderStatus(id, status) {
     this.httpService
       .changeOrderStatus(id, status)
-      .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         console.log('change status');
       });
@@ -69,12 +67,16 @@ export class OrderviewModalComponent extends RxUnsubscribe implements OnInit {
     this.httpService
       .createOrder(newOrder)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.changeOrderStatus(data.id, 'CONFIRMED');
-        this.dialogRef.close();
-        localStorage.removeItem('currentBasketItems');
-        this.router.navigate(['user']);
-      });
+      .subscribe(
+        (data) => {
+          this.data.successNotify()
+          this.changeOrderStatus(data.id, 'CONFIRMED');
+          this.dialogRef.close();
+          localStorage.removeItem('currentBasketItems');
+          this.router.navigate(['user']);
+        },
+        () => this.data.errorNotify()
+      );
   }
 
   ngOnInit(): void {}

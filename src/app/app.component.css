@@ -1,0 +1,7 @@
+::ng-deep snack-bar-container.alert-success {
+  color: rgb(73, 221, 14);
+}
+
+::ng-deep snack-bar-container.alert-error {
+  color: #ff4081;
+}
