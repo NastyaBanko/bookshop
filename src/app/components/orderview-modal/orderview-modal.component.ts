@@ -50,7 +50,7 @@ export class OrderviewModalComponent extends RxUnsubscribe implements OnInit {
     this.httpService
       .changeOrderStatus(id, status)
       .subscribe(() => {
-        console.log('change status');
+        console.log('change statusssss');
       });
   }
 
