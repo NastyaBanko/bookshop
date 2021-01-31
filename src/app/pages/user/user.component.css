@@ -85,3 +85,15 @@
   width: 100%;
   object-fit: contain;
 }
+
+.countCircle{
+  display: inline-block;
+  color: white;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  background: lightblue;
+  margin: 0 5px;
+  border-radius: 50%;
+  text-align: center;
+}

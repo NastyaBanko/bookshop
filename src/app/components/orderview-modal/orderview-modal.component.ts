@@ -32,6 +32,10 @@ export class OrderviewModalComponent extends RxUnsubscribe implements OnInit {
 
   deliveryDate = moment(this.data.deliveryDate).format('L');
 
+  loadingAddress = false;
+  loadingNumber = false;
+  loadingPaymentType = false;
+
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -49,34 +53,68 @@ export class OrderviewModalComponent extends RxUnsubscribe implements OnInit {
   changeOrderStatus(id, status) {
     this.httpService
       .changeOrderStatus(id, status)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        () => {
+          if (
+            !this.loadingAddress &&
+            !this.loadingNumber &&
+            !this.loadingPaymentType
+          ) {
+            this.data.successNotify();
+            console.log('change status');
+            this.dialogRef.close();
+            this.router.navigate(['user']);
+          }
+        },
+        () => this.data.errorNotify()
+      );
+  }
+
+  changeOrderDeliveryAddress(id, address) {
+    this.httpService
+      .changeDeliveryAddress(id, address)
+      .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        console.log('change status123');
+        this.loadingAddress = false;
+        console.log('change address');
+      });
+  }
+
+  changeContactNumber(id, number) {
+    this.httpService
+      .changeContactNumber(id, number)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.loadingNumber = false;
+        console.log('change number');
+      });
+  }
+
+  changePaymentType(id, payment) {
+    this.httpService
+      .changePaymentType(id, payment)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.loadingPaymentType = false;
+        console.log('change type');
       });
   }
 
   onConfirm(): void {
-    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    let newOrder = {
-      offers: [...this.data.itemsIds],
-      email: currentUser.email,
-      deliveryAddress: this.data.deliveryAddress,
-      contactNumber: this.data.contactNumber,
-      paymentType: this.data.paymentType === 'card' ? 'CREDIT_CARD' : 'CASH',
-      timeStamp: moment(this.data.deliveryDate).format(),
-    };
-    this.httpService
-      .createOrder(newOrder)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        (data) => {
-          this.data.successNotify()
-          this.changeOrderStatus(data.id, 'CONFIRMED');
-          this.dialogRef.close();
-          localStorage.removeItem('currentBasketItems');
-          this.router.navigate(['user']);
-        },
-        () => this.data.errorNotify()
-      );
+    this.loadingAddress = true;
+    this.loadingNumber = true;
+    this.loadingPaymentType = this.data.paymentType === 'card' ? true : false;
+
+    this.changeOrderDeliveryAddress(
+      this.data.order.id,
+      this.data.deliveryAddress
+    );
+    this.changeContactNumber(this.data.order.id, this.data.contactNumber);
+    if (this.data.paymentType === 'card') {
+      this.changePaymentType(this.data.order.id, 'CREDIT_CARD');
+    }
+    this.changeOrderStatus(this.data.order.id, 'CONFIRMED');
   }
 
   ngOnInit(): void {}

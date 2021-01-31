@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import { UserService } from '../../user.service';
+import { HttpService } from '../../services/http.service';
+
 import { MatDialog } from '@angular/material/dialog';
 import {
   MatSnackBar,
@@ -10,6 +13,10 @@ import {
 import { OrderviewModalComponent } from './../../components/orderview-modal/orderview-modal.component';
 
 import { Router } from '@angular/router';
+
+import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
+import { takeUntil } from 'rxjs/operators';
+
 import { cloneDeep } from 'lodash';
 
 import * as moment from 'moment';
@@ -19,8 +26,7 @@ import * as moment from 'moment';
   templateUrl: './basket.component.html',
   styleUrls: ['./basket.component.css'],
 })
-export class BasketComponent implements OnInit {
-
+export class BasketComponent extends RxUnsubscribe implements OnInit {
   horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
@@ -29,7 +35,7 @@ export class BasketComponent implements OnInit {
     { value: 'cash', viewValue: 'Cash' },
   ];
 
-  basketItems = JSON.parse(localStorage.getItem('currentBasketItems')) || [];
+  // basketItems = JSON.parse(localStorage.getItem('currentBasketItems')) || [];
 
   contactNumber: string = '';
   deliveryAddress: string = '';
@@ -37,9 +43,22 @@ export class BasketComponent implements OnInit {
   paymentType: string = this.mockCategories[0].value;
   dataError = false;
 
-  constructor(private router: Router, public dialog: MatDialog, private _snackBar: MatSnackBar) {}
+  orderInProgress: any = {};
+  currentUser: any;
 
-  ngOnInit(): void {}
+  constructor(
+    private router: Router,
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar,
+    private httpService: HttpService,
+    private userService: UserService
+  ) {
+    super();
+  }
+
+  ngOnInit(): void {
+    this.getCurrentUser();
+  }
 
   roundNum(x, n) {
     if (isNaN(x) || isNaN(n)) return false;
@@ -51,6 +70,22 @@ export class BasketComponent implements OnInit {
     return out;
   }
 
+  getCurrentUser(): void {
+    this.currentUser = this.userService.getCurrentUser();
+    this.getOrders(this.currentUser.email);
+  }
+
+  getOrders(email): void {
+    this.httpService
+      .getOrdersByEmail(email)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.orderInProgress =
+          data.find((el) => el.orderStatus === 'IN_PROCESS') || {};
+        if (this.orderInProgress.orderItems.length < 1) this.backHome();
+      });
+  }
+
   openSnackBar(message, type) {
     this._snackBar.open(message, 'Cancel', {
       duration: 2000,
@@ -60,24 +95,16 @@ export class BasketComponent implements OnInit {
     });
   }
 
-  addCount(item): void {
-    let isSaved = this.basketItems.findIndex((el) => el.id === item.id);
-    ++this.basketItems[isSaved].count;
-
-    let serial = JSON.stringify(this.basketItems);
-    localStorage.setItem('currentBasketItems', serial);
-  }
-
   minusCount(item): void {
-    let isSaved = this.basketItems.findIndex((el) => el.id === item.id);
-    --this.basketItems[isSaved].count;
-    if (this.basketItems[isSaved].count < 1)
-      this.basketItems.splice(isSaved, 1);
-
-    let serial = JSON.stringify(this.basketItems);
-    localStorage.setItem('currentBasketItems', serial);
-
-    if (this.basketItems.length < 1) this.backHome();
+    this.httpService
+      .deleteOrderItemFromOrder(this.orderInProgress.id, item.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (data) => {
+          this.getOrders(this.currentUser.email);
+        },
+        (err) => console.log(err)
+      );
   }
 
   dateFilter = (d: Date | null): boolean => {
@@ -87,12 +114,14 @@ export class BasketComponent implements OnInit {
   };
 
   getTotalPrice() {
-    let prices = this.basketItems.map((el) => el.price * el.count);
-    if (prices.length > 0) {
-      return prices.reduce(
-        (accumulator, currentValue) => accumulator + currentValue
-      );
-    } else return 0;
+    if (this.orderInProgress.orderItems) {
+      let prices = this.orderInProgress.orderItems.map((el) => el.price);
+      if (prices.length > 0) {
+        return prices.reduce(
+          (accumulator, currentValue) => accumulator + currentValue
+        );
+      } else return 0;
+    }
   }
 
   backHome() {
@@ -107,11 +136,9 @@ export class BasketComponent implements OnInit {
   }
 
   openDialog(): void {
-    const itemNames = this.basketItems.map((el) => el.title).join(', ');
-    const itemsIds = [];
-    this.basketItems.forEach((el) => {
-      for (let i = 0; i < el.count; i++) itemsIds.push(el.id);
-    });
+    const itemNames = this.orderInProgress.orderItems
+      .map((el) => el.title)
+      .join(', ');
     const dialogRef = this.dialog.open(OrderviewModalComponent, {
       width: '350px',
       data: {
@@ -121,15 +148,14 @@ export class BasketComponent implements OnInit {
         deliveryDate: this.deliveryDate,
         paymentType: this.paymentType,
         totalPrice: this.getTotalPrice(),
-        itemsIds: itemsIds,
-        screen: "BASKET",
-        successNotify: ()=>{
+        screen: 'BASKET',
+        order: this.orderInProgress,
+        successNotify: () => {
           this.openSnackBar('Success!', 'alert-success');
         },
-        errorNotify: ()=>{
-          this.openSnackBar('Something goes wrong!', 'alert-error')
-        }
-
+        errorNotify: () => {
+          this.openSnackBar('Something goes wrong!', 'alert-error');
+        },
       },
     });
   }

@@ -1,15 +1,13 @@
 <div class="mainContainer">
   <h1 class="welcomeText">Hi, {{ currentUser.name }}!</h1>
-  <button class="burgerBtn" mat-button [matMenuTriggerFor]="menu">Menu</button>
+  <button *ngIf="orderInProgress.id" class="burgerBtn" mat-button [matMenuTriggerFor]="menu">
+    <span>Menu</span>
+    <div class="countCircle" *ngIf="orderInProgress.orderItems.length > 0">{{orderInProgress.orderItems.length}}</div>
+  </button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="viewBasket()">
-      <span *ngIf="basketItems.length < 1">Basket</span>
-      <span
-        *ngIf="basketItems.length > 0"
-        [matBadge]="basketItems.length"
-        matBadgeOverlap="false"
-        >Basket</span
-      >
+    <button mat-menu-item (click)="viewBasket()" *ngIf="orderInProgress.id">
+      <span>Basket</span>
+      <div class="countCircle" *ngIf="orderInProgress.orderItems.length > 0">{{orderInProgress.orderItems.length}}</div>
     </button>
     <button mat-menu-item (click)="viewOrders()">Orders</button>
     <button mat-menu-item (click)="openDialog()">Log out</button>
@@ -82,10 +80,10 @@
     <p>Price: ${{ roundNum(offer.price, 2) }}</p>
     <div class="rowed">
       <button mat-stroked-button (click)="addCount(offer)">+</button>
-      <p class="countText">
+      <!-- <p class="countText">
         {{ findCurrentCount(offer) }}
       </p>
-      <button mat-stroked-button (click)="minusCount(offer)">-</button>
+      <button mat-stroked-button (click)="minusCount(offer)">-</button> -->
     </div>
   </mat-card>
 </div>

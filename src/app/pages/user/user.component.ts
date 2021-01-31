@@ -39,7 +39,11 @@ export class UserComponent extends RxUnsubscribe implements OnInit {
 
   mockOffers = [];
 
+  currentOrders: any;
+
   visibleOffers = [];
+
+  orderInProgress: any = {};
 
   selectedCategory: string = 'all';
   minPrice: number = 0;
@@ -64,6 +68,14 @@ export class UserComponent extends RxUnsubscribe implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
+    this.getCurrentUser();
+    this.getCategories();
+    this.getOffers();
+    this.getOrders(true);
+    this.getUsers();
+  }
+
+  getCategories() {
     this.httpService
       .getCategories()
       .pipe(takeUntil(this.destroy$))
@@ -79,7 +91,9 @@ export class UserComponent extends RxUnsubscribe implements OnInit {
           ...categories,
         ];
       });
+  }
 
+  getOffers() {
     this.httpService
       .getOffers()
       .pipe(takeUntil(this.destroy$))
@@ -93,12 +107,41 @@ export class UserComponent extends RxUnsubscribe implements OnInit {
         let prices = data.map((el) => el.price);
         this.minPrice = Math.min(...prices);
         this.maxPrice = Math.max(...prices);
+      });
+  }
+
+  createOrder(email) {
+    let newOrder = {
+      offers: [],
+      email: email,
+    };
+    this.httpService
+      .createOrder(newOrder)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (data) => {
+          this.orderInProgress = data;
+        },
+        (err) => console.log(err)
+      );
+  }
+
+  getOrders(loading = false): void {
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.httpService
+      .getOrdersByEmail(currentUser.email)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.currentOrders = data;
+        let orderInProgress =
+          data.find((el) => el.orderStatus === 'IN_PROCESS') || {};
+        if (loading && !orderInProgress.id) {
+          this.createOrder(currentUser.email);
+        } else this.orderInProgress = orderInProgress;
         setTimeout(() => {
           this.loading = false;
         }, 500);
       });
-    this.getCurrentUser();
-    this.getUsers();
   }
 
   roundNum(x, n) {
@@ -133,7 +176,7 @@ export class UserComponent extends RxUnsubscribe implements OnInit {
   }
 
   viewBasket() {
-    if (this.basketItems.length < 1) return;
+    if (this.orderInProgress.orderItems.length < 1) return;
     this.router.navigate(['user/basket']);
   }
 
@@ -150,40 +193,17 @@ export class UserComponent extends RxUnsubscribe implements OnInit {
     this.currentUser = this.userService.getCurrentUser();
   }
 
-  findCurrentCount(item) {
-    let savedItem = this.basketItems.find((el) => el.id === item.id) || {};
-    if (savedItem.id) {
-      return savedItem.count;
-    } else return 0;
-  }
-
   addCount(item): void {
-    let isSaved = this.basketItems.findIndex((el) => el.id === item.id);
-    let newItem = cloneDeep(item);
-    newItem.count = 1;
-    if (isSaved < 0) {
-      this.basketItems.push(newItem);
-    } else ++this.basketItems[isSaved].count;
-
-    let serial = JSON.stringify(this.basketItems);
-    localStorage.setItem('currentBasketItems', serial);
-  }
-
-  minusCount(item): void {
-    let savedItem = this.basketItems.find((el) => el.id === item.id) || {};
-    let isSaved = this.basketItems.findIndex((el) => el.id === item.id);
-    let newItem = cloneDeep(item);
-    newItem.count = 1;
-    if (!savedItem.id || savedItem.count < 1) {
-      return;
-    } else {
-      --this.basketItems[isSaved].count;
-      if (this.basketItems[isSaved].count < 1)
-        this.basketItems.splice(isSaved, 1);
-    }
-
-    let serial = JSON.stringify(this.basketItems);
-    localStorage.setItem('currentBasketItems', serial);
+    this.httpService
+      .addOfferToOrder(this.orderInProgress.id, item.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        () => {
+          this.openSnackBar('Order added!', 'alert-success');
+          this.getOrders();
+        },
+        () => this.openSnackBar('Something goes wrong!', 'alert-error')
+      );
   }
 
   filterPrice(arr) {
@@ -239,9 +259,6 @@ export class UserComponent extends RxUnsubscribe implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(AskModalComponent, {
-      width: '250px',
-      // data: {name: this.name, animal: this.animal}
-    });
+    this.dialog.open(AskModalComponent, { width: '250px' });
   }
 }

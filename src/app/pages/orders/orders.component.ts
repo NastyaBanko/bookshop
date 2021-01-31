@@ -36,7 +36,9 @@ export class OrdersComponent extends RxUnsubscribe implements OnInit {
   }
 
   getItemNames(order): string {
-    return order.orderItems.map((el) => el.title).join(', ');
+    if (order.orderItems.length > 0) {
+      return order.orderItems.map((el) => el.title).join(', ');
+    } else return 'unknown';
   }
 
   roundNum(x, n) {
@@ -50,10 +52,12 @@ export class OrdersComponent extends RxUnsubscribe implements OnInit {
   }
 
   getTotalPrice(order) {
-    let prices = order.orderItems.map((el) => el.price);
-    return prices.reduce(
-      (accumulator, currentValue) => accumulator + currentValue
-    );
+    if (order.orderItems.length > 0) {
+      let prices = order.orderItems.map((el) => el.price);
+      return prices.reduce(
+        (accumulator, currentValue) => accumulator + currentValue
+      );
+    } else return 0;
   }
 
   getOrders(email): void {
@@ -61,15 +65,11 @@ export class OrdersComponent extends RxUnsubscribe implements OnInit {
       .getOrdersByEmail(email)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
-        let ordersInProc =
-          JSON.parse(localStorage.getItem('currentBasketItems')) || [];
-        let orderInProcess = {
-          orderItems: [...ordersInProc],
-          orderStatus: 'IN_PROCESS',
-        };
+        console.log(data, 'ORDERS');
         this.orders = data;
-        if (ordersInProc.length > 0) this.orders.push(orderInProcess);
-        setTimeout(()=>{this.loading = false}, 500)
+        setTimeout(() => {
+          this.loading = false;
+        }, 500);
       });
   }
 
