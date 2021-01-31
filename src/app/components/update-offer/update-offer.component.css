@@ -22,7 +22,7 @@
 }
 
 .imageWrapper {
-  display: inline-block;
+  margin: 20px auto;
   height: 150px;
   width: 200px;
   padding: 5px;
@@ -37,4 +37,35 @@
 
 .fieldContainer {
   display: block;
+}
+
+.rowed {
+  display: flex;
+  justify-content: center;
+}
+
+.offerCard {
+  width: 300px;
+  margin: 10px;
+}
+.nameText {
+  text-align: center;
+  font-size: 20px;
+}
+.descriptionText {
+  text-align: start;
+  font-size: 13px;
+  color: gray;
+}
+.rowedBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.marginRight {
+  margin-right: 10px;
+}
+
+.marginVertical{
+  margin: 20px 0px;
 }

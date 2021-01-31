@@ -224,7 +224,7 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
 
   openCreateModal(): void {
     const dialogRef = this.dialog.open(CreateOfferModalComponent, {
-      width: '450px',
+      // width: '450px',
       data: {
         mockCategories: this.mockCategories.filter((el) => el.value !== 'all'),
         categories: this.categories,
@@ -246,7 +246,6 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
 
   openUpdateModal(offer): void {
     const dialogRef = this.dialog.open(UpdateOfferComponent, {
-      width: '450px',
       data: {
         offer: offer,
         mockCategories: this.mockCategories.filter((el) => el.value !== 'all'),

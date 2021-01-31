@@ -36,8 +36,6 @@ export class UpdateOfferComponent extends RxUnsubscribe implements OnInit {
   price: any = this.data.offer.price;
   isCategoryNew: boolean = false;
   dataError: boolean = false;
-  isPictureShow: boolean = false;
-  pictureError: boolean = false;
 
   mockCategories = this.data.mockCategories;
 
@@ -49,30 +47,14 @@ export class UpdateOfferComponent extends RxUnsubscribe implements OnInit {
     this.isCategoryNew = !this.isCategoryNew;
   }
 
-  checkImgSrc(src) {
-    const img = new Image();
-    img.src = src;
-    img.onload = () => {
-      this.isPictureShow = !this.isPictureShow;
-      this.pictureError = false;
-    };
-    img.onerror = () => {
-      this.isPictureShow = false;
-      this.pictureError = true;
-    };
-  }
-
-  showPicture() {
-    if (this.urlAddress.length > 0) {
-      this.checkImgSrc(this.urlAddress);
-    } else {
-      this.pictureError = true;
-      this.isPictureShow = false;
-    }
-  }
-
-  closePicture() {
-    this.isPictureShow = false;
+  roundNum(x, n) {
+    if (isNaN(x) || isNaN(n)) return false;
+    const result = (+x).toFixed(n).replace('.', ',');
+    const out = result
+      .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+      .split(' ')
+      .join('.');
+    return out;
   }
 
   onUpdate() {

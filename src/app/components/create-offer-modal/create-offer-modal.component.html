@@ -1,92 +1,102 @@
-<div mat-dialog-content>
-  <h1>Create Offer:</h1>
+<div mat-dialog-content class="rowed">
+  <div>
+    <h1>Create Offer:</h1>
+    <mat-form-field class="fieldContainer">
+      <mat-label>Title</mat-label>
+      <textarea
+        matInput
+        cdkTextareaAutosize
+        [(ngModel)]="title"
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="5"
+      ></textarea>
+    </mat-form-field>
 
-  <mat-form-field class="fieldContainer">
-    <mat-label>Title</mat-label>
-    <textarea
-      matInput
-      cdkTextareaAutosize
-      [(ngModel)]="title"
-      #autosize="cdkTextareaAutosize"
-      cdkAutosizeMinRows="1"
-      cdkAutosizeMaxRows="5"
-    ></textarea>
-  </mat-form-field>
+    <mat-form-field class="fieldContainer">
+      <mat-label>Picture url</mat-label>
+      <textarea
+        matInput
+        cdkTextareaAutosize
+        [(ngModel)]="urlAddress"
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="5"
+      ></textarea>
+    </mat-form-field>
 
-  <mat-form-field class="fieldContainer">
-    <mat-label>Picture url</mat-label>
-    <textarea
-      matInput
-      cdkTextareaAutosize
-      [(ngModel)]="urlAddress"
-      (ngModelChange)="closePicture()"
-      #autosize="cdkTextareaAutosize"
-      cdkAutosizeMinRows="1"
-      cdkAutosizeMaxRows="5"
-    ></textarea>
-  </mat-form-field>
+    <mat-form-field *ngIf="!isCategoryNew" appearance="fill">
+      <mat-label>Category</mat-label>
+      <mat-select [(value)]="selectedCategory">
+        <mat-option
+          *ngFor="let option of mockCategories"
+          [value]="option.value"
+        >
+          {{ option.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <p *ngIf="isPictureShow" class="imageWrapper">
-    <img class="bookImage" [src]="urlAddress" />
-  </p>
+    <mat-form-field *ngIf="isCategoryNew" class="fieldContainer">
+      <mat-label>Category</mat-label>
+      <textarea
+        matInput
+        cdkTextareaAutosize
+        [(ngModel)]="selectedCategory"
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="5"
+      ></textarea>
+    </mat-form-field>
 
-  <p class="errorText" *ngIf="pictureError">Check picture url.</p>
-  <button class="button" mat-button (click)="showPicture()">
-    {{ isPictureShow ? "Hide picture" : "Show picture" }}
-  </button>
+    <button class="button" mat-button (click)="addNewCategory()">
+      {{ isCategoryNew ? "Add existing category" : "Add new category" }}
+    </button>
 
-  <mat-form-field *ngIf="!isCategoryNew" appearance="fill">
-    <mat-label>Category</mat-label>
-    <mat-select [(value)]="selectedCategory">
-      <mat-option *ngFor="let option of mockCategories" [value]="option.value">
-        {{ option.viewValue }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <mat-form-field class="fieldContainer">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        cdkTextareaAutosize
+        [(ngModel)]="description"
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="5"
+      ></textarea>
+    </mat-form-field>
 
-  <mat-form-field *ngIf="isCategoryNew" class="fieldContainer">
-    <mat-label>Category</mat-label>
-    <textarea
-      matInput
-      cdkTextareaAutosize
-      [(ngModel)]="selectedCategory"
-      #autosize="cdkTextareaAutosize"
-      cdkAutosizeMinRows="1"
-      cdkAutosizeMaxRows="5"
-    ></textarea>
-  </mat-form-field>
+    <mat-form-field class="fieldContainer">
+      <mat-label>Price, $</mat-label>
+      <textarea
+        type="number"
+        matInput
+        cdkTextareaAutosize
+        [(ngModel)]="price"
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="5"
+        type="number"
+      ></textarea>
+    </mat-form-field>
 
-  <button class="button" mat-button (click)="addNewCategory()">
-    {{ isCategoryNew ? "Add existing category" : "Add new category" }}
-  </button>
-
-  <mat-form-field class="fieldContainer">
-    <mat-label>Description</mat-label>
-    <textarea
-      matInput
-      cdkTextareaAutosize
-      [(ngModel)]="description"
-      #autosize="cdkTextareaAutosize"
-      cdkAutosizeMinRows="1"
-      cdkAutosizeMaxRows="5"
-    ></textarea>
-  </mat-form-field>
-
-  <mat-form-field class="fieldContainer">
-    <mat-label>Price, $</mat-label>
-    <textarea
-      type="number"
-      matInput
-      cdkTextareaAutosize
-      [(ngModel)]="price"
-      #autosize="cdkTextareaAutosize"
-      cdkAutosizeMinRows="1"
-      cdkAutosizeMaxRows="5"
-      type="number"
-    ></textarea>
-  </mat-form-field>
-
-  <p class="errorText" *ngIf="dataError">The entered data is wrong</p>
+    <p class="errorText" *ngIf="dataError">The entered data is wrong</p>
+  </div>
+  <div>
+    <h1>Offer View:</h1>
+    <mat-card class="offerCard">
+      <div class="nameText">{{title ||"unknown" | uppercase }}</div>
+      <div class="imageWrapper">
+        <img class="bookImage" [src]="urlAddress" />
+      </div>
+      <div class="descriptionText">Category: {{selectedCategory||"unknown"}}</div>
+      <div class="descriptionText marginVertical">{{description||"unknown"}}</div>
+      <div class="marginVertical">Price: ${{roundNum(price, 2)||"unknown"}}</div>
+      <div class="rowedBtn">
+        <button class="marginRight" mat-stroked-button>Update Offer</button>
+        <button mat-stroked-button>Delete Offer</button>
+      </div>
+    </mat-card>
+  </div>
 </div>
 <div mat-dialog-actions class="buttonContainer">
   <button mat-button (click)="onNoClick()">Cancel</button>

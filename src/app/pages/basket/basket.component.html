@@ -3,7 +3,7 @@
   <p>Step 1. Order Overview</p>
   <ul class="basketList">
     <li class="basketItem" *ngFor="let item of orderInProgress.orderItems">
-      <p>{{ item.title }}</p>
+      <p>{{ item.title | uppercase }}</p>
       <p>Price: ${{ roundNum(item.price, 2) }}</p>
       <div class="rowed">
         <!-- <button mat-stroked-button (click)="addCount(item)">+</button>
