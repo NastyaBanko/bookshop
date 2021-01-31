@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { User } from '../../user';
-import { UserService } from '../../user.service';
+import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 

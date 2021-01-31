@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
-import { UserService } from '../../user.service';
+import { UserService } from '../../services/user.service';
 import { HttpService } from '../../services/http.service';
 import { faSleigh } from '@fortawesome/free-solid-svg-icons';
 
