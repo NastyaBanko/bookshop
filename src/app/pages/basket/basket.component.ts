@@ -35,15 +35,13 @@ export class BasketComponent extends RxUnsubscribe implements OnInit {
     { value: 'cash', viewValue: 'Cash' },
   ];
 
-  // basketItems = JSON.parse(localStorage.getItem('currentBasketItems')) || [];
-
   contactNumber: string = '';
   deliveryAddress: string = '';
   deliveryDate = moment(new Date()).add(1, 'days').format();
   paymentType: string = this.mockCategories[0].value;
   dataError = false;
 
-  orderInProgress: any = {};
+  orderInProgress: any;
   currentUser: any;
 
   constructor(
@@ -82,7 +80,7 @@ export class BasketComponent extends RxUnsubscribe implements OnInit {
       .subscribe((data) => {
         this.orderInProgress =
           data.find((el) => el.orderStatus === 'IN_PROCESS') || {};
-        if (this.orderInProgress.orderItems.length < 1) this.backHome();
+        if (this.orderInProgress?.orderItems.length < 1) this.backHome();
       });
   }
 
@@ -114,7 +112,7 @@ export class BasketComponent extends RxUnsubscribe implements OnInit {
   };
 
   getTotalPrice() {
-    if (this.orderInProgress.orderItems) {
+    if (this.orderInProgress && this.orderInProgress.orderItems) {
       let prices = this.orderInProgress.orderItems.map((el) => el.price);
       if (prices.length > 0) {
         return prices.reduce(
@@ -136,13 +134,16 @@ export class BasketComponent extends RxUnsubscribe implements OnInit {
   }
 
   openDialog(): void {
-    const itemNames = this.orderInProgress.orderItems
-      .map((el) => el.title)
-      .join(', ');
-    const dialogRef = this.dialog.open(OrderviewModalComponent, {
+    let itemNames = null;
+    if (this.orderInProgress) {
+      itemNames = this.orderInProgress.orderItems
+        .map((el) => el.title)
+        .join(', ');
+    }
+    this.dialog.open(OrderviewModalComponent, {
       width: '350px',
       data: {
-        items: itemNames,
+        items: itemNames || '',
         contactNumber: this.contactNumber,
         deliveryAddress: this.deliveryAddress,
         deliveryDate: this.deliveryDate,

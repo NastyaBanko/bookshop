@@ -1,13 +1,9 @@
 import { Component } from '@angular/core';
 
 import { UserService } from './services/user.service';
-import { HttpService } from './services/http.service';
-import { User } from './user';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 
 import { RxUnsubscribe } from './classes/rx-unsubscribe';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -16,15 +12,10 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class AppComponent extends RxUnsubscribe {
   title = 'hw7-login';
-  savedUsers: any;
-  currentCategories: any;
-  test: any;
 
   constructor(
     private userService: UserService,
-    private httpService: HttpService,
     private router: Router,
-    private http: HttpClient
   ) {
     super();
   }
@@ -41,38 +32,6 @@ export class AppComponent extends RxUnsubscribe {
         currentUser.email,
         currentUser.password
       );
-      if (currentUser.role === 'USER') {
-        // this.getOrders(currentUser.email);
-      }
     }
   }
-
-  // createOrder(email) {
-  //   let newOrder = {
-  //     offers: [],
-  //     email: email,
-  //   };
-  //   this.httpService
-  //     .createOrder(newOrder)
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe(
-  //       (data) => {
-  //         console.log(data, 'newOrder');
-  //       },
-  //       (err) => console.log(err)
-  //     );
-  // }
-
-  // getOrders(email): void {
-  //   this.httpService
-  //     .getOrdersByEmail(email)
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe((data) => {
-  //       console.log(data, 'ORDERS');
-  //       let orderInProgress =
-  //         data.find((el) => el.orderStatus === 'IN_PROCESS') || {};
-  //       console.log(orderInProgress, 'orderInProgress');
-  //       if (!orderInProgress.id) this.createOrder(email);
-  //     });
-  // }
 }

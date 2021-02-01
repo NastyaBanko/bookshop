@@ -1,15 +1,11 @@
 <div class="basketContainer">
   <h1>Your Basket</h1>
   <p>Step 1. Order Overview</p>
-  <ul class="basketList">
+  <ul class="basketList" *ngIf="orderInProgress">
     <li class="basketItem" *ngFor="let item of orderInProgress.orderItems">
       <p>{{ item.title | uppercase }}</p>
       <p>Price: ${{ roundNum(item.price, 2) }}</p>
       <div class="rowed">
-        <!-- <button mat-stroked-button (click)="addCount(item)">+</button>
-        <p class="countText">
-          {{ item.count }}
-        </p> -->
         <button mat-stroked-button (click)="minusCount(item)">-</button>
       </div>
     </li>

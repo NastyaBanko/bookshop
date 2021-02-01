@@ -1,16 +1,15 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-// import {OfferModel} from '../../../models/offer.model';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { OfferModel } from '../models/offerModel';
+import { HttpClient } from '@angular/common/http';
 // import {CategoryModel} from '../../../models/category.model';
 // import {OrderModel} from '../../../models/order.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HttpService {
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   getCategories(): Observable<any[]> {
     return this.http.get<any[]>('/catalog/api/v1/categories');
@@ -24,21 +23,24 @@ export class HttpService {
     return this.http.get<any>('/catalog/api/v1/categories/name/' + name);
   }
 
-  getOffers(): Observable<any[]> {
-    return this.http.get<any[]>('/catalog/api/v1/offers');
+  getOffers(): Observable<OfferModel[]> {
+    return this.http.get<OfferModel[]>('/catalog/api/v1/offers');
   }
 
-  saveOffer(offer: any): Observable<any> {
-    return this.http.post<any>('/catalog/api/v1/offers', offer);
+  saveOffer(offer: any): Observable<OfferModel> {
+    return this.http.post<OfferModel>('/catalog/api/v1/offers', offer);
   }
-  saveCategory(category: any): Observable<any> {
-    return this.http.post<any>('/catalog/api/v1/categories', category);
+  saveCategory(category: any): Observable<OfferModel> {
+    return this.http.post<OfferModel>('/catalog/api/v1/categories', category);
   }
-  updateOffer(offer: any): Observable<any> {
-    return this.http.put<any>('/catalog/api/v1/offers', offer);
+  updateOffer(offer: any): Observable<OfferModel> {
+    return this.http.put<OfferModel>('/catalog/api/v1/offers', offer);
   }
   updateOfferCategory(id: number, category: any): Observable<any> {
-    return this.http.put<any>('/catalog/api/v1/offers/' + id + '/category', category);
+    return this.http.put<any>(
+      '/catalog/api/v1/offers/' + id + '/category',
+      category
+    );
   }
 
   updateCategoryName(category: any): Observable<any> {
@@ -53,7 +55,7 @@ export class HttpService {
     return this.http.delete<void>('/catalog/api/v1/categories/' + id);
   }
 
-  createOrder(order: {offers: number[], email: string}): Observable<any> {
+  createOrder(order: { offers: number[]; email: string }): Observable<any> {
     return this.http.post<any>('/processor/api/v1/processor/orders', order);
   }
 
@@ -62,28 +64,49 @@ export class HttpService {
   }
 
   addOfferToOrder(orderId: number, offerId: number): Observable<any> {
-    return this.http.put<any>(`/processor/api/v1/processor/orders/${orderId}/add?offerId=${offerId}`, null);
+    return this.http.put<any>(
+      `/processor/api/v1/processor/orders/${orderId}/add?offerId=${offerId}`,
+      null
+    );
   }
 
-  deleteOrderItemFromOrder(orderId: number, orderItemId: number): Observable<any> {
-    return this.http.put<any>(`/processor/api/v1/processor/orders/${orderId}/delete?orderItemId=${orderItemId}`, null);
+  deleteOrderItemFromOrder(
+    orderId: number,
+    orderItemId: number
+  ): Observable<any> {
+    return this.http.put<any>(
+      `/processor/api/v1/processor/orders/${orderId}/delete?orderItemId=${orderItemId}`,
+      null
+    );
   }
 
   getOrderById(orderId: number): Observable<any> {
     return this.http.get<any>(`/processor/api/v1/processor/orders/${orderId}`);
   }
   changeOrderStatus(orderId: number, orderStatus: string): Observable<any> {
-    return this.http.put<any>(`/processor/api/v1/processor/orders/${orderId}/order-status`, orderStatus);
+    return this.http.put<any>(
+      `/processor/api/v1/processor/orders/${orderId}/order-status`,
+      orderStatus
+    );
   }
 
   changeDeliveryAddress(orderId: number, address: string): Observable<any> {
-    return this.http.put<any>(`/processor/api/v1/processor/orders/${orderId}/address`, address);
+    return this.http.put<any>(
+      `/processor/api/v1/processor/orders/${orderId}/address`,
+      address
+    );
   }
 
   changeContactNumber(orderId: number, contactNumber: string): Observable<any> {
-    return this.http.put<any>(`/processor/api/v1/processor/orders/${orderId}/contact-number`, contactNumber);
+    return this.http.put<any>(
+      `/processor/api/v1/processor/orders/${orderId}/contact-number`,
+      contactNumber
+    );
   }
   changePaymentType(orderId: number, paymentType: string): Observable<any> {
-    return this.http.put<any>(`/processor/api/v1/processor/orders/${orderId}/payment-type`, paymentType);
+    return this.http.put<any>(
+      `/processor/api/v1/processor/orders/${orderId}/payment-type`,
+      paymentType
+    );
   }
 }

@@ -9,8 +9,6 @@ import {
 
 import { UserService } from '../../services/user.service';
 import { HttpService } from '../../services/http.service';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 
 import { AskModalComponent } from './../../components/ask-modal/ask-modal.component';
 import { UpdateOfferComponent } from './../../components/update-offer/update-offer.component';
@@ -20,8 +18,6 @@ import { DeleteCategoryModalComponent } from './../../components/delete-category
 
 import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
 import { takeUntil } from 'rxjs/operators';
-
-import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-admin',
@@ -35,12 +31,7 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
   loading: boolean = false;
 
   currentUser: any;
-
-  currentCategories: any;
-  savedUsers: any;
-
   mockCategories = [];
-
   mockOffers = [];
 
   visibleOffers = [];
@@ -49,17 +40,12 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
   minPrice: number = 0;
   maxPrice: number = 100;
   searchName: string = '';
-  isAlphabetically = false;
-
-  basketItems = JSON.parse(localStorage.getItem('currentBasketItems')) || [];
-
+  isAlphabetically: boolean = false;
   categories = [];
 
   constructor(
     private userService: UserService,
     private httpService: HttpService,
-    private router: Router,
-    private http: HttpClient,
     public dialog: MatDialog,
     private _snackBar: MatSnackBar
   ) {
@@ -71,16 +57,6 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
     this.getCurrentCategories();
     this.getCurrentOffers();
     this.getCurrentUser();
-    this.getUsers();
-  }
-
-  getUsers(): void {
-    this.userService
-      .getUsers()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.savedUsers = data;
-      });
   }
 
   roundNum(x, n) {
@@ -214,7 +190,7 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
       .deleteOffer(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        (data) => {
+        () => {
           this.openSnackBar('Success!', 'alert-success');
           this.getCurrentOffers();
         },
@@ -223,8 +199,7 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
   }
 
   openCreateModal(): void {
-    const dialogRef = this.dialog.open(CreateOfferModalComponent, {
-      // width: '450px',
+    this.dialog.open(CreateOfferModalComponent, {
       data: {
         mockCategories: this.mockCategories.filter((el) => el.value !== 'all'),
         categories: this.categories,
@@ -245,7 +220,7 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
   }
 
   openUpdateModal(offer): void {
-    const dialogRef = this.dialog.open(UpdateOfferComponent, {
+    this.dialog.open(UpdateOfferComponent, {
       data: {
         offer: offer,
         mockCategories: this.mockCategories.filter((el) => el.value !== 'all'),
@@ -267,7 +242,7 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
   }
 
   openDeleteModal(id): void {
-    const dialogRef = this.dialog.open(DeleteOfferModalComponent, {
+    this.dialog.open(DeleteOfferModalComponent, {
       width: '350px',
       data: {
         deleteOffer: () => {
@@ -278,7 +253,7 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
   }
 
   openDeleteCategoryModal(): void {
-    const dialogRef = this.dialog.open(DeleteCategoryModalComponent, {
+    this.dialog.open(DeleteCategoryModalComponent, {
       width: '350px',
       data: {
         categories: this.categories,

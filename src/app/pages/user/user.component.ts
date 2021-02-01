@@ -4,13 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '../../services/user.service';
 import { HttpService } from '../../services/http.service';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 
 import { AskModalComponent } from './../../components/ask-modal/ask-modal.component';
-
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
-
-import { cloneDeep } from 'lodash';
 
 import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
 import { takeUntil } from 'rxjs/operators';
@@ -33,33 +28,21 @@ export class UserComponent extends RxUnsubscribe implements OnInit {
   loading: boolean = false;
   currentUser: any;
   currentCategories: any;
-  savedUsers: any;
-
   mockCategories = [];
-
   mockOffers = [];
-
   currentOrders: any;
-
   visibleOffers = [];
-
   orderInProgress: any = {};
-
   selectedCategory: string = 'all';
   minPrice: number = 0;
   maxPrice: number = 100;
   searchName: string = '';
-  isAlphabetically = false;
-
-  basketItems = JSON.parse(localStorage.getItem('currentBasketItems')) || [];
-
-  faShoppingCart = faShoppingCart;
+  isAlphabetically: boolean = false;
 
   constructor(
     private userService: UserService,
     private httpService: HttpService,
     private router: Router,
-    private http: HttpClient,
     public dialog: MatDialog,
     private _snackBar: MatSnackBar
   ) {
@@ -72,7 +55,6 @@ export class UserComponent extends RxUnsubscribe implements OnInit {
     this.getCategories();
     this.getOffers();
     this.getOrders(true);
-    this.getUsers();
   }
 
   getCategories() {
@@ -178,15 +160,6 @@ export class UserComponent extends RxUnsubscribe implements OnInit {
   viewBasket() {
     if (this.orderInProgress.orderItems.length < 1) return;
     this.router.navigate(['user/basket']);
-  }
-
-  getUsers(): void {
-    this.userService
-      .getUsers()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.savedUsers = data;
-      });
   }
 
   getCurrentUser(): void {

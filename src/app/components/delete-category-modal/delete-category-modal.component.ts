@@ -32,7 +32,6 @@ export class DeleteCategoryModalComponent
 
   categories = this.data.categories.slice();
   serverCategories: any;
-
   dataError: boolean = false;
 
   onNoClick(): void {

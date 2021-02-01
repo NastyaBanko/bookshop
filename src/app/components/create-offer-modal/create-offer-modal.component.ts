@@ -4,8 +4,6 @@ import { Router } from '@angular/router';
 
 import { UserService } from '../../services/user.service';
 import { HttpService } from '../../services/http.service';
-import { faSleigh } from '@fortawesome/free-solid-svg-icons';
-import { CurrencyPipe } from '@angular/common';
 
 import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
 import { takeUntil } from 'rxjs/operators';
@@ -22,19 +20,17 @@ export interface DialogData {
 export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<CreateOfferModalComponent>,
-    private userService: UserService,
-    private router: Router,
     private httpService: HttpService,
     @Inject(MAT_DIALOG_DATA) public data
   ) {
     super();
   }
 
-  title: any = '';
-  urlAddress: any = '';
-  selectedCategory: any = this.data.mockCategories[0].value;
-  description: any = '';
-  price: any = '';
+  title: string = '';
+  urlAddress: string = '';
+  selectedCategory: string = this.data.mockCategories[0].value;
+  description: string = '';
+  price: string = '';
   isCategoryNew: boolean = false;
   dataError: boolean = false;
 
@@ -44,10 +40,10 @@ export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
     this.dialogRef.close();
   }
 
-  addNewCategory() {
+  addNewCategory(): void {
     this.isCategoryNew = !this.isCategoryNew;
   }
- 
+
   roundNum(x, n) {
     if (isNaN(x) || isNaN(n)) return false;
     const result = (+x).toFixed(n).replace('.', ',');
@@ -64,7 +60,7 @@ export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
       this.urlAddress.length < 1 ||
       this.selectedCategory.length < 1 ||
       this.description.length < 1 ||
-      this.price < 0 ||
+      +this.price < 0 ||
       !this.price ||
       !+this.price
     ) {

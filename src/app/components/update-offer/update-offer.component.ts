@@ -29,10 +29,10 @@ export class UpdateOfferComponent extends RxUnsubscribe implements OnInit {
     super();
   }
 
-  title: any = this.data.offer.title;
-  urlAddress: any = this.data.offer.photo;
-  selectedCategory: any = this.data.offer.category.category;
-  description: any = this.data.offer.description;
+  title: string = this.data.offer.title;
+  urlAddress: string = this.data.offer.photo;
+  selectedCategory: string = this.data.offer.category.category;
+  description: string = this.data.offer.description;
   price: any = this.data.offer.price;
   isCategoryNew: boolean = false;
   dataError: boolean = false;
@@ -63,7 +63,7 @@ export class UpdateOfferComponent extends RxUnsubscribe implements OnInit {
       this.urlAddress.length < 1 ||
       this.selectedCategory.length < 1 ||
       this.description.length < 1 ||
-      this.price < 0 ||
+      +this.price < 0 ||
       !this.price ||
       !+this.price
     ) {
