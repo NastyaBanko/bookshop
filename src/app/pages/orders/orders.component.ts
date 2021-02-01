@@ -41,16 +41,6 @@ export class OrdersComponent extends RxUnsubscribe implements OnInit {
     } else return 'unknown';
   }
 
-  roundNum(x, n) {
-    if (isNaN(x) || isNaN(n)) return false;
-    const result = (+x).toFixed(n).replace('.', ',');
-    const out = result
-      .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
-      .split(' ')
-      .join('.');
-    return out;
-  }
-
   getTotalPrice(order) {
     if (order.orderItems.length > 0) {
       let prices = order.orderItems.map((el) => el.price);

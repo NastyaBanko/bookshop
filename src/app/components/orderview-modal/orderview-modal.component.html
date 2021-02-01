@@ -16,15 +16,15 @@
   </div>
   <div class="textContainer">
     <p class="textSection">Delivery date:</p>
-    {{ deliveryDate || "unknown"  }}
+    {{ deliveryDate || "unknown" }}
   </div>
   <div class="textContainer">
     <p class="textSection">Payment Type:</p>
-    {{ data.paymentType || "unknown"  }}
+    {{ data.paymentType || "unknown" }}
   </div>
   <div class="textContainer">
     <p class="textSection">Total Price:</p>
-    ${{ roundNum(data.totalPrice, 2) }}
+    ${{ data.totalPrice | roundNum: 2 }}
   </div>
 </div>
 <div mat-dialog-actions class="buttonContainer">

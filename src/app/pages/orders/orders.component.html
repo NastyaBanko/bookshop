@@ -10,7 +10,7 @@
     >
       <div>
         <p>{{ getItemNames(item) }}</p>
-        <p>TOTAL PRICE: ${{ roundNum(getTotalPrice(item), 2) }}</p>
+        <p>TOTAL PRICE: ${{ getTotalPrice(item) | roundNum: 2 }}</p>
       </div>
       <span
         *ngIf="item.orderStatus === 'IN_PROCESS'"

@@ -40,16 +40,6 @@ export class OrderviewModalComponent extends RxUnsubscribe implements OnInit {
     this.dialogRef.close();
   }
 
-  roundNum(x, n) {
-    if (isNaN(x) || isNaN(n)) return false;
-    const result = (+x).toFixed(n).replace('.', ',');
-    const out = result
-      .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
-      .split(' ')
-      .join('.');
-    return out;
-  }
-
   changeOrderStatus(id, status) {
     this.httpService
       .changeOrderStatus(id, status)

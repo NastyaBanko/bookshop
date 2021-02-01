@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { User } from '../../user';
+import { User } from '../../models/userModel';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';

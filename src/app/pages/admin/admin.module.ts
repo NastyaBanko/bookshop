@@ -15,6 +15,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 
+import { ApplicationPipesModule } from './../../pipes/ApplicationPipesModule';
 
 @NgModule({
   declarations: [AdminComponent],
@@ -31,6 +32,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatCardModule,
     MatBadgeModule,
     MatSnackBarModule,
+    ApplicationPipesModule,
   ]
 })
 export class AdminModule { }

@@ -1,0 +1,16 @@
+<mat-form-field class="fieldContainer">
+  <mat-label>{{ inputTitle }}</mat-label>
+  <textarea
+    #newItem
+    matInput
+    cdkTextareaAutosize
+    [(ngModel)]="someText"
+    (ngModelChange)="changeInput(newItem.value)"
+    #autosize="cdkTextareaAutosize"
+    cdkAutosizeMinRows="1"
+    cdkAutosizeMaxRows="5"
+  ></textarea>
+</mat-form-field>
+
+<!-- <p>{{inputTitle}}</p>
+<input [(ngModel)]="someText" type="text"/> -->

@@ -5,8 +5,8 @@ import { OrdersRoutingModule } from './orders-routing.module';
 import { OrdersComponent } from './orders.component';
 
 import { MatButtonModule } from '@angular/material/button';
-// import {MatCardModule} from '@angular/material/card';
 
+import { ApplicationPipesModule } from './../../pipes/ApplicationPipesModule';
 
 @NgModule({
   declarations: [OrdersComponent],
@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     OrdersRoutingModule,
     MatButtonModule,
-    // MatCardModule,
+    ApplicationPipesModule,
   ]
 })
 export class OrdersModule { }

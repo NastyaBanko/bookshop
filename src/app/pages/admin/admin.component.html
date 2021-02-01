@@ -76,7 +76,7 @@
     </p>
     <p class="descriptionText">Category: {{ offer.category.category }}</p>
     <p class="descriptionText">{{ offer.description }}</p>
-    <p>Price: ${{ roundNum(offer.price, 2) }}</p>
+    <p>Price: ${{ offer.price|roundNum:2 }}</p>
     <div class="rowed">
       <button
         class="marginRight"

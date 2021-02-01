@@ -126,16 +126,6 @@ export class UserComponent extends RxUnsubscribe implements OnInit {
       });
   }
 
-  roundNum(x, n) {
-    if (isNaN(x) || isNaN(n)) return false;
-    const result = (+x).toFixed(n).replace('.', ',');
-    const out = result
-      .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
-      .split(' ')
-      .join('.');
-    return out;
-  }
-
   openSnackBar(message, type) {
     this._snackBar.open(message, 'Cancel', {
       duration: 2000,

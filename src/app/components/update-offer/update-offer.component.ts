@@ -1,13 +1,14 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 import { UserService } from '../../services/user.service';
 import { HttpService } from '../../services/http.service';
-import { faSleigh } from '@fortawesome/free-solid-svg-icons';
 
 import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
 import { takeUntil } from 'rxjs/operators';
+
+import { InputComponent } from './../input/input.component';
 
 export interface DialogData {
   info: string;
@@ -29,6 +30,8 @@ export class UpdateOfferComponent extends RxUnsubscribe implements OnInit {
     super();
   }
 
+  @ViewChild(InputComponent) somethingInput: InputComponent;
+
   title: string = this.data.offer.title;
   urlAddress: string = this.data.offer.photo;
   selectedCategory: string = this.data.offer.category.category;
@@ -39,22 +42,16 @@ export class UpdateOfferComponent extends RxUnsubscribe implements OnInit {
 
   mockCategories = this.data.mockCategories;
 
+  onChangedInput(value: string, which: string) {
+    this[which] = value;
+  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   addNewCategory() {
     this.isCategoryNew = !this.isCategoryNew;
-  }
-
-  roundNum(x, n) {
-    if (isNaN(x) || isNaN(n)) return false;
-    const result = (+x).toFixed(n).replace('.', ',');
-    const out = result
-      .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
-      .split(' ')
-      .join('.');
-    return out;
   }
 
   onUpdate() {

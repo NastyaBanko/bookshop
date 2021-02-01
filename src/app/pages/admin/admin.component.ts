@@ -59,16 +59,6 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
     this.getCurrentUser();
   }
 
-  roundNum(x, n) {
-    if (isNaN(x) || isNaN(n)) return false;
-    const result = (+x).toFixed(n).replace('.', ',');
-    const out = result
-      .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
-      .split(' ')
-      .join('.');
-    return out;
-  }
-
   getCurrentCategories() {
     this.httpService
       .getCategories()

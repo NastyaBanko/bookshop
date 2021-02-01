@@ -2,27 +2,32 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { NgModule } from '@angular/core';
 
-import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from '@angular/material/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {
+  ErrorStateMatcher,
+  ShowOnDirtyErrorStateMatcher,
+} from '@angular/material/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatSelectModule} from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 import { AskModalComponent } from './components/ask-modal/ask-modal.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { OrderviewModalComponent } from './components/orderview-modal/orderview-modal.component';
 import { UpdateOfferComponent } from './components/update-offer/update-offer.component';
 import { DeleteOfferModalComponent } from './components/delete-offer-modal/delete-offer-modal.component';
 import { CreateOfferModalComponent } from './components/create-offer-modal/create-offer-modal.component';
 import { DeleteCategoryModalComponent } from './components/delete-category-modal/delete-category-modal.component';
-import {TextFieldModule} from '@angular/cdk/text-field';
-import {MatCardModule} from '@angular/material/card';
+import { TextFieldModule } from '@angular/cdk/text-field';
+import { MatCardModule } from '@angular/material/card';
+import { ApplicationPipesModule } from './pipes/ApplicationPipesModule';
+import { InputComponent } from './components/input/input.component';  
 
 @NgModule({
   declarations: [
@@ -33,6 +38,7 @@ import {MatCardModule} from '@angular/material/card';
     DeleteOfferModalComponent,
     CreateOfferModalComponent,
     DeleteCategoryModalComponent,
+    InputComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,10 +55,12 @@ import {MatCardModule} from '@angular/material/card';
     FormsModule,
     TextFieldModule,
     MatCardModule,
+    ApplicationPipesModule,
   ],
   providers: [
-    {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}, MatDatepickerModule,
+    { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
+    MatDatepickerModule
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

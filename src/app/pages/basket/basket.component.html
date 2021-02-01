@@ -4,7 +4,7 @@
   <ul class="basketList" *ngIf="orderInProgress">
     <li class="basketItem" *ngFor="let item of orderInProgress.orderItems">
       <p>{{ item.title | uppercase }}</p>
-      <p>Price: ${{ roundNum(item.price, 2) }}</p>
+      <p>Price: ${{ item.price | roundNum: 2 }}</p>
       <div class="rowed">
         <button mat-stroked-button (click)="minusCount(item)">-</button>
       </div>
@@ -61,7 +61,7 @@
   <p class="errorText" *ngIf="dataError">The entered data is wrong</p>
   <div>
     <p class="totalPriceView marginRight">
-      Total Price: ${{ roundNum(getTotalPrice(), 2) }}
+      Total Price: ${{ getTotalPrice() | roundNum: 2 }}
     </p>
     <button class="marginRight" mat-stroked-button (click)="backHome()">
       Back Home

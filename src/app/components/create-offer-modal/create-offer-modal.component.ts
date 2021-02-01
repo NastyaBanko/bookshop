@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
@@ -7,6 +7,8 @@ import { HttpService } from '../../services/http.service';
 
 import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
 import { takeUntil } from 'rxjs/operators';
+
+import { InputComponent } from './../input/input.component';
 
 export interface DialogData {
   info: string;
@@ -26,6 +28,8 @@ export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
     super();
   }
 
+  @ViewChild(InputComponent) somethingInput: InputComponent;
+
   title: string = '';
   urlAddress: string = '';
   selectedCategory: string = this.data.mockCategories[0].value;
@@ -36,22 +40,19 @@ export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
 
   mockCategories = this.data.mockCategories;
 
+  ngOnInit(): void {}
+
+  onChangedInput(value: string, which: string) {
+    this[which] = value;
+  }
+
   onNoClick(): void {
+    console.log(this.somethingInput.someText, 'RESULT');
     this.dialogRef.close();
   }
 
   addNewCategory(): void {
     this.isCategoryNew = !this.isCategoryNew;
-  }
-
-  roundNum(x, n) {
-    if (isNaN(x) || isNaN(n)) return false;
-    const result = (+x).toFixed(n).replace('.', ',');
-    const out = result
-      .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
-      .split(' ')
-      .join('.');
-    return out;
   }
 
   onCreate() {
@@ -105,6 +106,4 @@ export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
       };
     }
   }
-
-  ngOnInit(): void {}
 }
