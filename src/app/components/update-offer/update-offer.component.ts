@@ -36,7 +36,7 @@ export class UpdateOfferComponent extends RxUnsubscribe implements OnInit {
   urlAddress: string = this.data.offer.photo;
   selectedCategory: string = this.data.offer.category.category;
   description: string = this.data.offer.description;
-  price: any = this.data.offer.price;
+  price: number = this.data.offer.price;
   isCategoryNew: boolean = false;
   dataError: boolean = false;
 

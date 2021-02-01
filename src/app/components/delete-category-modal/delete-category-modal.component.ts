@@ -8,6 +8,8 @@ import { HttpService } from '../../services/http.service';
 import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
 import { takeUntil } from 'rxjs/operators';
 
+import {CategoryModel} from '../../models/categoryModel';
+
 export interface DialogData {
   info: string;
 }
@@ -31,7 +33,7 @@ export class DeleteCategoryModalComponent
   }
 
   categories = this.data.categories.slice();
-  serverCategories: any;
+  serverCategories: CategoryModel[];
   dataError: boolean = false;
 
   onNoClick(): void {

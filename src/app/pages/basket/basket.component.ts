@@ -21,6 +21,8 @@ import { cloneDeep } from 'lodash';
 
 import * as moment from 'moment';
 
+import {LoggedUser} from '../../models/loggedUserModel';
+
 @Component({
   selector: 'app-basket',
   templateUrl: './basket.component.html',
@@ -42,7 +44,7 @@ export class BasketComponent extends RxUnsubscribe implements OnInit {
   dataError = false;
 
   orderInProgress: any;
-  currentUser: any;
+  currentUser: LoggedUser;
 
   constructor(
     private router: Router,

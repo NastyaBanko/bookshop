@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OfferModel } from '../models/offerModel';
 import { HttpClient } from '@angular/common/http';
-// import {CategoryModel} from '../../../models/category.model';
-// import {OrderModel} from '../../../models/order.model';
+import { CategoryModel } from '../models/categoryModel';
 
 @Injectable({
   providedIn: 'root',
@@ -11,12 +10,12 @@ import { HttpClient } from '@angular/common/http';
 export class HttpService {
   constructor(private http: HttpClient) {}
 
-  getCategories(): Observable<any[]> {
-    return this.http.get<any[]>('/catalog/api/v1/categories');
+  getCategories(): Observable<CategoryModel[]> {
+    return this.http.get<CategoryModel[]>('/catalog/api/v1/categories');
   }
 
-  getCategoryById(id: number): Observable<any> {
-    return this.http.get<any>('/catalog/api/v1/categories/id/' + id);
+  getCategoryById(id: number): Observable<CategoryModel> {
+    return this.http.get<CategoryModel>('/catalog/api/v1/categories/id/' + id);
   }
 
   getCategoryByName(name: string): Observable<any> {
@@ -30,8 +29,11 @@ export class HttpService {
   saveOffer(offer: any): Observable<OfferModel> {
     return this.http.post<OfferModel>('/catalog/api/v1/offers', offer);
   }
-  saveCategory(category: any): Observable<OfferModel> {
-    return this.http.post<OfferModel>('/catalog/api/v1/categories', category);
+  saveCategory(category: any): Observable<CategoryModel> {
+    return this.http.post<CategoryModel>(
+      '/catalog/api/v1/categories',
+      category
+    );
   }
   updateOffer(offer: any): Observable<OfferModel> {
     return this.http.put<OfferModel>('/catalog/api/v1/offers', offer);
@@ -59,7 +61,7 @@ export class HttpService {
     return this.http.post<any>('/processor/api/v1/processor/orders', order);
   }
 
-  getOrdersByEmail(email: any): Observable<any> {
+  getOrdersByEmail(email: string): Observable<any> {
     return this.http.get<any>(`/processor/api/v1/processor/${email}/orders`);
   }
 

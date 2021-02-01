@@ -4,16 +4,21 @@ import { Observable, of, BehaviorSubject } from 'rxjs';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { catchError, map, tap } from 'rxjs/operators';
+import { LoggedUser } from '../models/loggedUserModel';
+import { User } from '../models/userModel';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  loggedIn = {
-    role: '',
-    isLogin: false,
-    name: '',
+  loggedIn: LoggedUser = {
+    age: 100,
     email: '',
+    isLogin: false,
+    login: '',
+    name: '',
     password: '',
+    patronymic: '',
+    role: '',
+    surname: '',
   };
 
   constructor(private http: HttpClient) {}
@@ -22,7 +27,7 @@ export class UserService {
     return this.http.get<any[]>('/shop/api/v1/customers');
   }
 
-  addUser(user: any): Observable<any[]> {
+  addUser(user: User): Observable<any[]> {
     return this.http.post<any[]>('/shop/api/v1/customers', user);
   }
 

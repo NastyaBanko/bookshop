@@ -42,8 +42,6 @@ export class LoginComponent extends RxUnsubscribe implements OnInit {
 
   matcher = new MyErrorStateMatcher();
 
-  currentCategories: any;
-
   constructor(
     private userService: UserService,
     private router: Router,

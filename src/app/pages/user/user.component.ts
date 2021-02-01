@@ -10,6 +10,8 @@ import { AskModalComponent } from './../../components/ask-modal/ask-modal.compon
 import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
 import { takeUntil } from 'rxjs/operators';
 
+import {LoggedUser} from '../../models/loggedUserModel';
+
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
@@ -26,8 +28,7 @@ export class UserComponent extends RxUnsubscribe implements OnInit {
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
   loading: boolean = false;
-  currentUser: any;
-  currentCategories: any;
+  currentUser: LoggedUser;
   mockCategories = [];
   mockOffers = [];
   currentOrders: any;

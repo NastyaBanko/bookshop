@@ -19,6 +19,8 @@ import { DeleteCategoryModalComponent } from './../../components/delete-category
 import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
 import { takeUntil } from 'rxjs/operators';
 
+import {LoggedUser} from '../../models/loggedUserModel';
+
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -30,7 +32,7 @@ export class AdminComponent extends RxUnsubscribe implements OnInit {
 
   loading: boolean = false;
 
-  currentUser: any;
+  currentUser: LoggedUser;
   mockCategories = [];
   mockOffers = [];
 

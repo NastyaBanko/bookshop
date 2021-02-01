@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 import { Injectable } from "@angular/core";
 import { UserService } from '../services/user.service';
 
+import {LoggedUser} from '../models/loggedUserModel';
+
 @Injectable()
 export class LoginGuardService implements CanActivate {
 
@@ -18,7 +20,7 @@ export class LoginGuardService implements CanActivate {
       const expectedRole = route.data.expectedRole;
       return this.userService.isAuthenticated()
       .then(
-        (loginInf: any) => {
+        (loginInf: LoggedUser) => {
           if (loginInf.isLogin && expectedRole === loginInf.role) {
             return true;
           } else {

@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
     name: 'replaceComma'
 })
 export class ReplaceCommaPipe implements PipeTransform {
-  transform(value: number, args?: any): string {  
+  transform(value: number): string {  
     return value.toString().replace(",", ".");
   }
 }
