@@ -47,7 +47,6 @@ export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
   }
 
   onNoClick(): void {
-    console.log(this.somethingInput.someText, 'RESULT');
     this.dialogRef.close();
   }
 

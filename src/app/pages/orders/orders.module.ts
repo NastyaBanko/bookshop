@@ -5,6 +5,7 @@ import { OrdersRoutingModule } from './orders-routing.module';
 import { OrdersComponent } from './orders.component';
 
 import { MatButtonModule } from '@angular/material/button';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import { ApplicationPipesModule } from './../../pipes/ApplicationPipesModule';
 
@@ -15,6 +16,7 @@ import { ApplicationPipesModule } from './../../pipes/ApplicationPipesModule';
     OrdersRoutingModule,
     MatButtonModule,
     ApplicationPipesModule,
+    MatProgressSpinnerModule,
   ]
 })
 export class OrdersModule { }

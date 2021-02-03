@@ -55,7 +55,6 @@ export class OrdersComponent extends RxUnsubscribe implements OnInit {
       .getOrdersByEmail(email)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
-        console.log(data, 'ORDERS');
         this.orders = data;
         setTimeout(() => {
           this.loading = false;

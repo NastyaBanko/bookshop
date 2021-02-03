@@ -52,7 +52,7 @@ export class OrderviewModalComponent extends RxUnsubscribe implements OnInit {
             !this.loadingPaymentType
           ) {
             this.data.successNotify();
-            console.log('change statussss');
+            console.log('change status');
             this.dialogRef.close();
             this.router.navigate(['user']);
           }

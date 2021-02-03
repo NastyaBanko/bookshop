@@ -28,6 +28,9 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatCardModule } from '@angular/material/card';
 import { ApplicationPipesModule } from './pipes/ApplicationPipesModule';
 import { InputComponent } from './components/input/input.component';  
+import {MatIconModule} from '@angular/material/icon';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -56,6 +59,8 @@ import { InputComponent } from './components/input/input.component';
     TextFieldModule,
     MatCardModule,
     ApplicationPipesModule,
+    BrowserAnimationsModule,
+    MatIconModule,
   ],
   providers: [
     { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },

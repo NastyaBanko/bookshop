@@ -1,6 +1,12 @@
 <div class="ordersContainer">
   <h1>Your Orders</h1>
-  <p *ngIf="loading">Loading...</p>
+  <div *ngIf="loading" class="uploader-status">
+    <mat-progress-spinner
+      class="spinner"
+      diameter="50"
+      mode="indeterminate"
+    ></mat-progress-spinner>
+  </div>
   <p *ngIf="orders.length < 1 && !loading">No available orders</p>
   <div class="ordersView" *ngIf="!loading">
     <div

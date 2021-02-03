@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
-import {takeUntil} from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -39,6 +39,7 @@ export class LoginComponent extends RxUnsubscribe implements OnInit {
   loginError: string = '';
 
   userEmail = new FormControl('', [Validators.required, Validators.email]);
+  inputType: string = 'password';
 
   matcher = new MyErrorStateMatcher();
 
@@ -57,11 +58,16 @@ export class LoginComponent extends RxUnsubscribe implements OnInit {
   }
 
   getUsers(): void {
-    this.userService.getUsers().pipe(
-      takeUntil((this.destroy$))
-    ).subscribe((data) => {
-      this.savedUsers = data;
-    });
+    this.userService
+      .getUsers()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.savedUsers = data;
+      });
+  }
+
+  showPassword(): void {
+    this.inputType = this.inputType === 'text' ? 'password' : 'text';
   }
 
   createAccount(): void {
@@ -85,6 +91,10 @@ export class LoginComponent extends RxUnsubscribe implements OnInit {
   }
 
   submit(): void {
+    if (!this.userEmail.value || !this.userPassword) {
+      this.loginError = 'Incorrect username or password.';
+      return;
+    }
     let isSaved = this.savedUsers.find(
       (el) =>
         el.email === this.userEmail.value && el.password === this.userPassword

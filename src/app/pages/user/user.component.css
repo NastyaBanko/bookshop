@@ -97,3 +97,11 @@
   border-radius: 50%;
   text-align: center;
 }
+
+.spinner{
+  margin: 20px auto;
+}
+
+.uploader-status ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
+  stroke: lightblue;
+}

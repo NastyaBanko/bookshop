@@ -50,6 +50,7 @@ export class CreateAccountComponent extends RxUnsubscribe implements OnInit {
   loginError: string = '';
 
   userEmail = new FormControl('', [Validators.required, Validators.email]);
+  inputType: string = 'password';
 
   matcher = new MyErrorStateMatcher();
 
@@ -84,19 +85,51 @@ export class CreateAccountComponent extends RxUnsubscribe implements OnInit {
     });
   }
 
+  showPassword(): void {
+    this.inputType = this.inputType === 'text' ? 'password' : 'text';
+  }
+
   login(): void {
     this.router.navigate(['login']);
   }
 
-  addAccount(): void {
+  validate(userName, userEmail, password) {
+    let errors = [];
     if (
-      this.userName.length < 1 ||
-      (this.userEmail.hasError('email') &&
-        !this.userEmail.hasError('required')) ||
-      this.userPassword.length < 8
+      userName.length < 1 ||
+      (userEmail.hasError('email') && !userEmail.hasError('required')) ||
+      password.length < 1
     ) {
-      this.loginError =
-        'Check entered data. Password should be at least 8 symbols';
+      errors.push('Check entered data.');
+      this.loginError = errors.join('\n');
+      return;
+    }
+    if (password.length < 8) {
+      errors.push('Your password must be at least 8 characters.');
+    }
+    if (password.search(/[a-z]/i) < 0) {
+      errors.push('Your password must contain at least one small letter.');
+    }
+    if (password.search(/[0-9]/) < 0) {
+      errors.push('Your password must contain at least one digit.');
+    }
+    if (password.search(/[!@#$%^&*]/) < 0) {
+      errors.push('Your password must contain at least one symbol.');
+    }
+    if (password.search(/[A-Z]/) < 0) {
+      errors.push('Your password must contain at least one big letter.');
+    }
+    if (errors.length > 0) {
+      this.loginError = errors.join('\n');
+      return false;
+    }
+    this.loginError = '';
+    return true;
+  }
+
+  addAccount(): void {
+    if (!this.validate(this.userName, this.userEmail, this.userPassword)) {
+      return;
     } else {
       let isSaved = this.savedUsers.find(
         (el) => el.email === this.userEmail.value || el.name === this.userName

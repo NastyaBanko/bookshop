@@ -12,6 +12,7 @@ import { CreateAccountComponent } from './create-account.component';
 import { MatButtonModule } from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatIconModule} from '@angular/material/icon';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatButtonModule,
     MatInputModule,
     MatSnackBarModule,
+    MatIconModule,
   ]
 })
 export class CreateAccountModule { }

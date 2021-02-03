@@ -13,19 +13,21 @@ import { RxUnsubscribe } from './classes/rx-unsubscribe';
 export class AppComponent extends RxUnsubscribe {
   title = 'hw7-login';
 
-  constructor(
-    private userService: UserService,
-    private router: Router,
-  ) {
+  constructor(private userService: UserService, private router: Router) {
     super();
   }
 
   ngOnInit(): void {
+    console.log(this.router.url, '>>>');
+    console.log(window.location.pathname.slice(1));
     let currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
     if (currentUser.email) {
       if (currentUser.role === 'ADMIN') {
         this.router.navigate(['admin']);
-      } else this.router.navigate(['user']);
+      } else {
+        this.router.navigate(['user']);
+        // this.router.navigate([window.location.pathname.slice(1)])
+      }
       this.userService.login(
         currentUser.role,
         currentUser.name,

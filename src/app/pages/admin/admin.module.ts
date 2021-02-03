@@ -7,13 +7,14 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin.component';
 
 import { MatButtonModule } from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {MatCardModule} from '@angular/material/card';
-import {MatBadgeModule} from '@angular/material/badge';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatCardModule } from '@angular/material/card';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { ApplicationPipesModule } from './../../pipes/ApplicationPipesModule';
 
@@ -33,6 +34,7 @@ import { ApplicationPipesModule } from './../../pipes/ApplicationPipesModule';
     MatBadgeModule,
     MatSnackBarModule,
     ApplicationPipesModule,
-  ]
+    MatProgressSpinnerModule,
+  ],
 })
-export class AdminModule { }
+export class AdminModule {}

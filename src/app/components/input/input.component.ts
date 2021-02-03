@@ -14,8 +14,12 @@ export class InputComponent implements OnInit {
   someText: string = "";
 
   changeInput(newItem:string) {
-    console.log(newItem)
     this.onChangeInput.emit(newItem);
+  }
+
+  clearString(newItem: string): void{
+    this.someText = "";
+    this.changeInput(newItem);
   }
 
   constructor() { }

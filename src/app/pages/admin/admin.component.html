@@ -65,7 +65,13 @@
 
 <div class="warningText">
   <p *ngIf="visibleOffers.length < 1 && !loading">No available offers</p>
-  <p *ngIf="loading">Loading...</p>
+  <div *ngIf="loading" class="uploader-status">
+    <mat-progress-spinner
+      class="spinner"
+      diameter="50"
+      mode="indeterminate"
+    ></mat-progress-spinner>
+  </div>
 </div>
 
 <div *ngIf="!loading" class="offersContainer">
@@ -76,7 +82,7 @@
     </p>
     <p class="descriptionText">Category: {{ offer.category.category }}</p>
     <p class="descriptionText">{{ offer.description }}</p>
-    <p>Price: ${{ offer.price|roundNum:2 }}</p>
+    <p>Price: ${{ offer.price | roundNum: 2 }}</p>
     <div class="rowed">
       <button
         class="marginRight"

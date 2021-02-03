@@ -1,51 +1,62 @@
-.ordersContainer{
-    padding: 20px;
-    text-align: center;
+.ordersContainer {
+  padding: 20px;
+  text-align: center;
 }
 
-.orderView{
-    border: solid 1px rgb(216, 215, 215);
-    border-radius: 5px;
-    margin: 10px;
-    padding: 10px 15px;
-    width: 260px;
-    cursor: pointer;
-    transition: transform 0.5s; 
-    background-color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.orderView {
+  border: solid 1px rgb(216, 215, 215);
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px 15px;
+  width: 260px;
+  cursor: pointer;
+  transition: transform 0.5s;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.orderView:hover { transform: scale(1.1); }
-
-.ordersView{
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
+.orderView:hover {
+  transform: scale(1.1);
 }
 
-.status{
-    margin: 0;
-    padding: 5px 10px;
-    border-radius: 15px;
-    color: white;
-    font-size: 12px;
+.ordersView {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
-.inProcess{
-    background-color: rgb(245, 150, 42);
+.status {
+  margin: 0;
+  padding: 5px 10px;
+  border-radius: 15px;
+  color: white;
+  font-size: 12px;
 }
 
-.confirmed{
-    background-color: rgb(41, 231, 73);
+.inProcess {
+  background-color: rgb(245, 150, 42);
 }
 
-.cancelled{
-    background-color: rgb(235, 68, 38);
+.confirmed {
+  background-color: rgb(41, 231, 73);
 }
 
-.delivered{
-    background-color: rgb(38, 130, 235);
+.cancelled {
+  background-color: rgb(235, 68, 38);
+}
+
+.delivered {
+  background-color: rgb(38, 130, 235);
+}
+
+.spinner {
+  margin: 20px auto;
+}
+
+.uploader-status ::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: lightblue;
 }

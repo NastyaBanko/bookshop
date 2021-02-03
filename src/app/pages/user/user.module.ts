@@ -13,6 +13,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatCardModule } from '@angular/material/card';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import { ApplicationPipesModule } from './../../pipes/ApplicationPipesModule';
 
@@ -32,6 +33,7 @@ import { ApplicationPipesModule } from './../../pipes/ApplicationPipesModule';
     MatBadgeModule,
     MatSnackBarModule,
     ApplicationPipesModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class UserModule {}

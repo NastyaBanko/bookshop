@@ -10,7 +10,14 @@
     cdkAutosizeMinRows="1"
     cdkAutosizeMaxRows="5"
   ></textarea>
+  <button
+    mat-button
+    *ngIf="someText"
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    (click)="clearString('')"
+  >
+    <mat-icon aria-hidden="false" aria-label="icon">close</mat-icon>
+  </button>
 </mat-form-field>
-
-<!-- <p>{{inputTitle}}</p>
-<input [(ngModel)]="someText" type="text"/> -->

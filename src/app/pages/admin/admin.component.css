@@ -89,3 +89,11 @@
 .blue-snackbar {
   background: #2196F3;
 }
+
+.spinner {
+  margin: 20px auto;
+}
+
+.uploader-status ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
+  stroke: lightblue;
+}

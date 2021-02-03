@@ -26,11 +26,21 @@
         <mat-label>Password</mat-label>
         <input
           [(ngModel)]="userPassword"
-          type="password"
+          [type]="inputType"
           name="password"
           matInput
           value=""
         />
+        <button
+          mat-button
+          *ngIf="userPassword"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="showPassword()"
+        >
+          <mat-icon aria-hidden="false" aria-label="icon">remove_red_eye</mat-icon>
+        </button>
       </mat-form-field>
     </form>
     <p class="loginError" *ngIf="loginError.length">{{ loginError }}</p>

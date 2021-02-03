@@ -1,13 +1,22 @@
 <div class="mainContainer">
   <h1 class="welcomeText">Hi, {{ currentUser.name }}!</h1>
-  <button *ngIf="orderInProgress.id" class="burgerBtn" mat-button [matMenuTriggerFor]="menu">
+  <button
+    *ngIf="orderInProgress.id"
+    class="burgerBtn"
+    mat-button
+    [matMenuTriggerFor]="menu"
+  >
     <span>Menu</span>
-    <div class="countCircle" *ngIf="orderInProgress.orderItems.length > 0">{{orderInProgress.orderItems.length}}</div>
+    <div class="countCircle" *ngIf="orderInProgress.orderItems.length > 0">
+      {{ orderInProgress.orderItems.length }}
+    </div>
   </button>
   <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="viewBasket()" *ngIf="orderInProgress.id">
       <span>Basket</span>
-      <div class="countCircle" *ngIf="orderInProgress.orderItems.length > 0">{{orderInProgress.orderItems.length}}</div>
+      <div class="countCircle" *ngIf="orderInProgress.orderItems.length > 0">
+        {{ orderInProgress.orderItems.length }}
+      </div>
     </button>
     <button mat-menu-item (click)="viewOrders()">Orders</button>
     <button mat-menu-item (click)="openDialog()">Log out</button>
@@ -67,7 +76,9 @@
 
 <div class="warningText">
   <p *ngIf="visibleOffers.length < 1 && !loading">No available offers</p>
-  <p *ngIf="loading">Loading...</p>
+  <div *ngIf="loading" class="uploader-status">
+    <mat-progress-spinner class="spinner" diameter="50" mode="indeterminate"></mat-progress-spinner>
+  </div>
 </div>
 <div class="offersContainer" *ngIf="!loading">
   <mat-card *ngFor="let offer of visibleOffers" class="offerCard">
@@ -77,7 +88,7 @@
     </p>
     <p class="descriptionText">Category: {{ offer.category.category }}</p>
     <p class="descriptionText">{{ offer.description }}</p>
-    <p>Price: ${{ offer.price | roundNum:2 }}</p>
+    <p>Price: ${{ offer.price | roundNum: 2 }}</p>
     <div class="rowed">
       <button mat-stroked-button (click)="addCount(offer)">+</button>
       <!-- <p class="countText">
