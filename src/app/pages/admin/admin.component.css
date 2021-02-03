@@ -1,12 +1,19 @@
 .mainContainer {
   display: flex;
-  padding: 20px;
+  padding: 70px 20px;
   justify-content: flex-end;
   align-items: center;
+  background-image: url("./../../../assets/back.png");
+  background-size: cover;
+  color: white;
 }
 
 .welcomeText {
   margin: 0 10px 0 10px;
+}
+
+.logOutBtn{
+  border-color: white;
 }
 
 .toolBar {

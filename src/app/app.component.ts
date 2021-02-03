@@ -23,10 +23,10 @@ export class AppComponent extends RxUnsubscribe {
     let isAvailable = allPathes.find((el) => el.path === currentPath) || {};
 
     let currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
-    
+
     if (currentUser.email) {
       if (currentUser.role === 'ADMIN') {
-        this.router.navigate(['admin']);
+        this.router.navigate([isAvailable.path?'admin':"**"]);
       } else {
         this.router.navigate([
           isAvailable.path

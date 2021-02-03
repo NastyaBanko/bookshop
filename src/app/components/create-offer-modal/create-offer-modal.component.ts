@@ -34,10 +34,12 @@ export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
 
   title: string = '';
   urlAddress: string = '';
-  selectedCategory: string = this.data.mockCategories[0].value;
+  selectedCategory: string = this.data.mockCategories[0]
+    ? this.data.mockCategories[0].value
+    : '';
   description: string = '';
   price: string = '';
-  isCategoryNew: boolean = false;
+  isCategoryNew: boolean = this.data.mockCategories[0] ? false : true;
   dataError: boolean = false;
 
   mockCategories = this.data.mockCategories;
@@ -45,8 +47,8 @@ export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
   ngOnInit(): void {}
 
   onChangedInput(value: string, which: string) {
-    if(which==="price"){
-      this[which] = value.replace(",", ".");
+    if (which === 'price') {
+      this[which] = value.replace(',', '.');
     } else this[which] = value;
   }
 
@@ -99,10 +101,10 @@ export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
               this.data.successNotify();
               this.data.getOffers();
               this.data.getCategories();
-              setTimeout(()=>{
+              setTimeout(() => {
                 this.loading = false;
                 this.dialogRef.close();
-              }, 500)
+              }, 500);
             },
             () => this.data.errorNotify()
           );

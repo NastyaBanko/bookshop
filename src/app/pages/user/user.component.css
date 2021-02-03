@@ -1,8 +1,11 @@
 .mainContainer {
   display: flex;
-  padding: 20px;
+  padding: 70px 20px;
   justify-content: flex-end;
   align-items: center;
+  background-image: url("./../../../assets/back.png");
+  background-size: cover;
+  color: white;
 }
 
 .welcomeText {
@@ -68,7 +71,7 @@
 }
 
 .burgerBtn {
-  border: solid 1px rgb(216, 215, 215);
+  border: solid 1px rgb(255, 255, 255);
   border-radius: 5px;
 }
 
