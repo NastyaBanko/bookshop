@@ -14,6 +14,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatIconModule} from '@angular/material/icon';
 
+import { ApplicationDirectivesModule } from './../../directives/ApplicationDirectivesModule';
+
 
 @NgModule({
   declarations: [CreateAccountComponent],
@@ -27,6 +29,7 @@ import {MatIconModule} from '@angular/material/icon';
     MatInputModule,
     MatSnackBarModule,
     MatIconModule,
+    ApplicationDirectivesModule,
   ]
 })
 export class CreateAccountModule { }

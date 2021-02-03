@@ -1,65 +1,72 @@
 <div class="basketContainer">
   <h1>Your Basket</h1>
-  <p>Step 1. Order Overview</p>
-  <ul class="basketList" *ngIf="orderInProgress">
-    <li class="basketItem" *ngFor="let item of orderInProgress.orderItems">
-      <p>{{ item.title | uppercase }}</p>
-      <p>Price: ${{ item.price | roundNum: 2 }}</p>
-      <div class="rowed">
-        <button mat-stroked-button (click)="minusCount(item)">-</button>
+  <p class="stepText">Step 1. Order Overview</p>
+
+  <div *ngIf="loading" class="uploader-status">
+    <mat-progress-spinner
+      class="spinner"
+      diameter="50"
+      mode="indeterminate"
+    ></mat-progress-spinner>
+  </div>
+
+  <div *ngIf="!loading" class="offersView">
+    <p *ngIf="orderInProgress.orderItems.length < 1">No added offers</p>
+    <div class="offerView" *ngFor="let item of orderInProgress.orderItems">
+      <div>
+        <p>{{ item.title }}</p>
+        <p>PRICE: ${{ item.price | roundNum: 2 }}</p>
       </div>
-    </li>
-  </ul>
-  <div>
-    <p>Step 2. Order Completion</p>
-    <mat-form-field class="marginRight">
-      <mat-label>Contact number</mat-label>
-      <input
-        [(ngModel)]="contactNumber"
-        name="contactNumber"
-        matInput
-        value=""
-      />
-    </mat-form-field>
+      <div>
+        <button mat-stroked-button (click)="minusCount(item)">Delete</button>
+      </div>
+    </div>
   </div>
-  <div>
-    <mat-form-field class="marginRight">
-      <mat-label>Delivery Address</mat-label>
-      <input
-        [(ngModel)]="deliveryAddress"
-        name="deliveryAddress"
-        matInput
-        value=""
-      />
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>Delivery date</mat-label>
-      <input
-        matInput
-        [(ngModel)]="deliveryDate"
-        [matDatepickerFilter]="dateFilter"
-        [matDatepicker]="picker"
-      />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field appearance="fill">
-      <mat-label>Payment type</mat-label>
-      <mat-select [(value)]="paymentType">
-        <mat-option
-          [value]="option.value"
-          *ngFor="let option of mockCategories"
-          >{{ option.viewValue }}</mat-option
-        >
-      </mat-select>
-    </mat-form-field>
-  </div>
+
+  <p class="stepText">Step 2. Order Completion</p>
+
+  <mat-form-field class="marginRight">
+    <mat-label>Contact number</mat-label>
+    <input [(ngModel)]="contactNumber" name="contactNumber" matInput value="" />
+  </mat-form-field>
+
+  <mat-form-field class="marginRight">
+    <mat-label>Delivery Address</mat-label>
+    <input
+      [(ngModel)]="deliveryAddress"
+      name="deliveryAddress"
+      matInput
+      value=""
+    />
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width marginRight" appearance="fill">
+    <mat-label>Delivery date</mat-label>
+    <input
+      matInput
+      [(ngModel)]="deliveryDate"
+      [matDatepickerFilter]="dateFilter"
+      [matDatepicker]="picker"
+    />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Payment type</mat-label>
+    <mat-select [(value)]="paymentType">
+      <mat-option
+        [value]="option.value"
+        *ngFor="let option of mockCategories"
+        >{{ option.viewValue }}</mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+
   <p class="errorText" *ngIf="dataError">The entered data is wrong</p>
+
   <div>
+    <p class="stepText">Step 3. Order Confirmation</p>
     <p class="totalPriceView marginRight">
       Total Price: ${{ getTotalPrice() | roundNum: 2 }}
     </p>

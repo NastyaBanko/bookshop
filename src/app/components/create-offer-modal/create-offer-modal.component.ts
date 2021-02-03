@@ -30,6 +30,8 @@ export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
 
   @ViewChild(InputComponent) somethingInput: InputComponent;
 
+  loading: boolean = false;
+
   title: string = '';
   urlAddress: string = '';
   selectedCategory: string = this.data.mockCategories[0].value;
@@ -43,7 +45,9 @@ export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
   ngOnInit(): void {}
 
   onChangedInput(value: string, which: string) {
-    this[which] = value;
+    if(which==="price"){
+      this[which] = value.replace(",", ".");
+    } else this[which] = value;
   }
 
   onNoClick(): void {
@@ -71,6 +75,7 @@ export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
       const img = new Image();
       img.src = this.urlAddress;
       img.onload = () => {
+        this.loading = true;
         const currentCategory =
           this.data.categories.find(
             (el) => el.category === this.selectedCategory
@@ -92,10 +97,12 @@ export class CreateOfferModalComponent extends RxUnsubscribe implements OnInit {
           .subscribe(
             () => {
               this.data.successNotify();
-              console.log('save offer');
               this.data.getOffers();
               this.data.getCategories();
-              this.dialogRef.close();
+              setTimeout(()=>{
+                this.loading = false;
+                this.dialogRef.close();
+              }, 500)
             },
             () => this.data.errorNotify()
           );

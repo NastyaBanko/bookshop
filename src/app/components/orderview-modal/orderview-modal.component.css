@@ -1,25 +1,33 @@
-.buttonContainer{
-    display: flex;
-    justify-content: center;
+.buttonContainer {
+  display: flex;
+  justify-content: center;
 }
 
-.orderView{
-    width: 400px;
+.orderView {
+  width: 400px;
 }
 
-.textSection{
-    color: gray;
-    padding: 0;
-    margin: 0;
-    width: 120px;
-    display: inline-block;
+.textSection {
+  color: gray;
+  padding: 0;
+  margin: 0;
+  width: 120px;
+  display: inline-block;
 }
 
-.rowed{
-    display: flex;
-    justify-content: space-between;
+.rowed {
+  display: flex;
+  justify-content: space-between;
 }
 
-.textContainer{
-    margin-bottom: 5px;
+.textContainer {
+  margin-bottom: 5px;
+}
+
+::ng-deep .mat-dialog-title {
+  font-family: "Nunito", sans-serif !important;
+}
+
+::ng-deep .mat-typography {
+  font-family: "Nunito", sans-serif !important;
 }

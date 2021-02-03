@@ -1,4 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0 auto;
+  font-family: "Nunito", sans-serif !important;
+  width: 100%;
+  max-width: 1920px;
+  height: auto;
+  padding: 0px;
+  border: none;
+  outline: none;
+}
+
+button {
+  font-family: "Nunito", sans-serif !important;
+}
+
+input {
+  font-family: "Nunito", sans-serif !important;
+}
+
+select {
+  font-family: "Nunito", sans-serif !important;
+}

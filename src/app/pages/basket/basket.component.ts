@@ -17,11 +17,9 @@ import { Router } from '@angular/router';
 import { RxUnsubscribe } from '../../classes/rx-unsubscribe';
 import { takeUntil } from 'rxjs/operators';
 
-import { cloneDeep } from 'lodash';
-
 import * as moment from 'moment';
 
-import {LoggedUser} from '../../models/loggedUserModel';
+import { LoggedUser } from '../../models/loggedUserModel';
 
 @Component({
   selector: 'app-basket',
@@ -31,6 +29,8 @@ import {LoggedUser} from '../../models/loggedUserModel';
 export class BasketComponent extends RxUnsubscribe implements OnInit {
   horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+
+  loading: boolean = false;
 
   mockCategories = [
     { value: 'card', viewValue: 'Card' },
@@ -57,6 +57,7 @@ export class BasketComponent extends RxUnsubscribe implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.getCurrentUser();
   }
 
@@ -73,6 +74,9 @@ export class BasketComponent extends RxUnsubscribe implements OnInit {
         this.orderInProgress =
           data.find((el) => el.orderStatus === 'IN_PROCESS') || {};
         if (this.orderInProgress?.orderItems.length < 1) this.backHome();
+        setTimeout(() => {
+          this.loading = false;
+        }, 500);
       });
   }
 

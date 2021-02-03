@@ -59,7 +59,9 @@ const routes: Routes = [
   {
     path: '**',
     loadChildren: () =>
-      import('./pages/login/login.module').then((m) => m.LoginModule),
+      import('./pages/wrong-path-page/wrong-path-page.module').then(
+        (m) => m.WrongPathPageModule
+      ),
   },
 ];
 

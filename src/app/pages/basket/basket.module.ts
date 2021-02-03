@@ -11,6 +11,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { ApplicationPipesModule } from './../../pipes/ApplicationPipesModule';
 
@@ -28,6 +29,7 @@ import { ApplicationPipesModule } from './../../pipes/ApplicationPipesModule';
     MatNativeDateModule,
     MatSnackBarModule,
     ApplicationPipesModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
    MatDatepickerModule,

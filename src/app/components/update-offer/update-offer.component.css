@@ -22,7 +22,7 @@
 }
 
 .imageWrapper {
-  margin: 20px auto;
+  margin: 10px auto;
   height: 150px;
   width: 200px;
   padding: 5px;
@@ -66,6 +66,23 @@
   margin-right: 10px;
 }
 
-.marginVertical{
-  margin: 20px 0px;
+.marginVertical {
+  margin: 15px 0px;
+}
+
+::ng-deep .mat-card {
+  font-family: "Nunito", sans-serif !important;
+  box-shadow: 0 0 10px rgb(0 0 0 / 20%) !important;
+}
+
+::ng-deep .mat-form-field {
+  font-family: "Nunito", sans-serif !important;
+}
+
+::ng-deep .mat-option {
+  font-family: "Nunito", sans-serif !important;
+}
+
+::ng-deep .mat-select-value {
+  font-family: "Nunito", sans-serif !important;
 }

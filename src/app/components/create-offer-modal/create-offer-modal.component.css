@@ -22,7 +22,7 @@
 }
 
 .imageWrapper {
-  margin: 20px auto;
+  margin: 10px auto;
   height: 150px;
   width: 200px;
   padding: 5px;
@@ -47,6 +47,7 @@ p {
 .rowed {
   display: flex;
   justify-content: center;
+  /* margin-bottom: 20px; */
 }
 
 .offerCard {
@@ -72,5 +73,38 @@ p {
 }
 
 .marginVertical{
-  margin: 20px 0px;
+  margin: 15px 0px;
+}
+
+.spinBtm{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  display: inline-block;
+  /* margin-left: 5px; */
+}
+
+.uploader-status ::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: lightblue;
+}
+
+::ng-deep .mat-card {
+  font-family: "Nunito", sans-serif !important;
+  box-shadow: 0 0 10px rgb(0 0 0 / 20%) !important;
+}
+
+::ng-deep .mat-form-field {
+  font-family: "Nunito", sans-serif !important;
+}
+
+::ng-deep .mat-option {
+  font-family: "Nunito", sans-serif !important;
+}
+
+::ng-deep .mat-select-value {
+  font-family: "Nunito", sans-serif !important;
 }

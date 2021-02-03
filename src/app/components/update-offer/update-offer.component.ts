@@ -43,7 +43,9 @@ export class UpdateOfferComponent extends RxUnsubscribe implements OnInit {
   mockCategories = this.data.mockCategories;
 
   onChangedInput(value: string, which: string) {
-    this[which] = value;
+    if(which==="price"){
+      this[which] = +(value.replace(",", "."));
+    } else this[which] = value;
   }
 
   onNoClick(): void {

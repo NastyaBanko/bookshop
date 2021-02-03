@@ -26,10 +26,12 @@ import { CreateOfferModalComponent } from './components/create-offer-modal/creat
 import { DeleteCategoryModalComponent } from './components/delete-category-modal/delete-category-modal.component';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatCardModule } from '@angular/material/card';
-import { ApplicationPipesModule } from './pipes/ApplicationPipesModule';
-import { InputComponent } from './components/input/input.component';  
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
+import { InputComponent } from './components/input/input.component';
+
+import { ApplicationPipesModule } from './pipes/ApplicationPipesModule';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -61,10 +63,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ApplicationPipesModule,
     BrowserAnimationsModule,
     MatIconModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
-    MatDatepickerModule
+    MatDatepickerModule,
   ],
   bootstrap: [AppComponent],
 })

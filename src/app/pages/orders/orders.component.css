@@ -60,3 +60,20 @@
 .mat-spinner circle {
   stroke: lightblue;
 }
+
+::ng-deep .mat-card {
+  font-family: "Nunito", sans-serif !important;
+  box-shadow: 0 0 10px rgb(0 0 0 / 20%) !important;
+}
+
+::ng-deep .mat-form-field {
+  font-family: "Nunito", sans-serif !important;
+}
+
+::ng-deep .mat-option {
+  font-family: "Nunito", sans-serif !important;
+}
+
+::ng-deep .mat-select-value {
+    font-family: "Nunito", sans-serif !important;
+  }

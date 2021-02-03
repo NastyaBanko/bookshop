@@ -1,47 +1,86 @@
-.basketContainer{
-    padding: 20px;
+.basketContainer {
+  padding: 20px;
+  text-align: center;
 }
 
-.basketItem{
-    border: solid 1px rgb(216, 215, 215);
-    border-radius: 5px;
-    margin: 10px 0;
-    list-style-type: none;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
+.offerView {
+  border: solid 1px rgb(216, 215, 215);
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px 15px;
+  width: 260px;
+  cursor: pointer;
+  transition: transform 0.5s;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.basketList{
-    width: 300px;
-    margin: 0;
-    padding: 0;
+.offersView {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
-.rowed{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.rowed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.countText{
-    margin: 0 10px;
+.countText {
+  margin: 0 10px;
 }
 
-.selectPayType{
-    padding: 0;
+.stepText {
+  background-color: lightblue;
+  color: white;
+  padding: 20px;
+  margin: 30px 50px;
 }
 
-.totalPriceView{
-    text-transform: uppercase;
-    font-size: 25px;
-    display: inline;
+.selectPayType {
+  padding: 0;
 }
 
-.marginRight{
-    margin-right: 10px;
+.totalPriceView {
+  text-transform: uppercase;
+  font-size: 25px;
+  display: inline;
 }
 
-.errorText{
-    color: red;
+.marginRight {
+  margin-right: 10px;
+}
+
+.errorText {
+  color: red;
+}
+
+.spinner {
+  margin: 20px auto;
+}
+
+.uploader-status ::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: lightblue;
+}
+
+::ng-deep .mat-card {
+  font-family: "Nunito", sans-serif !important;
+  box-shadow: 0 0 10px rgb(0 0 0 / 20%) !important;
+}
+
+::ng-deep .mat-form-field {
+  font-family: "Nunito", sans-serif !important;
+}
+
+::ng-deep .mat-option {
+  font-family: "Nunito", sans-serif !important;
+}
+
+::ng-deep .mat-select-value {
+  font-family: "Nunito", sans-serif !important;
 }

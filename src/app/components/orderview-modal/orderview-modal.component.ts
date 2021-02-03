@@ -52,7 +52,6 @@ export class OrderviewModalComponent extends RxUnsubscribe implements OnInit {
             !this.loadingPaymentType
           ) {
             this.data.successNotify();
-            console.log('change status');
             this.dialogRef.close();
             this.router.navigate(['user']);
           }
@@ -67,7 +66,6 @@ export class OrderviewModalComponent extends RxUnsubscribe implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.loadingAddress = false;
-        console.log('change address');
       });
   }
 
@@ -77,7 +75,6 @@ export class OrderviewModalComponent extends RxUnsubscribe implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.loadingNumber = false;
-        console.log('change number');
       });
   }
 
@@ -87,7 +84,6 @@ export class OrderviewModalComponent extends RxUnsubscribe implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.loadingPaymentType = false;
-        console.log('change type');
       });
   }
 

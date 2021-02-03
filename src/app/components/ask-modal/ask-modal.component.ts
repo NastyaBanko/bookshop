@@ -47,7 +47,6 @@ export class AskModalComponent implements OnInit {
   }
 
   onLogOut(): void {
-    console.log('log out');
     this.dialogRef.close();
     this.userService.logout();
     this.cleanLocaleStorage();

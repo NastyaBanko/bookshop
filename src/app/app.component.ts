@@ -18,15 +18,23 @@ export class AppComponent extends RxUnsubscribe {
   }
 
   ngOnInit(): void {
-    console.log(this.router.url, '>>>');
-    console.log(window.location.pathname.slice(1));
+    let currentPath = window.location.pathname.slice(1);
+    let allPathes = this.router.config;
+    let isAvailable = allPathes.find((el) => el.path === currentPath) || {};
+
     let currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+    
     if (currentUser.email) {
       if (currentUser.role === 'ADMIN') {
         this.router.navigate(['admin']);
       } else {
-        this.router.navigate(['user']);
-        // this.router.navigate([window.location.pathname.slice(1)])
+        this.router.navigate([
+          isAvailable.path
+            ? isAvailable.path === 'admin'
+              ? 'user'
+              : isAvailable.path
+            : '**',
+        ]);
       }
       this.userService.login(
         currentUser.role,
